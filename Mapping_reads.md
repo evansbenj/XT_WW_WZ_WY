@@ -73,10 +73,26 @@ for file in ${2}/*${3}*.R1.fq.gz ; do         # Use ./* ... NEVER bare *
 done
 ```
 
-# Coverage per site
+# Genomic regions with no coverage
 
 ```
+#!/bin/sh
+#SBATCH --job-name=bedtools
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=4:00:00
+#SBATCH --mem=2gb
+#SBATCH --output=bedtools.%J.out
+#SBATCH --error=bedtools.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this (in the directory with the files)
+# sbatch 2020_regions_with_no_coverage.sh bamfile prefix
+# sbatch 2020_regions_with_no_coverage.sh ../raw_data/XT11_WW_trim_sorted.bam XT_WW
+
 module load StdEnv/2020 bedtools/2.29.2
+
+bedtools genomecov -ibam ${1} -bg | awk '$4 < 1' > ${2}_intervals_with_no_coverage.txt
 ```
 
 
