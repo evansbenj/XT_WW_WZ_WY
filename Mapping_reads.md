@@ -73,4 +73,10 @@ for file in ${2}/*${3}*.R1.fq.gz ; do         # Use ./* ... NEVER bare *
 done
 ```
 
+# Coverage per site
+
+```
+module load StdEnv/2020 bedtools/2.29.2
+```
+
 
