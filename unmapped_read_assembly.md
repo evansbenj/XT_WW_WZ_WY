@@ -17,9 +17,27 @@ cat XT7_WY__1_unaligned_seqs.fq XT7_WY__M_unaligned_seqs.fq > XT7_WY_unmappd_pai
 ```
 Now assemble them
 ```
-module load StdEnv/2020 trinity/2.11.0
-module load samtools jellyfish 
-module load gcc/9.3.0  openmpi/4.0.3 salmon/1.3.0
+#!/bin/sh
+#SBATCH --job-name=trinity
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=32
+#SBATCH --time=24:00:00
+#SBATCH --mem=0
+#SBATCH --output=trinity.%J.out
+#SBATCH --error=trinity.%J.err
+#SBATCH --account=rrg-ben
 
-Trinity --seqType fq --left XT7_WY_unmappd_paired_and_singletons.fq --right XT7_WY__2_unaligned_seqs.fq --no_normalize_reads --max_memory 10G
-```
+# sbatch 2020_trinity.sh ../unaligned_seqs/XT7_WY/XT7_WY_unmappd_paired_and_singletons.fq ../unaligned_seqs/XT7_WY/XT7_WY__2_unaligned_seqs.fq ../unaligned_seqs/XT7_WY/trinity_output
+
+module load nixpkgs/16.09  gcc/7.3.0 nixpkgs/16.09
+module load openmpi/3.1.2
+module load samtools/1.9
+module load salmon/0.11.3
+module load bowtie2/2.3.4.3
+module load jellyfish/2.2.6
+module load trinity/2.8.4
+
+# get total memory from the assigned node
+avail_mem=$(free -h| grep Mem| tr -s ' '| cut -d ' ' -f2)
+
+Trinity --seqType fq --left ${1} --right ${2} --CPU 32 --full_cleanup --max_memory "${avail_mem}" --min_kmer_cov 2 --include_supertranscripts --bflyCalculateCPU  --bflyCPU 10 --bflyHeapSpaceMax 12G --output ${3}```
