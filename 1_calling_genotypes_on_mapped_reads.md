@@ -48,7 +48,7 @@ java -Xmx2g  -jar $EBROOTGATK/GenomeAnalysisTK.jar -T RealignerTargetCreator -R 
 java -Xmx2g  -jar $EBROOTGATK/GenomeAnalysisTK.jar -T IndelRealigner -R ${1} -I ${2} -targetIntervals ${2}.intervals -o ${2}_realigned.bam
 
 
-module load samtools/1.11
+module load StdEnv/2020 samtools/1.11
 samtools index ${2}_realigned.bam
 ```
 
