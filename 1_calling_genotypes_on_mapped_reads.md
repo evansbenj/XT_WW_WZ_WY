@@ -23,7 +23,7 @@ ina RGPU=XT10_WZ RGSM=XT10_WZ
 ```
 (and the same for XT11_WW and XT7_WY)
 
-# Realign indels using GATK
+# Index the new bam files
 ```
 #!/bin/sh
 #SBATCH --job-name=picard
@@ -36,10 +36,30 @@ ina RGPU=XT10_WZ RGSM=XT10_WZ
 #SBATCH --account=def-ben
 
 # run by passing an argument like this
+# sbatch 2020_samtools_index_bam.sh pathtobamfile/bamfile
+
+module load StdEnv/2020 samtools/1.11
+
+samtools index ${1}
+```
+
+# Realign indels using GATK
+```
+#!/bin/sh
+#SBATCH --job-name=gatk_indelrealigner
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=gatk_indelrealigner.%J.out
+#SBATCH --error=gatk_indelrealigner.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this
 # sbatch 2020_GATK_indelrealigner.sh pathtoref/ref  pathtobamfile/bamfile
-# sbatch 2020_GATK_indelrealigner.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta.gz bamfile
+# sbatch 2020_GATK_indelrealigner.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta bamfile
 
-
+module --force purge
 module load nixpkgs/16.09
 module load gatk/3.8
 
@@ -50,6 +70,7 @@ java -Xmx2g  -jar $EBROOTGATK/GenomeAnalysisTK.jar -T IndelRealigner -R ${1} -I 
 
 module load StdEnv/2020 samtools/1.11
 samtools index ${2}_realigned.bam
+
 ```
 
 # call genotypes
@@ -66,6 +87,7 @@ samtools index ${2}_realigned.bam
 
 # sbatch 2020_chrX_0_gatk_HaplotypeCaller.sh pathtobamfile/bamfilname
 
+module --force purge
 module load nixpkgs/16.09
 module load gatk/3.8
 
