@@ -1,5 +1,22 @@
 # Extract reads that don't map to reference:
 ```
+#!/bin/sh
+#SBATCH --job-name=bam2fastq
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=4:00:00
+#SBATCH --mem=2gb
+#SBATCH --output=bam2fastq.%J.out
+#SBATCH --error=bam2fastq.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this (in the directory with the files)
+# sbatch 2020_extract_unmapped_seqs.sh bamfile prefix
+# sbatch 2020_extract_unmapped_seqs.sh ../raw_data/XT11_WW_trim_sorted.bam XT_WW
+
+../bin/bam2fastq/bam2fastq --no-aligned --unaligned ${1} -o ${2}_#_unaligned_seqs.fq
+
+
 ```
 # Assemble them
 
