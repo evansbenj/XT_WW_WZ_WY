@@ -96,3 +96,25 @@ java -jar $EBROOTGATK/GenomeAnalysisTK.jar -T HaplotypeCaller -R ~/projects/rrg-
 DENT_SITES --emitRefConfidence GVCF -o ${1}_noBSQR.g.vcf.gz
 
 ```
+
+Combining gvcfs:
+```
+#!/bin/sh
+#SBATCH --job-name=GenotypeGVCFs
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=32000M
+#SBATCH --output=GenotypeGVCFs.%J.out
+#SBATCH --error=GenotypeGVCFs.%J.err
+#SBATCH --account=def-ben
+
+module load nixpkgs/16.09
+module load gatk/3.8
+
+
+java -jar $EBROOTGATK/GenomeAnalysisTK.jar -T GenotypeGVCFs -R /home/ben/scratch/2020_XT_WW_WZ_WY/2020_XT_v10_refgen
+ome/XENTR_10.0_genome.fasta -V XT10_WZ_trim_sorted_rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -V XT11_WW_trim_sorted_
+rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -V XT7_WY_trim_sorted_rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -allSites 
+-o XTgenomez_${1}.vcf.gz
+```
