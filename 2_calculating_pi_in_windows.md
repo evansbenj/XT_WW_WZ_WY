@@ -1,6 +1,30 @@
 # Calculating pi in windows for each genome
 
-I'm going to try three approaches - vcftools, tabfile + myscript, and general_genomics. The first works from a vcf file, which I now have.  The last works from a geno file which I am making like this (2020_make_geno_from_vcf.sh):
+I'm going to try three approaches - vcftools, tabfile + myscript, and general_genomics. The first works from a vcf file, which I now have.  The last works from a geno file. 
+
+First phase with Beagle:
+```
+#!/bin/sh
+#SBATCH --job-name=beagle
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=3:00:00
+#SBATCH --mem=128gb
+#SBATCH --output=beagle.%J.out
+#SBATCH --error=beagle.%J.err
+#SBATCH --account=def-ben
+
+# sbatch Beagle.sh chr
+
+module load java
+
+java -Xmx12g -jar /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_
+depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/twisst/beagle.18May20.d20.jar gt=${1} out=${1}_phased.vcf
+.gz impute=true
+```
+
+
+Then make the geno file like this (2020_make_geno_from_vcf.sh):
 ```
 #!/bin/sh
 #SBATCH --job-name=makegeno
@@ -18,6 +42,10 @@ python /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam
 th_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/VCF_processing/parseVCF.py -i ${1} 
 | gzip > ${1}.geno.gz
 ```
+
+
+
+
 
 
 The tab file approach is made with vcftools and my script is this (Boot_from_tab_diverge_poly_2018_allowmissingdata_transcripts_.pl):
