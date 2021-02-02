@@ -50,6 +50,22 @@ sed -i 's/\*/N/g' ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohe
 gzip -c ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno > ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz
 ```
 
+The sbatch scripts are not working for some reason probably related to module incompatibility.  It runs really quickly directly though:
+
+```
+./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT7_WY XT10_WZ
+
+python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT7_WY_XT10_WZ.csv -m 1 -p XT7_WY -p XT10_WZ -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
+
+./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT10_WZ XT11_WW
+
+python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT10_WZ_XT11_WW.csv -m 1 -p XT10_WZ -p XT11_WW -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
+
+./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT11_WW XT7_WY
+
+python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT11_WW_XT7_WY.csv -m 1 -p XT11_WW -p XT7_WY -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
+```
+
 
 
 
