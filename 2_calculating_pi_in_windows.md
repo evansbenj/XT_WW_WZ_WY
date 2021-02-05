@@ -68,7 +68,7 @@ Here is an sbatch script that runs the popgenWindows calculation of Fst:
 # populations
 # bru papio hec mau nem sum nig nge tog ton
 
-
+module --force purge
 module load StdEnv/2020
 module load scipy-stack/2020b
 module load python/3.8.2
