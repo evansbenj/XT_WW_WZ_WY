@@ -50,6 +50,47 @@ sed -i 's/\*/N/g' ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohe
 gzip -c ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno > ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz
 ```
 
+Here is an sbatch script that runs the popgenWindows calculation of Fst:
+```
+#!/bin/sh
+#SBATCH --job-name=popgen
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=1:00:00
+#SBATCH --mem=2gb
+#SBATCH --output=popgen.%J.out
+#SBATCH --error=popgen.%J.err
+#SBATCH --account=def-ben
+
+
+# sbatch ./popgenWindows_allautosomes.sh pop1 pop2
+
+# populations
+# bru papio hec mau nem sum nig nge tog ton
+
+
+module load StdEnv/2020
+module load scipy-stack/2020b
+module load python/3.8.2
+
+## declare an array variable
+declare -a chrs=("chr01" "chr02a" "chr02b" "chr03" "chr04" "chr05" "chr06" "chr07" "chr08" "chr09" "chr10" "chr11
+" "chr12" "chr13" "chr14" "chr15" "chr16" "chr17" "chr18" "chr19")
+
+for file in "${chrs[@]}"; do  
+
+    echo python3 ./popgenWindows.py -g ./VCF_processing/${file}.geno.gz -o ./VCF_processing/popgenWindows_${file}
+_${1}_${2}_windowstats.csv -w 100000 -m 100 -s 100000 -p ${1} -p ${2} -f phased -T 10 --popsFile pops.txt --write
+FailedWindows --windType coordinate
+
+python3 ./popgenWindows.py -g ./VCF_processing/${file}.geno.gz -o ./VCF_processing/popgenWindows_${file}_${1}_${2
+}_windowstats.csv -w 100000 -m 100 -s 100000 -p ${1} -p ${2} -f phased -T 10 --popsFile pops.txt --writeFailedWin
+dows --windType coordinate
+
+done
+```
+
+
 The sbatch scripts are not working for some reason probably related to module incompatibility.  It runs really quickly directly though:
 
 ```
