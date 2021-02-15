@@ -45,3 +45,30 @@ I made meryl kmer databases like this:
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl count ${1} threads=4 memory=128 k=29 ou
 tput ${1}_meryldb.out
 ```
+
+# Make a union-sum of the kmer-dbs of the forward and reverrse reads:
+```
+#SBATCH --job-name=meryl                                                                                                        
+#SBATCH --nodes=1                                                                                                               
+#SBATCH --ntasks-per-node=1                                                                                                     
+#SBATCH --time=48:00:00                                                                                                         
+#SBATCH --mem=128gb                                                                                                             
+#SBATCH --output=meryl.%J.out                                                                                                   
+#SBATCH --error=meryl.%J.err                                                                                                    
+#SBATCH --account=def-ben                                                                                                       
+
+
+# sbatch 2020_meryl_union_kmer_dbs.sh db1 db2 out 
+
+sbatch 2020_meryl_union_kmer_dbs.sh ../raw_data/XT10_WZ_trim.R1.fq.gz_meryldb.out ../raw_data/XT10_WZ_trim.R2.fq.gz_meryldb.out\
+ ../raw_data/XT10_WZ_R1R2_meryldb.out
+
+sbatch 2020_meryl_union_kmer_dbs.sh ../raw_data/XT11_WW_trim.R1.fq.gz_meryldb.out ../raw_data/XT11_WW_trim.R2.fq.gz_meryldb.out\
+ ../raw_data/XT11_WW_R1R2_meryldb.out
+
+sbatch 2020_meryl_union_kmer_dbs.sh ../raw_data/XT7_WY_trim.R1.fq.gz_meryldb.out ../raw_data/XT7_WY_trim.R2.fq.gz_meryldb.out .\
+./raw_data/XT7_WY_R1R2_meryldb.out
+
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl union-sum ${1} ${2} threads=4 memory=128 k=29 output \
+${3}
+```
