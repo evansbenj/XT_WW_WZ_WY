@@ -88,6 +88,7 @@ head -n 333333 XT_Chr7.fasta > XT_Chr7_first20mil.fasta
 ```
 ./Split_fasta.pl /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XT_Chr7_first20mil.fasta 3333 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/Chr7_bits
 ```
+Because there are 60 bp/line, the 3333 means that each bit will have 3333*60=~200,000 bp.
 
 Where `Split_fasta.pl` is this:
 ```
