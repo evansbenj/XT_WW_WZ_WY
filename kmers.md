@@ -156,3 +156,11 @@ while ( my $line = <DATAINPUT>) {
 	}
 }		
 ```
+
+# Make little kmer db out of each bit
+```
+for file in ../Chr7_bits/*
+do
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl count $file threads=4 memory=128 k=29 output $file_meryldb.out
+done
+```
