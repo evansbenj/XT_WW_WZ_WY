@@ -72,3 +72,86 @@ tput ${1}_meryldb.out
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl union-sum ${1} ${2} threads=4 memory=128 k=29 output \
 ${3}
 ```
+
+# Extract chr7 from v10 ref
+```
+perl -ne 'if(/^>(\S+)/){$c=grep{/^$1$/}qw(Chr7)}print if $c' XENTR_10.0_genome.fasta > XT_Chr7.fasta
+```
+
+# Focus on first 20million bp
+
+```
+head -n 333333 XT_Chr7.fasta > XT_Chr7_first20mil.fasta
+```
+
+# Split into 200,000 bp bits
+```
+./Split_fasta.pl /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XT_Chr7_first20mil.fasta 3333 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/Chr7_bits
+```
+
+Where `Split_fasta.pl` is this:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+# This program reads in a fasta file and splits it into several
+# smaller files of length equal to $ARGV[1].  
+# This is useful for doing kmer quantification of different parts of a chromosome
+# Output files will be printed to $ARGV[2], which is the "output_directory"
+# First calculate how many lines the input fasta file is. The divide this number
+# by the number of bits you want to divide it into to get the $ARGV[1] length
+
+# Run this script like this
+# Split_fasta.pl input.fasta length output_directory 
+
+
+my $inputfile = $ARGV[0]; # This is the input file
+my $length = $ARGV[1]; # this how many lines each subset file will have
+my $outputdirectory = $ARGV[2]; # This is where the bits will be printed
+
+unless (open DATAINPUT, $inputfile) {
+	print 'Can not find the input file.\n';
+	exit;
+}
+
+my $filecounter=0;
+my $linecounter=0;
+my $header;
+my @temp;
+my $outputfile;
+my $line;
+
+# Read in datainput file
+
+while ( my $line = <DATAINPUT>) {
+	if($line =~ '>'){
+		# save the fasta HEADER for later to print in each output file
+		$filecounter+=1;
+		# parse header
+		chomp($line);
+		@temp=split('>',$line);
+		$header=$temp[1];
+		unless (open(OUTFILE, ">".$outputdirectory."\/".$header."_".$filecounter))  {
+			print "I can\'t write to $outputfile\n";
+			exit;
+		}
+		print OUTFILE ">".$header."_".$filecounter."\n";
+		$linecounter=0;
+	}
+	elsif($linecounter < $length){
+		print OUTFILE $line;
+		$linecounter+=1;
+	}	
+	else{	
+		$filecounter+=1;
+		unless (open(OUTFILE, ">".$outputdirectory."\/".$header."_".$filecounter))  {
+			print "I can\'t write to $outputfile\n";
+			exit;
+		}
+		print OUTFILE ">".$header."_".$filecounter."\n";
+		print OUTFILE $line;
+		$linecounter=0;
+	}
+}		
+```
