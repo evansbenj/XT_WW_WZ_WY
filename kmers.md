@@ -72,6 +72,39 @@ tput ${1}_meryldb.out
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl union-sum ${1} ${2} threads=4 memory=128 k=29 output \
 ${3}
 ```
+# Subtract kmers to get kmer db with sex chr specific kmers:
+
+```
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_putative_Y_specific.out
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out
+```
+where `2020_meryl_difference_kmer_dbs.sh` is:
+```
+#!/bin/sh
+#SBATCH --job-name=meryl
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=48:00:00
+#SBATCH --mem=132gb
+#SBATCH --output=meryl.%J.out
+#SBATCH --error=meryl.%J.err
+#SBATCH --account=def-ben
+
+
+# sbatch 2020_meryl_difference_kmer_dbs.sh db1 db2 out
+
+# sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_putative_Y_specific.out
+# sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out
+
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl difference ${1} ${2} threads=4 memory=128 k=29 output ${3}
+```
+After this try 
+```
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_putative_Y_specific.out ../raw_data/XT10_WZ_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out  
+
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
+```
+# BELOW NOT USED
 
 # Extract chr7 from v10 ref
 ```
