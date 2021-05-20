@@ -150,6 +150,14 @@ awk '{ if ($2 > 2) { print } }' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_p
 ```
 awk '{ if ($2 > 2) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out
 ```
+# uncompress fq files but keep compressed version (cookiecutter needs them uncompressed)
+```
+gunzip -k ../raw_data/XT7_WY_trim.R1.fq.gz
+gunzip -k ../raw_data/XT7_WY_trim.R2.fq.gz
+gunzip -k ../raw_data/XT10_WZ_trim.R1.fq.gz
+gunzip -k ../raw_data/XT10_WZ_trim.R2.fq.gz
+
+```
 
 # get ave, max, min
 ```
