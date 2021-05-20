@@ -151,6 +151,16 @@ awk '{ if ($2 > 2) { print } }' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_p
 awk '{ if ($2 > 2) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out
 ```
 
+# get ave, max, min
+```
+awk '{print $2}' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2.out | awk '{if(min==""){min=max=$1}; if($1>max) {max=$1}; if($1<min) {min=$1}; total+=$1; count+=1} END {print "avg " total/count," | max "max," | min " min}'
+```
+```
+awk '{print $2}' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out | awk '{if(min==""){min=max=$1}; if($1>max) {max=$1}; if($1<min) {min=$1}; total+=$1; count+=1} END {print "avg " total/count," | max "max," | min " min}'
+```
+
+
+
 # BELOW NOT USED
 
 # Extract chr7 from v10 ref
