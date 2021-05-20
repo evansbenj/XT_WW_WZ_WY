@@ -46,7 +46,7 @@ I made meryl kmer databases like this:
 tput ${1}_meryldb.out
 ```
 
-# Make a union-sum of the kmer-dbs of the forward and reverrse reads:
+## Make a union-sum of the kmer-dbs of the forward and reverrse reads:
 ```
 #SBATCH --job-name=meryl                                                                                                        
 #SBATCH --nodes=1                                                                                                               
@@ -72,7 +72,7 @@ tput ${1}_meryldb.out
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/bin/meryl/build/bin/meryl union-sum ${1} ${2} threads=4 memory=128 k=29 output \
 ${3}
 ```
-# Subtract kmers to get kmer db with sex chr specific kmers:
+## Subtract kmers to get kmer db with sex chr specific kmers:
 
 ```
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_putative_Y_specific.out
@@ -105,7 +105,7 @@ sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_putati
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 ```
 
-# getting fastq from bam for v10 ZW
+## getting fastq from bam for v10 ZW
 
 ```
 module load nixpkgs/16.09  intel/2018.3 bamutil/1.0.14
@@ -113,7 +113,7 @@ module load nixpkgs/16.09  intel/2018.3 bamutil/1.0.14
 ```
 bam bam2FastQ --in JBL052.bam --outBase XXX
 ```
-# make kmer db from forward and rev reads:
+## make kmer db from forward and rev reads:
 ```
 sbatch 2020_meryl_make_kmerdb.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__1.fastq
 ```
@@ -121,36 +121,36 @@ sbatch 2020_meryl_make_kmerdb.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL05
 sbatch 2020_meryl_make_kmerdb.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__2.fastq
 ```
 
-# combine kmer dbs:
+## combine kmer dbs:
 ```
 sbatch 2020_meryl_union_kmer_dbs.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__1.fastq_meryldb.out ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__2.fastq_meryldb.out ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052_R1R2.fastq_meryldb.out
 ```
 
-# now substract v10_ZW
+## now substract v10_ZW
 ```
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
 ```
 
-# Putative kmer specific dbs
+## Putative kmer specific dbs
 ```
 ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
 ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 ```
 
-# print kmer-specific dbs for Z and Y
+## print kmer-specific dbs for Z and Y
 ```
 sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
 ```
 
-# filter to include only kmers with more than 2 observations:
+## filter to include only kmers with more than 2 observations:
 ```
 awk '{ if ($2 > 2) { print } }' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed.out > ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2.out
 ```
 ```
 awk '{ if ($2 > 2) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out
 ```
-# extract reads with sex-chr specific kmers
+## extract reads with sex-chr specific kmers
 ```
 sbatch 2021_cookiecutter_extract.sh ../raw_data/XT7_WY_trim.R1.fq.gz ../raw_data/XT7_WY_trim.R2.fq.gz ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out_seqs.fa ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out_fq_filez
 ```
