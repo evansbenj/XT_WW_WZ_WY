@@ -113,6 +113,18 @@ module load nixpkgs/16.09  intel/2018.3 bamutil/1.0.14
 ```
 bam bam2FastQ --in JBL052.bam --outBase XXX
 ```
+# make kmer db from forward and rev reads:
+```
+sbatch 2020_meryl_make_kmerdb.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__1.fastq
+```
+```
+sbatch 2020_meryl_make_kmerdb.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__2.fastq
+```
+
+# combine kmer dbs:
+```
+sbatch 2020_meryl_union_kmer_dbs.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__1.fastq_meryldb.out ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052__2.fastq_meryldb.out ../../2020_XT_v10_raw_data/XT-v10_rawdata/JBL052_R1R2.fastq_meryldb.out
+```
 
 # BELOW NOT USED
 
