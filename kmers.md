@@ -77,6 +77,7 @@ ${3}
 ```
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_putative_Y_specific.out
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_R1R2_meryldb.out ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_R1R2_meryldb.out ../raw_data/XT11_WW_minus_XT10_WZ_putative_W_specific.out
 ```
 where `2020_meryl_difference_kmer_dbs.sh` is:
 ```
