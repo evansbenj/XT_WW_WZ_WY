@@ -159,6 +159,10 @@ awk '{print $2}' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_
 awk '{print $2}' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out | awk '{if(min==""){min=max=$1}; if($1>max) {max=$1}; if($1<min) {min=$1}; total+=$1; count+=1} END {print "avg " total/count," | max "max," | min " min}'
 ```
 
+# make this output into a multifasta file for cookie cutter
+```
+awk '{print ">\n"$1}' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out_seqs.fa
+```
 
 
 # BELOW NOT USED
