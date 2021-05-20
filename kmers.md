@@ -104,6 +104,16 @@ sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_putati
 
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 ```
+
+# getting fastq from bam for v10 ZW
+
+```
+module load nixpkgs/16.09  intel/2018.3 bamutil/1.0.14
+```
+```
+bam bam2FastQ --in JBL052.bam --outBase XXX
+```
+
 # BELOW NOT USED
 
 # Extract chr7 from v10 ref
