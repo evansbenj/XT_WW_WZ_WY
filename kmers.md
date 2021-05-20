@@ -137,6 +137,12 @@ sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_
 ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 ```
 
+# print kmer-specific dbs for Z and Y
+```
+sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
+sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
+```
+
 # BELOW NOT USED
 
 # Extract chr7 from v10 ref
