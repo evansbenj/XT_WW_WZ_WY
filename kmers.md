@@ -143,6 +143,14 @@ sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_
 sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
 ```
 
+# filter to include only kmers with more than 2 observations:
+```
+awk '{ if ($2 > 2) { print } }' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed.out > ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2.out
+```
+```
+awk '{ if ($2 > 2) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out
+```
+
 # BELOW NOT USED
 
 # Extract chr7 from v10 ref
