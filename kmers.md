@@ -128,7 +128,7 @@ sbatch 2020_meryl_union_kmer_dbs.sh ../../2020_XT_v10_raw_data/XT-v10_rawdata/JB
 
 # now substract v10_ZW
 ```
-sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out ../raw_data/XT7_WY_trim.R2.fq.gz_meryldb.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
 ```
 
 # Putative kmer specific dbs
