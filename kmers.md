@@ -152,10 +152,10 @@ awk '{ if (($2 > 2)&&($2 < 100)) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_m
 ```
 ## extract reads with sex-chr specific kmers
 ```
-sbatch 2021_cookiecutter_extract.sh ../raw_data/XT7_WY_trim.R1.fq.gz ../raw_data/XT7_WY_trim.R2.fq.gz ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out_seqs.fa ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2.out_fq_filez
+sbatch 2021_cookiecutter_extract.sh ../raw_data/XT7_WY_trim.R1.fq.gz ../raw_data/XT7_WY_trim.R2.fq.gz ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez
 ```
 ```
-sbatch 2021_cookiecutter_extract.sh ../raw_data/XT10_WZ_trim.R1.fq.gz ../raw_data/XT10_WZ_trim.R2.fq.gz ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2.out_seqs.fa ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2.out_seqs.fa_fq_filez
+sbatch 2021_cookiecutter_extract.sh ../raw_data/XT10_WZ_trim.R1.fq.gz ../raw_data/XT10_WZ_trim.R2.fq.gz ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez
 ```
 Output fasta files are gz compressed
 
