@@ -1,3 +1,6 @@
+# Sequencing
+NovaSeq 6000 PE150
+
 # Working directory
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY
