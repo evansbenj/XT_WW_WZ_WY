@@ -165,7 +165,11 @@ sbatch 2021_cookiecutter_extract.sh ../raw_data/XT7_WY_trim_noadapters/XT7_WY_tr
 ```
 sbatch 2021_cookiecutter_extract.sh ../raw_data/XT10_WZ_trim_noadapters/XT10_WZ_trim_no_adapt.R1.fq ../raw_data/XT10_WZ_trim_noadapters/XT10_WZ_trim_no_adapt.R2.fq ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez
 ```
-
+# convert fq files to trinity format (with /1 and /2 after the for and rev reads)
+```
+awk '{ if (NR%4==1) { print $1"_"$2"/1" } else { print } }' Read1.fastq > rename_Read1.fastq
+awk '{ if (NR%4==1) { print $1"_"$2"/2" } else { print } }' Read2.fastq > rename_Read2.fastq
+```
 
 # Assemble
 ```
