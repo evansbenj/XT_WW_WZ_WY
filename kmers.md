@@ -104,9 +104,9 @@ sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_putati
 
 sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_putative_Z_specific.out ../raw_data/XT7_WY_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 
-sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out ../raw_data/XT11_WW_R1R2_minus_Z_specific_W_specific_meryldb.out
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_meryldb.out ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out ../raw_data/XT11_WW_R1R2_minus_Z_specific_putative_W_specific_meryldb.out
 
-sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_minus_Z_specific_W_specific_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_really_W_specific_meryldb.out
+sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_minus_Z_specific_putative_W_specific_meryldb.out ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_really_Y_specific.out ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out
 
 ```
 
