@@ -146,6 +146,7 @@ sbatch 2020_meryl_difference_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_
 ```
 sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out
 sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out
+sbatch 2021_meryl_print_kmer_dbs.sh ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out
 ```
 
 ## filter to include only kmers with more than 2 observations and less than 100 observations (which is way more than the coverage):
