@@ -192,6 +192,16 @@ awk '{ if (NR%4==1) { print $1"_"$2"/2" } else { print } }' Read2.fastq > rename
 sbatch 2021_trinity.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/PE_SE_combined_for_trinity.fastq ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/XT7_WY_trim_no_adapt.R2.filtered_trinity.fastq ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez
 ```
 
+# Align assembly to ref
+```
+sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/trinity.Trinity.fasta ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/XT7_WY_Y_specific_XTv10
+```
+
+
+
+
+# BELOW NOT USED
+
 
 
 # get ave, max, min
@@ -208,7 +218,6 @@ awk '{print ">\n"$1}' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_re
 ```
 
 
-# BELOW NOT USED
 
 # Extract chr7 from v10 ref
 ```
