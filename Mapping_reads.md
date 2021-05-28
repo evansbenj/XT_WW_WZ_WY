@@ -32,11 +32,9 @@ for file in $1/*_WW_R*.fastq.gz; do         # Use ./* ... NEVER bare *
   	#if [[ $v -eq 1 ]]
       #then # if/then branch
     echo java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE ${file::-15}_WW_R1.fastq.gz ${file::-15}_WW_R2.fastq.gz ${fi
-le::-15}_trim.R1.fq.gz ${file::-15}_trim.R1_single.fq.gz ${file::-15}_trim.R2.fq.gz ${file::-15}_trim.R2_single.fq.gz SLID
-INGWINDOW:4:15 MINLEN:36 HEADCROP:3
+le::-15}_trim.R1.fq.gz ${file::-15}_trim.R1_single.fq.gz ${file::-15}_trim.R2.fq.gz ${file::-15}_trim.R2_single.fq.gz ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 	java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.39.jar PE ${file::-15}_WW_R1.fastq.gz ${file::-15}_WW_R2.fastq.gz ${fil
-e::-15}_trim.R1.fq.gz ${file::-15}_trim.R1_single.fq.gz ${file::-15}_trim.R2.fq.gz ${file::-15}_trim.R2_single.fq.gz SLIDI
-NGWINDOW:4:15 MINLEN:36 HEADCROP:3
+e::-15}_trim.R1.fq.gz ${file::-15}_trim.R1_single.fq.gz ${file::-15}_trim.R2.fq.gz ${file::-15}_trim.R2_single.fq.gz ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 	#	  v=0
 	#else # else branch
   	#	v=1
