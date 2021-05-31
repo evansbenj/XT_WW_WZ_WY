@@ -73,7 +73,7 @@ samtools index ${2}_realigned.bam
 
 ```
 
-# call genotypes
+# Call genotypes
 ```
 #!/bin/sh
 #SBATCH --job-name=haplotypecaller
@@ -97,7 +97,7 @@ DENT_SITES --emitRefConfidence GVCF -o ${1}_noBSQR.g.vcf.gz
 
 ```
 
-Combining gvcfs:
+# Combining gvcfs:
 ```
 #!/bin/sh
 #SBATCH --job-name=GenotypeGVCFs
@@ -118,6 +118,8 @@ ome/XENTR_10.0_genome.fasta -V XT10_WZ_trim_sorted_rg.bam_realigned.bam_${1}_noB
 rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -V XT7_WY_trim_sorted_rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -allSites 
 -o XTgenomez_${1}.vcf.gz
 ```
+
+# Below not used
 Phased using Beagle in advance of general_genomics:
 ```
 #!/bin/sh
