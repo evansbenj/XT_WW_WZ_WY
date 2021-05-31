@@ -177,6 +177,8 @@ me.fasta -I ${1}.bam -L ${2} --output_mode EMIT_ALL_CONFIDENT_SITES --emitRefCon
 XXX
 ```
 
+# Below not used
+
 # Genomic regions with no coverage
 
 ```
