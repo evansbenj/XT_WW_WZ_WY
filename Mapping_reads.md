@@ -58,8 +58,8 @@ done
 
 # run by passing an argument like this (in the directory with the files)
 # sbatch 2020_align_paired_fq_to_ref.sh pathandname_of_ref path_to_paired_fq_filez sexchr_genotype
-# sbatch 2020_align_paired_fq_to_ref.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta.gz pathtofqfi
-lez WW
+# sbatch 2020_align_paired_fq_to_ref.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta.gz ../raw_data/X
+T10_WZ_trim_noadapters WZ
 
 module load bwa/0.7.17
 module load samtools/1.10
@@ -67,11 +67,114 @@ module load samtools/1.10
 
 for file in ${2}/*${3}*.R1.fq.gz ; do         # Use ./* ... NEVER bare *    
     if [ -e "$file" ] ; then   # Check whether file exists.
-	bwa mem ${1} ${file::-9}.R1.fq.gz ${file::-9}.R2.fq.gz -t 16 | samtools view -Shu - | samtools sort - -o ${file::-
-9}_sorted.bam
+	bwa mem ${1} ${file::-9}.R1.fq.gz ${file::-9}.R2.fq.gz -t 16 | samtools view -Shu - | samtools sort - -o ${file::-9}_
+sorted.bam
 	samtools index ${file::-9}_sorted.bam
   fi
 done
+```
+
+
+# Indel realign
+```
+#!/bin/sh
+#SBATCH --job-name=gatk_indelrealigner
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=gatk_indelrealigner.%J.out
+#SBATCH --error=gatk_indelrealigner.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this
+# sbatch 2020_GATK_indelrealigner.sh pathtoref/ref  pathtobamfile/bamfile_prefix
+# sbatch 2020_GATK_indelrealigner.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta bamfile
+
+# first add readgroups with picard
+module load StdEnv/2020 picard/2.23.3
+
+java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
+      I=${2}.bam \
+      O=${2}_rg.bam \
+      RGID=1 \
+      RGLB=lib1 \
+      RGPL=illumina \
+      RGPU=unit1 \
+      RGSM=${2}
+
+# index the new bam file
+module load StdEnv/2020 samtools/1.12
+samtools index ${2}_rg.bam
+
+# now do indel realignment with GATK
+module --force purge
+module load nixpkgs/16.09
+module load gatk/3.8
+
+java -Xmx2g  -jar $EBROOTGATK/GenomeAnalysisTK.jar -T RealignerTargetCreator -R ${1} -I ${2}_rg.bam -o ${2}.intervals
+
+java -Xmx2g  -jar $EBROOTGATK/GenomeAnalysisTK.jar -T IndelRealigner -R ${1} -I ${2}_rg.bam -targetIntervals ${2}.intervals -
+o ${2}_rg_realigned.bam
+
+module load StdEnv/2020 samtools/1.12
+# now index the realigned file
+samtools index ${2}_rg_realigned.bam
+```
+
+# Dedup
+```
+#!/bin/sh
+#SBATCH --job-name=picard_dedup
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=picard_dedup.%J.out
+#SBATCH --error=picard_dedup.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this
+# sbatch 2020_GATK_indelrealigner.sh pathtobamfile/bamfile_prefix
+# sbatch 2020_GATK_indelrealigner.sh bamfile
+
+# first add readgroups with picard
+module load StdEnv/2020 picard/2.23.3
+
+java -jar $EBROOTPICARD/picard.jar MarkDuplicates \
+     REMOVE_DUPLICATES=true \
+     I=${1}.bam \
+     O=${1}_dedup.bam \
+     M=marked_dup_metrics.txt
+```
+# Haplotypecaller
+```
+#!/bin/sh
+#SBATCH --job-name=haplotypecaller
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=128:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=haplotypecaller.%J.out
+#SBATCH --error=haplotypecaller.%J.err
+#SBATCH --account=def-ben
+
+# sbatch 2020_chrX_0_gatk_HaplotypeCaller.sh pathtobamfile/bamfilname chr
+
+module load samtools/1.12
+samtools index ${1}.bam
+
+module --force purge
+module load nixpkgs/16.09
+module load gatk/3.8
+
+
+java -jar $EBROOTGATK/GenomeAnalysisTK.jar -T HaplotypeCaller -R ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_geno
+me.fasta -I ${1}.bam -L ${2} --output_mode EMIT_ALL_CONFIDENT_SITES --emitRefConfidence GVCF -o ${1}_+${2}_noBSQR.g.vcf.gz
+```
+# GenotypeGVCFs
+```
+XXX
 ```
 
 # Genomic regions with no coverage
