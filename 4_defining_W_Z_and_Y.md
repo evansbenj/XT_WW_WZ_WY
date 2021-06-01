@@ -21,7 +21,7 @@ Things to check on
 # subset a vcf file
 ```
 module load bcftools/1.11
-bcftools view -r Chr7:16000001-20000000 ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_pos16Mb_20Mb.vcf
+bcftools view -r Chr7:1-30000000 ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered.vcf.gz -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.vcf
 ```
 
 # Make a tab file from a subsetted vcf file
