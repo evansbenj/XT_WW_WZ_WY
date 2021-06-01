@@ -203,11 +203,11 @@ sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v1
 # Here are the assemblies based on kmer reads
 ChrY
 ```
-../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/trinity.Trinity.fasta
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/trinity.Trinity.fasta
 ```
 ChrZ
 ```
-../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta
 ```
 
 
