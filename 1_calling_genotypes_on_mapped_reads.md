@@ -119,6 +119,48 @@ rg.bam_realigned.bam_${1}_noBSQR.g.vcf.gz -V XT7_WY_trim_sorted_rg.bam_realigned
 -o XTgenomez_${1}.vcf.gz
 ```
 
+# Filter
+```
+#!/bin/sh
+#SBATCH --job-name=VarFilt
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=VarFilt.%J.out
+#SBATCH --error=VarFilt.%J.err
+#SBATCH --account=def-ben
+
+module load nixpkgs/16.09
+module load gatk/3.8
+
+
+java -jar $EBROOTGATK/GenomeAnalysisTK.jar -T VariantFiltration -R ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10
+.0_genome.fasta -V ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz --filterExpression "QD < 2.0 || FS > 30.0 |
+| MQ < 40.0 || ReadPosRankSum < -8.0 || MQRankSum < -10.00" --filterName "lowqual" --genotypeFilterExpression "DP < 5 ||
+ DP > 100" --genotypeFilterName "genotypefilter" --setFilteredGtToNocall -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_
+noBSQR_flagged.vcf.gz
+```
+```
+#!/bin/sh
+#SBATCH --job-name=indels
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=12:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=indels.%J.out
+#SBATCH --error=indels.%J.err
+#SBATCH --account=def-ben
+
+module load nixpkgs/16.09
+module load gatk/3.8
+
+
+java -jar $EBROOTGATK/GenomeAnalysisTK.jar -T SelectVariants -R ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_
+genome.fasta -V ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_flagged.vcf.gz -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7
+_WY_Chr7_noBSQR_filtered.vcf.gz
+```
+
 # Below not used
 Phased using Beagle in advance of general_genomics:
 ```
