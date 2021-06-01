@@ -210,6 +210,12 @@ ChrZ
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta
 ```
 
+# Make blast dbs and blast some candidates
+```
+module load nixpkgs/16.09 gcc/7.3.0 blast+/2.9.0
+makeblastdb -in trinity_XT10_WZ.Trinity.fasta -dbtype nucl -out trinity_XT10_WZ.Trinity.fasta_blastable
+blastn -query PZP.fasta -db trinity_XT10_WZ.Trinity.fasta_blastable -out PZP.fasta_to_Z_kmer_assembly.out
+```
 
 # BELOW NOT USED
 
