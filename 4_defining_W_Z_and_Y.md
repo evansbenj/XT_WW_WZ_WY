@@ -27,7 +27,7 @@ bcftools view -r Chr7:1-30000000 ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noB
 # Make a tab file from a subsetted vcf file
 ```
 module load nixpkgs/16.09  intel/2018.3 vcftools/0.1.16
-vcf-to-tab < ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_pos16Mb_20Mb.vcf > ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_pos16Mb_20Mb.tab
+vcf-to-tab < ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.vcf > ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.tab
 ```
 
 # Make a phy file out of a tab file
