@@ -200,7 +200,15 @@ sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v1
 sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/XT10_WZ_Z_specific_XTv10
 ```
 
-
+# Here are the assemblies based on kmer reads
+ChrY
+```
+../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/trinity.Trinity.fasta
+```
+ChrZ
+```
+../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta
+```
 
 
 # BELOW NOT USED
