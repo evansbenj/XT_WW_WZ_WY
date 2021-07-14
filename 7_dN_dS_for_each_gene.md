@@ -481,9 +481,41 @@ print OUTFILE2 "Y_chr     ";
 print OUTFILE2 $Y,"\n";
 
 
-
 close OUTFILE2;
 ```
+I piped all the tab files to this perl script like this:
+` ./Make_lots_of_paml_files.pl ../dNdS/gene_beds_chr7_1_30Mb/vcfs_indiv_genes_0_30Mb`
+where `Make_lots_of_paml_files.pl ` looks like this:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+
+#  This program reads in coordinate files from a directory
+# and feeds them into a bash script that extracts sections using bcftools
+
+# before executing load modules
+# module load nixpkgs/16.09 intel/2018.3 vcftools/0.1.16
+# to execute type ./Make_lots_of_tab_files.pl path_to_vcf_files
+
+
+    
+my $inputfile = $ARGV[0];
+	unless (open DATAINPUT, $inputfile) {
+		print "Can not find the input file.\n";
+		exit;
+	}
+
+my @files = glob($inputfile.'/*tab');
+
+foreach ( @files ) {
+ #   print $_,"\n";
+	system( "./Makes_W_Z_Y_from_tab.pl $_ $_\.paml_in")
+}	
+
+```
+
 # Analysis with paml
 
 PAML
