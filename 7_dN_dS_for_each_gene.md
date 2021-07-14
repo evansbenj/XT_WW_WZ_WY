@@ -109,7 +109,58 @@ foreach my $key (sort keys %gene_hash){
 
 ```
 
-# Now subset the exons from the vcf file and concatenate them into individual vcfs for each gene
+# Now subset the exons from the chr7 vcf file, and concatenate them into individual vcfs for each gene
+
+This is done like this:
+```
+./Run_bcftools_with_lots_of_inputs.pl ../dNdS/gene_beds_chr7_1_30Mb
+```
+
+Where `Run_bcftools_with_lots_of_inputs.pl` is:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+
+#  This program reads in coordinate files from a directory
+# and feeds them into a bash script that extracts sections using bcftools
+
+# to execute type ./Run_bcftools_with_lots_of_inputs.pl path_to_bed_files
+
+
+my $inputfile = $ARGV[0];
+	unless (open DATAINPUT, $inputfile) {
+		print "Can not find the input file.\n";
+		exit;
+	}
+
+my @files = glob($inputfile.'/*coord');
+
+foreach ( @files ) {
+	print $_,"\n";
+	system( "./2021_bcftools_extract_sections_from_vcf.sh $_")
+}
+```
+and `2021_bcftools_extract_sections_from_vcf.sh` is:
+```
+#!/bin/sh
+#SBATCH --job-name=bcftools
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=0:10:00
+#SBATCH --mem=2gb
+#SBATCH --output=bcftools.%J.out
+#SBATCH --error=bcftools.%J.err
+#SBATCH --account=def-ben
+
+# execute like this: ./2021_bcftools_extract_sections_from_vcf.sh path_and_filename_of_coordinate_file
+
+module load StdEnv/2020 gcc/9.3.0 bcftools/1.11
+bcftools view -R ${1} ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz -o ${1}.vcf
+```
+
+# Generate tab file for each gene
 
 module load StdEnv/2020 gcc/9.3.0 bcftools/1.11
 
