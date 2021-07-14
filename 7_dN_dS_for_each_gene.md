@@ -10,7 +10,7 @@ use warnings;
 #  This program reads in gff file and outputs
 # the coordinates of all CDS for each gene
 
-# to execute type ./Get_coordinates_of_CDS_in_each_gene.pl XENTR_10.0_Xenbase_Chr7_lt_30Mb.gff3 output1 
+# to execute type ./Get_coordinates_of_CDS_in_each_gene.pl XENTR_10.0_Xenbase_Chr7_lt_30Mb.gff3 exon_coordinates.txt 
 
 
 my $inputfile = $ARGV[0];
@@ -87,4 +87,281 @@ foreach my $key (keys %gene_hash){
 	}		
 }	
 close OUTFILE;
+```
+
+# Now subset the exons from the vcf file and concatenate them into individual vcfs for each gene
+
+These vcf files can then be exported and converted to W, Z, and Y sequences and piped to paml using a modification of this script:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use List::MoreUtils qw/ uniq /;
+use List::Util qw( min max );
+
+
+#  This program reads in a tab delimited genotype file generated
+#  from vcftools that has a WW, WZ and WY individual
+#  and prints out a fasta file with an interpretation for the 
+#  W, Z, and Y chromosome sequence
+
+# Data should be from one chromosome.
+
+# the first individual is XT10_WZ
+# the second individual is XT11_WW
+# the third individual is XT7_WY
+
+# to execute type Makes_W_Z_Y_from_tab.pl inputfile.tab output.fasta  
+
+
+my $inputfile = $ARGV[0];
+my $outputfile2 = $ARGV[1];
+
+unless (open DATAINPUT, $inputfile) {
+	print "Can not find the input file.\n";
+	exit;
+}
+
+
+unless (open(OUTFILE2, ">$outputfile2"))  {
+	print "I can\'t write to $outputfile2\n";
+	exit;
+}
+print "Creating output file: $outputfile2\n";
+
+my $W;
+my $Z;
+my $Y;
+my $allele_1;
+my $allele_2;
+my $allele_3;
+my $allele_4;
+my $allele_5;
+my $allele_6;
+my @temp;
+my @lengths;
+my $max;
+
+while ( my $line = <DATAINPUT>) {
+	chomp($line);
+	@temp=split(/[\/'\t']+/,$line);
+	if($temp[0] ne '#CHROM'){
+		print $temp[8],"\n";
+		# load the alleles
+			# load each of the six alleles
+				$allele_1 = $temp[3];
+				$allele_2 = $temp[4];
+				$allele_3 = $temp[5];
+				$allele_4 = $temp[6];
+				$allele_5 = $temp[7];
+				$allele_6 = $temp[8];
+			# now see which is the longest
+				@lengths=();
+				push(@lengths,length($allele_1));
+				push(@lengths,length($allele_2));
+				push(@lengths,length($allele_3));
+				push(@lengths,length($allele_4));
+				push(@lengths,length($allele_5));
+				push(@lengths,length($allele_6));
+				$max = max @lengths;
+			# add the data to the chrs
+				if($max == 1){ # this is just a SNP
+					####################
+					# first consider W
+					####################
+					if($allele_3 eq $allele_4){ # the W genotype is homozygous
+						if(($allele_3 eq 'A')||($allele_3 eq 'C')||($allele_3 eq 'G')||($allele_3 eq 'T')){
+							$W = $W.$allele_3;
+						}
+						elsif($allele_3 eq '*'){
+							$W = $W.'-';
+						}
+						else{
+							$W = $W.'N';
+						}
+					}
+					elsif($allele_3 ne $allele_4){ # the W genotype is heterozygous
+						if((($allele_3 eq 'A')||($allele_3 eq 'C')||($allele_3 eq 'G')||($allele_3 eq 'T'))
+							&&
+							(($allele_4 eq 'A')||($allele_4 eq 'C')||($allele_4 eq 'G')||($allele_4 eq 'T'))
+							){ # both alleles are nucleotides
+							# insert an IUPAC symbol
+							if((($allele_3 eq 'A')&&($allele_4 eq 'C'))||(($allele_3 eq 'C')&&($allele_4 eq 'A'))){
+								$W = $W.'M';
+							}	
+							elsif((($allele_3 eq 'A')&&($allele_4 eq 'T'))||(($allele_3 eq 'T')&&($allele_4 eq 'A'))){
+								$W = $W.'W';
+							}	
+							elsif((($allele_3 eq 'A')&&($allele_4 eq 'G'))||(($allele_3 eq 'G')&&($allele_4 eq 'A'))){
+								$W = $W.'R';
+							}	
+							elsif((($allele_3 eq 'C')&&($allele_4 eq 'G'))||(($allele_3 eq 'G')&&($allele_4 eq 'C'))){
+								$W = $W.'S';
+							}	
+							elsif((($allele_3 eq 'C')&&($allele_4 eq 'T'))||(($allele_3 eq 'T')&&($allele_4 eq 'C'))){
+								$W = $W.'Y';
+							}	
+							elsif((($allele_3 eq 'G')&&($allele_4 eq 'T'))||(($allele_3 eq 'T')&&($allele_4 eq 'G'))){
+								$W = $W.'K';
+							}	
+						}
+						else{ # a het with a dot means unknown, or any other weirdness will be set to be unknown
+							$W = $W.'N';
+						}
+
+					}	
+					####################
+					# Now consider the Z
+					####################
+					if($allele_1 eq $allele_2){ # the Z genotype is homozygous
+						# Confirm that the alleles are the same as the W and only use them if they are
+						if($allele_1 eq $allele_3){
+							if(($allele_1 eq 'A')||($allele_1 eq 'C')||($allele_1 eq 'G')||($allele_1 eq 'T')){
+								$Z = $Z.$allele_1;
+							}
+							elsif($allele_1 eq '*'){
+								$Z = $Z.'-';
+							}
+							else{
+								$Z = $Z.'N';
+							}
+						}
+						else{ # we don't know what the Z is because both alleles are different from the W
+							$Z = $Z.'N';
+						}
+					}
+					elsif($allele_1 ne $allele_2){ # the Z genotype is heterozygous
+						if((($allele_1 eq 'A')||($allele_1 eq 'C')||($allele_1 eq 'G')||($allele_1 eq 'T'))
+							&&
+							(($allele_2 eq 'A')||($allele_2 eq 'C')||($allele_2 eq 'G')||($allele_2 eq 'T'))
+							){ # both Z alleles are nucleotides
+							# check if only one is the same as the W
+							if((($allele_1 ne $allele_3)||($allele_1 ne $allele_4))&&
+								(($allele_2 eq $allele_3)||($allele_2 eq $allele_4))){
+								$Z = $Z.$allele_1;
+							}
+							elsif((($allele_2 ne $allele_3)||($allele_2 ne $allele_4))&&
+								(($allele_1 eq $allele_3)||($allele_1 eq $allele_4))){
+								$Z = $Z.$allele_2;
+							}
+							else{ # the WZ genotype is completely different from the WW genotype
+								# so we are unable to make a call
+								$Z = $Z.'N';
+							}
+						}
+						elsif(($allele_1 eq '*')||($allele_2 eq '*')){ # one allele on the Z is a gap
+							if((($allele_1 ne $allele_3)||($allele_1 ne $allele_4))&&
+								(($allele_2 eq $allele_3)||($allele_2 eq $allele_4))){
+								if($allele_1 eq '*'){
+									$Z = $Z.'-'; # the Z has a gap and the W does not
+								}
+								else{
+									$Z = $Z.$allele_1; # the W has a gap and the Z does not
+								}	
+							}
+							elsif((($allele_2 ne $allele_3)||($allele_2 ne $allele_4))&&
+								(($allele_1 eq $allele_3)||($allele_1 eq $allele_4))){
+								if($allele_2 eq '*'){
+									$Z = $Z.'-'; # the Z has a gap and the W does not
+								}
+								else{
+									$Z = $Z.$allele_2; # the W has a gap and the Z does not
+								}	
+							}
+							else{ # the WZ genotype is completely different from the WW genotype
+								$Z = $Z.'N';
+							}
+						}
+						else{ # a homozygous dot means unknown, or any other weirdness will be set to be unknown
+							$Z = $Z.'N';
+						}
+					}	
+
+					####################
+					# Now consider the Y
+					####################
+					if($allele_5 eq $allele_6){ # the Y genotype is homozygous
+						# Confirm that the alleles are the same as the W and only use them if they are
+						if($allele_5 eq $allele_3){
+							if(($allele_5 eq 'A')||($allele_5 eq 'C')||($allele_5 eq 'G')||($allele_5 eq 'T')){
+								$Y = $Y.$allele_5;
+							}
+							elsif($allele_5 eq '*'){
+								$Y = $Y.'-';
+							}
+							else{
+								$Y = $Y.'N';
+							}
+						}
+						else{ # we don't know what the Y is because both alleles are different from the W
+							$Y = $Y.'N';
+						}
+					}
+					elsif($allele_5 ne $allele_6){ # the Y genotype is heterozygous
+						if((($allele_5 eq 'A')||($allele_5 eq 'C')||($allele_5 eq 'G')||($allele_5 eq 'T'))
+							&&
+							(($allele_6 eq 'A')||($allele_6 eq 'C')||($allele_6 eq 'G')||($allele_6 eq 'T'))
+							){ # both Y alleles are nucleotides
+							# check if only one is the same as the W
+							if((($allele_5 ne $allele_3)||($allele_5 ne $allele_4))&&
+								(($allele_6 eq $allele_3)||($allele_6 eq $allele_4))){
+								$Y = $Y.$allele_5;
+							}
+							elsif((($allele_6 ne $allele_3)||($allele_6 ne $allele_4))&&
+								(($allele_5 eq $allele_3)||($allele_5 eq $allele_4))){
+								$Y = $Y.$allele_6;
+							}
+							else{ # the WY genotype is completely different from the WW genotype
+								# so we are unable to make a call
+								$Y = $Y.'N';
+							}
+						}
+						elsif(($allele_5 eq '*')||($allele_6 eq '*')){ # one allele on the Y is a gap
+							if((($allele_5 ne $allele_3)||($allele_5 ne $allele_4))&&
+								(($allele_6 eq $allele_3)||($allele_6 eq $allele_4))){
+								if($allele_5 eq '*'){
+									$Y = $Y.'-'; # the Y has a gap and the W does not
+								}
+								else{
+									$Y = $Y.$allele_5; # the W has a gap and the Y does not
+								}	
+							}
+							elsif((($allele_6 ne $allele_3)||($allele_6 ne $allele_4))&&
+								(($allele_5 eq $allele_3)||($allele_5 eq $allele_4))){
+								if($allele_6 eq '*'){
+									$Y = $Y.'-'; # the Y has a gap and the W does not
+								}
+								else{
+									$Y = $Y.$allele_6; # the W has a gap and the Y does not
+								}	
+							}
+							else{ # the WY genotype is completely different from the WW genotype
+								$Y = $Y.'N';
+							}
+						}
+						else{ # a homozygous dot means unknown, or any other weirdness will be set to be unknown
+							$Y = $Y.'N';
+						}
+					}	
+				}	# end of check for one nucleotide in all genotypes
+	} # end if to check for header of input file
+} # end while	
+close DATAINPUT;				
+
+# print out the lengths of each chr to see if we missed anything
+print "Length of W :",length($W),"\n";
+print "Length of Z :",length($Z),"\n";
+print "Length of Y :",length($Y),"\n";
+
+# OK print out the fasta file
+
+print OUTFILE2 "3 ",length($W),"\n";
+print OUTFILE2 "W_chr     ";
+print OUTFILE2 $W,"\n";
+print OUTFILE2 "Z_chr     ";
+print OUTFILE2 $Z,"\n";
+print OUTFILE2 "Y_chr     ";
+print OUTFILE2 $Y,"\n";
+
+close OUTFILE2;
 ```
