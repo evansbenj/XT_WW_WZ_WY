@@ -1,6 +1,6 @@
 # First get the coordinates of each exon within each gene
 
-I wrote a perl script that does this:
+I wrote a perl script that does this (and I will modify it to output coordinates separately for each gene):
 ```
 #!/usr/bin/env perl
 use strict;
@@ -91,7 +91,17 @@ close OUTFILE;
 
 # Now subset the exons from the vcf file and concatenate them into individual vcfs for each gene
 
-These vcf files can then be exported and converted to W, Z, and Y sequences and piped to paml using a modification of this script:
+module load StdEnv/2020 gcc/9.3.0 bcftools/1.11
+
+bcftools view -R ncapd2_100491414.coord ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz -o ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.vcf
+
+
+module load nixpkgs/16.09  intel/2018.3 vcftools/0.1.16
+vcf-to-tab < ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.vcf > ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.tab
+
+
+
+These tab file can be converted to W, Z, and Y sequences and piped to paml using a modification of this script:
 ```
 #!/usr/bin/env perl
 use strict;
@@ -364,4 +374,10 @@ print OUTFILE2 "Y_chr     ";
 print OUTFILE2 $Y,"\n";
 
 close OUTFILE2;
+```
+# Analysis with paml
+
+PAML
+```
+module load StdEnv/2020  gcc/9.3.0 paml/4.9j
 ```
