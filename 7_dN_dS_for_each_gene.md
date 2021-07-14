@@ -1,4 +1,4 @@
-# First get the coordinates of each gene
+# First get the coordinates of each exon within each gene
 
 I wrote a perl script that does this:
 ```
