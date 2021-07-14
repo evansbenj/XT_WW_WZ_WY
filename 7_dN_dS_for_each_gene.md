@@ -1,6 +1,6 @@
 # First get the coordinates of each exon within each gene
 
-I wrote a perl script that does this (and I will modify it to output coordinates separately for each gene):
+I wrote a perl script that does this; it will output coordinates separately for each transcript, including separate transcript files for each gene if multiple transcripts exist:
 ```
 #!/usr/bin/env perl
 use strict;
@@ -21,12 +21,6 @@ unless (open DATAINPUT, $inputfile) {
 	exit;
 }
 
-unless (open(OUTFILE, ">$outputfile"))  {
-	print "I can\'t write to $outputfile\n";
-	exit;
-}
-print "Creating output file: $outputfile\n";
-
 my @temp;
 my @temp1;
 my @Gene_name;
@@ -42,6 +36,7 @@ while ( my $line = <DATAINPUT>) {
 	@temp=split('\t',$line);
 	#print $temp[1],"\n";
 	if($temp[2] eq 'gene'){ # we need to parse the gene name and geneID
+		# We are assuming that all CDs are preceded by a "gene" annotation
 		@temp1=split(';',$temp[8]);
 		@Gene_name=split('=',$temp1[1]);
 		$Gene_name=$Gene_name[1];
@@ -58,35 +53,60 @@ while ( my $line = <DATAINPUT>) {
 		}
 		else{
 			$Transcript_ID=$Gene_ID;
-		}	
+		}
 		$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[0]=$temp[3]; # start coordinate
 		$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[1]=$temp[4];	# stop coordinate
 		$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[2]=$temp[7];	# phase sort of
 								#'0' indicates that the first base of the feature is the first base of a codon, 
 								#'1' that the second base is the first base of a codon,
 								#'2' that the third base is the first base of a codon,
+		$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[4]=$temp[0]; # chromosome						
 		if($temp[6] eq '+'){
 			$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[3]=1;	# forward orientation
+
 		}
 		elsif($temp[6] eq '-'){
 			$gene_hash{$Gene_name."_".$Gene_ID}{$Transcript_ID}{$exon_counter}[3]=-1;	# reverse orientation
+		}
+		else{
+			print "WTF ",$temp[6],"\n";
 		}
 		$exon_counter+=1;
 	}
 } # end while	
 close DATAINPUT;	
 # OK, now all the CDS are in a hash
-
-foreach my $key (keys %gene_hash){
-	foreach my $transcript_id (keys %{$gene_hash{$key}}){
-		foreach my $exon (keys %{$gene_hash{$key}{$transcript_id}}){
-			print $key," ",$transcript_id," ",$gene_hash{$key}{$transcript_id}{$exon}[0]," ",$gene_hash{$key}{$transcript_id}{$exon}[1]," ",$gene_hash{$key}{$transcript_id}{$exon}[2]," ";
-			print $gene_hash{$key}{$transcript_id}{$exon}[1] - $gene_hash{$key}{$transcript_id}{$exon}[0]," ";
-			print $gene_hash{$key}{$transcript_id}{$exon}[3],"\n";
+my $switch=0;
+# print a bed file for each transcript (sometimes there will be multiple transcripts for the same gene)
+foreach my $key (sort keys %gene_hash){
+	foreach my $transcript_id (sort keys %{$gene_hash{$key}}){
+		foreach my $exon (sort keys %{$gene_hash{$key}{$transcript_id}}){
+			if($switch == 0){ # open a new file for this transcript
+				$switch=1;
+				if($gene_hash{$key}{$transcript_id}{$exon}[3] eq 1){ # assume all exons are in this orientation
+					unless (open(OUTFILE, ">".$key."_".$transcript_id.".coord"))  {
+						print "I can\'t write to $outputfile\n";
+						exit;
+					}
+					print "Creating output file: ".$key."_".$transcript_id.".coord\n";
+				}
+				else{ # assume all exons are in this orientation
+					unless (open(OUTFILE, ">".$key."_".$transcript_id."_rc.coord"))  {
+						print "I can\'t write to $outputfile\n";
+						exit;
+					}
+					print "Creating output file: ".$key."_".$transcript_id."_rc.coord\n";
+				}	
+			}	
+			print OUTFILE $gene_hash{$key}{$transcript_id}{$exon}[4]," ";
+			print OUTFILE $gene_hash{$key}{$transcript_id}{$exon}[0]," ";
+			print OUTFILE $gene_hash{$key}{$transcript_id}{$exon}[1],"\n";
 		}
+		close OUTFILE;
+		$switch=0; # reset for next transcript
 	}		
 }	
-close OUTFILE;
+
 ```
 
 # Now subset the exons from the vcf file and concatenate them into individual vcfs for each gene
