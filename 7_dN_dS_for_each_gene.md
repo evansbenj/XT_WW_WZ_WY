@@ -214,7 +214,7 @@ use List::Util qw( min max );
 # the second individual is XT11_WW
 # the third individual is XT7_WY
 
-# to execute type Makes_W_Z_Y_from_tab.pl inputfile.tab output.fasta  
+# to execute type Makes_W_Z_Y_from_tab.pl inputfile.tab output_paml_in 
 
 
 my $inputfile = $ARGV[0];
@@ -456,6 +456,20 @@ print "Length of W :",length($W),"\n";
 print "Length of Z :",length($Z),"\n";
 print "Length of Y :",length($Y),"\n";
 
+# reversecomplement if needed
+if(substr($inputfile,-17) eq "_rc.coord.vcf.tab"){
+	my $W_revcom = reverse $W;
+	my $Z_revcom = reverse $Z;
+	my $Y_revcom = reverse $Y;
+	$W_revcom =~ tr/ACGTacgt/TGCAtgca/;
+	$Z_revcom =~ tr/ACGTacgt/TGCAtgca/;
+	$Y_revcom =~ tr/ACGTacgt/TGCAtgca/;
+	$W = $W_revcom;
+	$Z = $Z_revcom;
+	$Y = $Y_revcom;
+}
+
+
 # OK print out the fasta file
 
 print OUTFILE2 "3 ",length($W),"\n";
@@ -465,6 +479,8 @@ print OUTFILE2 "Z_chr     ";
 print OUTFILE2 $Z,"\n";
 print OUTFILE2 "Y_chr     ";
 print OUTFILE2 $Y,"\n";
+
+
 
 close OUTFILE2;
 ```
