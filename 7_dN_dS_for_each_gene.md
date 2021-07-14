@@ -162,8 +162,35 @@ bcftools view -R ${1} ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz 
 
 # Generate tab file for each gene
 
-module load nixpkgs/16.09  intel/2018.3 vcftools/0.1.16
-vcf-to-tab < ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.vcf > ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.tab
+This is done like this:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+
+#  This program reads in coordinate files from a directory
+# and feeds them into a bash script that extracts sections using bcftools
+
+# before executing load modules
+# module load nixpkgs/16.09 intel/2018.3 vcftools/0.1.16
+# to execute type ./Make_lots_of_tab_files.pl path_to_vcf_files
+
+
+    
+my $inputfile = $ARGV[0];
+	unless (open DATAINPUT, $inputfile) {
+		print "Can not find the input file.\n";
+		exit;
+	}
+
+my @files = glob($inputfile.'/*vcf');
+
+foreach ( @files ) {
+ #   print $_,"\n";
+	system( "vcf-to-tab < $_ > $_.tab")
+}
+```
 
 
 
