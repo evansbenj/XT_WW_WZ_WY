@@ -162,11 +162,6 @@ bcftools view -R ${1} ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz 
 
 # Generate tab file for each gene
 
-module load StdEnv/2020 gcc/9.3.0 bcftools/1.11
-
-bcftools view -R ncapd2_100491414.coord ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR.vcf.gz -o ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.vcf
-
-
 module load nixpkgs/16.09  intel/2018.3 vcftools/0.1.16
 vcf-to-tab < ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.vcf > ./XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_ncapd2_100491414.tab
 
