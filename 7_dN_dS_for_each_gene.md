@@ -258,17 +258,26 @@ while ( my $line = <DATAINPUT>) {
 				$allele_4 = $temp[6];
 				$allele_5 = $temp[7];
 				$allele_6 = $temp[8];
+			# remove trailing positions if the string is more than one base long
+					
+				$allele_1 = substr($allele_1,0,1);
+				$allele_2 = substr($allele_2,0,1);
+				$allele_3 = substr($allele_3,0,1);
+				$allele_4 = substr($allele_4,0,1);
+				$allele_5 = substr($allele_5,0,1);
+				$allele_6 = substr($allele_6,0,1);
+
 			# now see which is the longest
-				@lengths=();
-				push(@lengths,length($allele_1));
-				push(@lengths,length($allele_2));
-				push(@lengths,length($allele_3));
-				push(@lengths,length($allele_4));
-				push(@lengths,length($allele_5));
-				push(@lengths,length($allele_6));
-				$max = max @lengths;
+			#	@lengths=();
+			#	push(@lengths,length($allele_1));
+			#	push(@lengths,length($allele_2));
+			#	push(@lengths,length($allele_3));
+			#	push(@lengths,length($allele_4));
+			#	push(@lengths,length($allele_5));
+			#	push(@lengths,length($allele_6));
+			#	$max = max @lengths;
 			# add the data to the chrs
-				if($max == 1){ # this is just a SNP
+			#	if($max == 1){ # this is just a SNP
 					####################
 					# first consider W
 					####################
@@ -446,7 +455,7 @@ while ( my $line = <DATAINPUT>) {
 							$Y = $Y.'N';
 						}
 					}	
-				}	# end of check for one nucleotide in all genotypes
+				#}	# end of check for one nucleotide in all genotypes
 	} # end if to check for header of input file
 } # end while	
 close DATAINPUT;				
@@ -480,8 +489,8 @@ print OUTFILE2 $Z,"\n";
 print OUTFILE2 "Y_chr     ";
 print OUTFILE2 $Y,"\n";
 
-
 close OUTFILE2;
+
 ```
 I piped all the tab files to this perl script like this:
 ` ./Make_lots_of_paml_files.pl ../dNdS/gene_beds_chr7_1_30Mb/vcfs_indiv_genes_0_30Mb`
