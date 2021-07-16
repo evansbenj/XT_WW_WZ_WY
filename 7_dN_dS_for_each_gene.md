@@ -559,3 +559,7 @@ foreach ( @files ) {
     system("mv temp.mlc $_.mlc");	
 }	
 ```
+Check for empty files (which are due to input files that are not multiples of 3 because of indel weirdness in the vcf and tab files:
+```
+find . -name '*.mlc' -size 0 | wc -l
+```
