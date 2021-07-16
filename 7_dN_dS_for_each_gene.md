@@ -232,52 +232,121 @@ unless (open(OUTFILE2, ">$outputfile2"))  {
 }
 print "Creating output file: $outputfile2\n";
 
-my $W;
-my $Z;
-my $Y;
+my $W="";
+my $Z="";
+my $Y="";
 my $allele_1;
 my $allele_2;
 my $allele_3;
 my $allele_4;
 my $allele_5;
 my $allele_6;
+my @allele1;
+my @allele2;
+my @allele3;
+my @allele4;
+my @allele5;
+my @allele6;
 my @temp;
 my @lengths;
 my $max;
+my $a;
+my $b;
+my $start;
 
 while ( my $line = <DATAINPUT>) {
 	chomp($line);
 	@temp=split(/[\/'\t']+/,$line);
 	if($temp[0] ne '#CHROM'){
-		print $temp[8],"\n";
+		# print $temp[8],"\n";
 		# load the alleles
 			# load each of the six alleles
-				$allele_1 = $temp[3];
-				$allele_2 = $temp[4];
-				$allele_3 = $temp[5];
-				$allele_4 = $temp[6];
-				$allele_5 = $temp[7];
-				$allele_6 = $temp[8];
+			$allele_1 = $temp[3];
+			$allele_2 = $temp[4];
+			$allele_3 = $temp[5];
+			$allele_4 = $temp[6];
+			$allele_5 = $temp[7];
+			$allele_6 = $temp[8];
 			# remove trailing positions if the string is more than one base long
 					
-				$allele_1 = substr($allele_1,0,1);
-				$allele_2 = substr($allele_2,0,1);
-				$allele_3 = substr($allele_3,0,1);
-				$allele_4 = substr($allele_4,0,1);
-				$allele_5 = substr($allele_5,0,1);
-				$allele_6 = substr($allele_6,0,1);
+			#	$allele_1 = substr($allele_1,0,1);
+			#	$allele_2 = substr($allele_2,0,1);
+			#	$allele_3 = substr($allele_3,0,1);
+			#	$allele_4 = substr($allele_4,0,1);
+			#	$allele_5 = substr($allele_5,0,1);
+			#	$allele_6 = substr($allele_6,0,1);
 
 			# now see which is the longest
-			#	@lengths=();
-			#	push(@lengths,length($allele_1));
-			#	push(@lengths,length($allele_2));
-			#	push(@lengths,length($allele_3));
-			#	push(@lengths,length($allele_4));
-			#	push(@lengths,length($allele_5));
-			#	push(@lengths,length($allele_6));
-			#	$max = max @lengths;
+			@lengths=();
+			push(@lengths,length($allele_1));
+			push(@lengths,length($allele_2));
+			push(@lengths,length($allele_3));
+			push(@lengths,length($allele_4));
+			push(@lengths,length($allele_5));
+			push(@lengths,length($allele_6));
+			$max = max @lengths;
+			# split each allele into an array
+			@allele1=split(//,$allele_1);
+			@allele2=split(//,$allele_2);
+			@allele3=split(//,$allele_3);
+			@allele4=split(//,$allele_4);
+			@allele5=split(//,$allele_5);
+			@allele6=split(//,$allele_6);	
+			if(($#allele1+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele1+1;
+				for($a=$start, $a=$max, $a++){
+					$allele1[$a] = "-";
+				}
+			}	
+			if(($#allele2+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele2+1;
+				for($a=$start, $a=$max, $a++){
+					$allele2[$a] = "-";
+				}
+			}	
+			if(($#allele3+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele3+1;
+				for($a=$start, $a=$max, $a++){
+					$allele3[$a] = "-";
+				}
+			}	
+			if(($#allele4+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele4+1;
+				for($a=$start, $a=$max, $a++){
+					$allele4[$a] = "-";
+				}
+			}	
+			if(($#allele5+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele5+1;
+				for($a=$start, $a=$max, $a++){
+					$allele5[$a] = "-";
+				}
+			}	
+			if(($#allele6+1) < $max){ # we need padding for this allele; cycle through indexes
+									  # to one less than the $max length, which will give $max indexes.
+				$start=$#allele6+1;
+				for($a=$start, $a=$max, $a++){
+					$allele6[$a] = "-";
+				}
+			}	
+
+			# now the lengths should all be the same
+			#print $#allele1," ",$#allele2," ",$#allele3," ",$#allele4," ",$#allele5," ",$#allele6,"\n";
+
 			# add the data to the chrs
-			#	if($max == 1){ # this is just a SNP
+				for($a=0; $a<=$#allele1; $a++){
+					# Reassign each position to the allele
+					$allele_1=$allele1[$a];
+					$allele_2=$allele2[$a];
+					$allele_3=$allele3[$a];
+					$allele_4=$allele4[$a];
+					$allele_5=$allele5[$a];
+					$allele_6=$allele6[$a];
 					####################
 					# first consider W
 					####################
@@ -455,15 +524,15 @@ while ( my $line = <DATAINPUT>) {
 							$Y = $Y.'N';
 						}
 					}	
-				#}	# end of check for one nucleotide in all genotypes
+				}	# end of loop across all bases in this position
 	} # end if to check for header of input file
 } # end while	
 close DATAINPUT;				
 
 # print out the lengths of each chr to see if we missed anything
-print "Length of W :",length($W),"\n";
-print "Length of Z :",length($Z),"\n";
-print "Length of Y :",length($Y),"\n";
+# print "Length of W :",length($W),"\n";
+# print "Length of Z :",length($Z),"\n";
+# print "Length of Y :",length($Y),"\n";
 
 # reversecomplement if needed
 if(substr($inputfile,-17) eq "_rc.coord.vcf.tab"){
@@ -489,7 +558,13 @@ print OUTFILE2 $Z,"\n";
 print OUTFILE2 "Y_chr     ";
 print OUTFILE2 $Y,"\n";
 
+
+
 close OUTFILE2;
+
+if( length($W)/3 != int(length($W)/3) ){
+	print "This infile not multiples of 3: ",$inputfile," ",length($W),"\n";
+}
 
 ```
 I piped all the tab files to this perl script like this:
