@@ -527,7 +527,35 @@ foreach ( @files ) {
 
 # Analysis with paml
 
-PAML
+I ran lots of paml runs using the perl script below.
 ```
-module load StdEnv/2020  gcc/9.3.0 paml/4.9j
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+
+# this program will read in lots of file names that are
+# paml input files and run them by coping them to a temp
+# input file, running the program, and renaming the output file
+
+# before executing load modules
+# module load StdEnv/2020  gcc/9.3.0 paml/4.9j
+# to execute type ./Execute_lots_of_paml_runs.pl path_to_paml_input_files
+
+
+    
+my $inputfile = $ARGV[0];
+	unless (open DATAINPUT, $inputfile) {
+		print "Can not find the input file.\n";
+		exit;
+	}
+
+my @files = glob($inputfile.'/*paml_in');
+
+foreach ( @files ) {
+    system("echo; echo $_; echo");
+    system("scp $_ temp.in");
+    system("echo Y | codeml ./codeml.ctl");
+    system("mv temp.mlc $_.mlc");	
+}	
 ```
