@@ -285,6 +285,7 @@ while ( my $line = <DATAINPUT>) {
 			push(@lengths,length($allele_5));
 			push(@lengths,length($allele_6));
 			$max = max @lengths;
+			# print $max;
 			# split each allele into an array
 			@allele1=split(//,$allele_1);
 			@allele2=split(//,$allele_2);
@@ -295,48 +296,48 @@ while ( my $line = <DATAINPUT>) {
 			if(($#allele1+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele1+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele1[$a] = "-";
 				}
 			}	
 			if(($#allele2+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele2+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele2[$a] = "-";
 				}
 			}	
 			if(($#allele3+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele3+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele3[$a] = "-";
 				}
 			}	
 			if(($#allele4+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele4+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele4[$a] = "-";
 				}
 			}	
 			if(($#allele5+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele5+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele5[$a] = "-";
 				}
 			}	
 			if(($#allele6+1) < $max){ # we need padding for this allele; cycle through indexes
 									  # to one less than the $max length, which will give $max indexes.
 				$start=$#allele6+1;
-				for($a=$start, $a=$max, $a++){
+				for($a=$start; $a<$max; $a++){
 					$allele6[$a] = "-";
 				}
 			}	
 
 			# now the lengths should all be the same
-			#print $#allele1," ",$#allele2," ",$#allele3," ",$#allele4," ",$#allele5," ",$#allele6,"\n";
+			# print $#allele1," ",$#allele2," ",$#allele3," ",$#allele4," ",$#allele5," ",$#allele6,"\n";
 
 			# add the data to the chrs
 				for($a=0; $a<=$#allele1; $a++){
@@ -561,10 +562,12 @@ print OUTFILE2 $Y,"\n";
 
 
 close OUTFILE2;
+my $n = length($W)/3;
 
-if( length($W)/3 != int(length($W)/3) ){
+if( $n != int(length($W)/3) ){
 	print "This infile not multiples of 3: ",$inputfile," ",length($W),"\n";
 }
+
 
 ```
 I piped all the tab files to this perl script like this:
