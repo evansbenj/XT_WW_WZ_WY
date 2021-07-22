@@ -80,7 +80,7 @@ my $switch=0;
 # print a bed file for each transcript (sometimes there will be multiple transcripts for the same gene)
 foreach my $key (sort keys %gene_hash){
 	foreach my $transcript_id (sort keys %{$gene_hash{$key}}){
-		foreach my $exon (sort keys %{$gene_hash{$key}{$transcript_id}}){
+		foreach my $exon (sort {$a <=> $b} keys %{$gene_hash{$key}{$transcript_id}}){
 			if($switch == 0){ # open a new file for this transcript
 				$switch=1;
 				if($gene_hash{$key}{$transcript_id}{$exon}[3] eq 1){ # assume all exons are in this orientation
