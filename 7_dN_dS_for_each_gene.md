@@ -109,6 +109,8 @@ foreach my $key (sort keys %gene_hash){
 
 ```
 
+Before I did the next step I had to modify several file names that had a comma and a colon in them.
+
 # Now subset the exons from the chr7 vcf file, and concatenate them into individual vcfs for each gene
 
 This is done like this:
