@@ -109,7 +109,10 @@ foreach my $key (sort keys %gene_hash){
 
 ```
 
-Before I did the next step I had to modify several file names that had a comma and a colon in them.
+Before I did the next step I had to modify several file names that had a comma and a colon in them, for example:
+```
+mv ../dNdS/gene_beds_chr7_1_30Mb/a2ml1_100127688,Xenbase:XB-GENE-5943821_NP_001106498.1_rc.coord ../dNdS/gene_beds_chr7_1_30Mb/a2ml1_100127688_XB-GENE-5943821_NP_001106498.1_rc.coord
+```
 
 # Now subset the exons from the chr7 vcf file, and concatenate them into individual vcfs for each gene
 
