@@ -159,7 +159,7 @@ java -jar $EBROOTPICARD/picard.jar MarkDuplicates \
 #SBATCH --error=haplotypecaller.%J.err
 #SBATCH --account=def-ben
 
-# sbatch 2020_chrX_0_gatk_HaplotypeCaller.sh pathtobamfile/bamfilname chr
+# sbatch 2020_0_gatk_HaplotypeCaller.sh pathtobamfile/bamfilname chr
 
 module load samtools/1.12
 samtools index ${1}.bam
