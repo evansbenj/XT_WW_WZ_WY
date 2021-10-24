@@ -161,6 +161,11 @@ awk '{ if (($2 > 2)&&($2 < 100)) { print } }' ../raw_data/XT7_WY_minus_XT11_WW_m
 ```
 awk '{ if (($2 > 2)&&($2 < 100)) { print } }' ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out > ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out_printed_filtered_gt_2_lt_100.out
 ```
+```
+awk '{ if (($2 > 2)&&($2 < 100)) { print } }' ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out > ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out
+```
+
+
 ## Make a multifasta file out of the kmer list for use with cookiecutter
 ```
 awk '{print ">\n"$1}' ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out > ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa
