@@ -176,6 +176,9 @@ awk '{print ">\n"$1}' ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_re
 ```
 awk '{print ">\n"$1}' ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out_printed_filtered_gt_2_lt_100.out > ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa
 ```
+```
+awk '{print ">\n"$1}' ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out > ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa
+```
 
 ## extract reads with sex-chr specific kmers
 ```
@@ -186,6 +189,9 @@ sbatch 2021_cookiecutter_extract.sh ../raw_data/XT10_WZ_trim_noadapters/XT10_WZ_
 ```
 ```
 sbatch 2021_cookiecutter_extract.sh ../raw_data/XT11_WW_trim_noadapters/XT11_WW_trim_no_adapt.R1.fq ../raw_data/XT11_WW_trim_noadapters/XT11_WW_trim_no_adapt.R2.fq ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa ../raw_data/XT11_WW_R1R2_minus_Z_specific_minus_Y_specific_putative_really_W_specific_meryldb.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez
+```
+```
+sbatch 2021_cookiecutter_extract.sh ../raw_data/XTR_1_ZY/trimmed/XT1_ZY_trim_no_adapt.R1.fq.gz ../raw_data/XTR_1_ZY/trimmed/XT1_ZY_trim_no_adapt.R2.fq.gz ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez
 ```
 
 # convert fq files to trinity format (with /1 and /2 after the for and rev reads)
