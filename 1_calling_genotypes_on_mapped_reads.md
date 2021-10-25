@@ -1,3 +1,8 @@
+# Directory
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts
+```
+
 # Calling genotypes on mapped reads
 
 # First add readgroups using picard:
