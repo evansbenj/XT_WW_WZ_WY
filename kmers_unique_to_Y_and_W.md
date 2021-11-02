@@ -201,8 +201,17 @@ awk '{ if (NR%4==1) { print $1"_"$2"/2" } else { print } }' Read2.fastq > rename
 ```
 
 # Assemble
+for Y-specific
 ```
 sbatch 2021_trinity.sh ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/PE_SE_combined_for_trinity.fastq ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/XT7_WY_trim_no_adapt.R2.filtered_trinity.fastq ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez
+```
+for Z-specific (I think this is the correct command)
+```
+sbatch 2021_trinity_SE.sh ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/XT10_WZ_all_Z_specific.fastq ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ
+```
+for W-specific
+```
+sbatch 2021_trinity_SE.sh ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/XT11_WW_W_specific_aftersubtractingXT1_ZY.fq.gz ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_SE
 ```
 
 # Align assembly to ref
