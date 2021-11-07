@@ -174,6 +174,10 @@ genome.fasta -V ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_flagged.vcf.g
 _WY_Chr7_noBSQR_filtered.vcf.gz
 ```
 
+# Genotype files 
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/combined_and_genotyped_vcf_filez
+```
 
 
 
