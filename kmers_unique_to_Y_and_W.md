@@ -231,9 +231,9 @@ ChrZ
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta
 ```
-ChrW (eventually)
+ChrW 
 ```
-/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_SE
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/Wspecific_trinity_SE.Trinity.fasta
 ```
 
 # Make blast dbs and blast some candidates
