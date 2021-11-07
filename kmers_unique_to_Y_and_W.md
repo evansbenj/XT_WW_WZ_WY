@@ -214,14 +214,6 @@ for W-specific
 sbatch 2021_trinity_SE.sh ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/XT11_WW_W_specific_aftersubtractingXT1_ZY.fq.gz ../raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_SE
 ```
 
-# Align assembly to ref
-```
-sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/trinity.Trinity.fasta ../raw_data/XT7_WY_minus_XT11_WW_minus_XT10_WZ_putative_reallyreally_Y_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_fq_filez/XT7_WY_Y_specific_XTv10
-```
-```
-sbatch 2021_align_multifasta_to_ref.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/trinity_XT10_WZ.Trinity.fasta ../raw_data/XT10_WZ_minus_XT11_WW_minus_XT7_WY_putative_really_Z_specific.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/XT10_WZ_Z_specific_XTv10
-```
-
 # Here are the assemblies based on kmer reads
 ChrY
 ```
@@ -234,6 +226,32 @@ ChrZ
 ChrW 
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_minus_XT1_ZY_putative_W_specific.out_printed.out_printed_filtered_gt_2_lt_100.out_seqs.fa_fq_filez/Wspecific_trinity_SE.Trinity.fasta
+```
+
+
+# Align assembly to ref
+
+```
+#!/bin/sh
+#SBATCH --job-name=bwa_align
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=4
+#SBATCH --time=48:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=bwa_align.%J.out
+#SBATCH --error=bwa_align.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this (in the directory with the files)
+# sbatch 2020_align_paired_fq_to_ref.sh pathandname_of_ref path_to_paired_fq_filez sexchr_genotype
+# sbatch 2020_align_paired_fq_to_ref.sh ~/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta.gz ../raw_data/XT
+10_WZ_trim_noadapters WZ
+
+module load bwa/0.7.17
+module load samtools/1.10
+
+bwa mem ${1} ${2} -t 16 | samtools view -Shu - | samtools sort - -o ${2}_sorted.bam
+samtools index ${2}_sorted.bam
 ```
 
 # Make blast dbs and blast some candidates
