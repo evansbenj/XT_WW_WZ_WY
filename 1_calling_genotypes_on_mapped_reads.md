@@ -48,6 +48,14 @@ module load StdEnv/2020 samtools/1.11
 samtools index ${1}
 ```
 
+# bam files:
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_trim_noadapters/XT10_WZ_trim_no_adapt_sorted_rg_realigned_dedup.bam
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_trim_noadapters/XT11_WW_trim_no_adapt_sorted_rg_realigned_dedup.bam
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_trim_no_adapt_sorted_rg_realigned_dedup.bam
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XTR_1_ZY/trimmed/XT1_ZY_trim_no_adapt_sorted_rg_dedup.bam
+```
+
 # Realign indels using GATK
 ```
 #!/bin/sh
