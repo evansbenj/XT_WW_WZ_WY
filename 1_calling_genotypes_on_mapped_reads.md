@@ -174,6 +174,10 @@ genome.fasta -V ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_flagged.vcf.g
 _WY_Chr7_noBSQR_filtered.vcf.gz
 ```
 
+
+
+
+
 # Below not used
 Phased using Beagle in advance of general_genomics:
 ```
