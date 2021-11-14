@@ -20,7 +20,7 @@ Things to check on
 
 # subset a vcf file
 ```
-module load bcftools/1.11
+module load StdEnv/2020  gcc/9.3.0 bcftools/1.11
 bcftools view -r Chr7:1-30000000 ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered.vcf.gz -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.vcf
 ```
 
