@@ -21,13 +21,13 @@ Things to check on
 # subset a vcf file
 ```
 module load StdEnv/2020  gcc/9.3.0 bcftools/1.11
-bcftools view -r Chr7:1-30000000 ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered.vcf.gz -o ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.vcf
+bcftools view -r Chr7:1-30000000 allsites_MandF_Chr7.g.vcf.gz_Chr7.vcf.gz -o allsites_MandF_Chr7.g.vcf.gz_Chr7_pos1_30Mb.vcf
 ```
 
 # Make a tab file from a subsetted vcf file
 ```
 module load nixpkgs/16.09  intel/2018.3 vcftools/0.1.16
-vcf-to-tab < ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.vcf > ../genotypez/XT_XT11_WW_XT10_WZ_XT7_WY_Chr7_noBSQR_filtered_pos1_30Mb.tab
+vcf-to-tab < allsites_MandF_Chr7.g.vcf.gz_Chr7_pos1_30Mb.vcf > allsites_MandF_Chr7.g.vcf.gz_Chr7_pos1_30Mb.tab
 ```
 
 # Make a phy file out of a tab file
