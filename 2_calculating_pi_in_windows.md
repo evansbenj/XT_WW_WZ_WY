@@ -107,6 +107,38 @@ python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_ba
 python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT11_WW_XT7_WY.csv -m 1 -p XT11_WW -p XT7_WY -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
 ```
 
+Update Nov 2021 - I now have 4 individuals sequenced and genotyped.
+example commandline:
+```
+./2021_general_genomics_popgen_4pops.sh ../combined_and_genotyped_vcf_filez_SNPsonly/MandF_Chr7.g.vcf.gz_Chr7_SNPs_pos1_30Mb.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT10_WZ XT11_WW XT1_ZY XT7_WY
+```
+with 2021_general_genomics_popgen_4pops.sh being this:
+
+```
+#!/bin/sh
+#SBATCH --job-name=popgen
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=1:00:00
+#SBATCH --mem=2gb
+#SBATCH --output=popgen.%J.out
+#SBATCH --error=popgen.%J.err
+#SBATCH --account=def-ben
+
+
+# sbatch ./2021_general_genomics_popgen_2pops.sh genofile pop1 pop2
+
+module --force purge
+module load StdEnv/2020
+module load scipy-stack/2020b
+module load python/3.8.2
+
+
+python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_fi
+ltered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWind
+ows.py -g ${1} -o ${2}_${3}_${4}_${5}_windowstats.csv -w 10000 -m 100 -s 10000 -p ${2} -p ${3} -p ${4} -
+p ${5} -f phased -T 10 --popsFile pops.txt --writeFailedWindows --windType coordinate
+```
 
 
 
