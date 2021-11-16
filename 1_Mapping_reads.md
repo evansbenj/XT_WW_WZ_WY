@@ -1,5 +1,5 @@
 # Sequencing
-NovaSeq 6000 PE150
+NovaSeq 6000 PE150 for all four samples.  3 were run at Genome Quebec and the fourth (XT1_ZY) was run at TCAG
 
 # Working directory
 ```
