@@ -1,4 +1,12 @@
 # Liberia and others
+working directory:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined
+```
+and
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY
+```
 
 In total we have 17 WGS samples:
 ```
@@ -21,3 +29,4 @@ XT7_WY	tadpole	Xenopus tropicalis	Ghana		probM	WY
 XT11_WW	tadpole	Xenopus tropicalis	Ghana		probF	WW
 XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ
 ```
+
