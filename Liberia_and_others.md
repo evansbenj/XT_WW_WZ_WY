@@ -19,5 +19,5 @@ ROM19161	ROM19161	Xenopus tropicalis	Liberia		Female
 XTR_1_ZY	tadpole	Xenopus tropicalis	Ghana		probM	ZY
 XT7_WY	tadpole	Xenopus tropicalis	Ghana		probM	WY
 XT11_WW	tadpole	Xenopus tropicalis	Ghana		probF	WW
-XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ![image](https://user-images.githubusercontent.com/12414009/219811341-23cbc85b-cc2e-4f88-83ab-7c3fc08e5714.png)
+XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ
 ```
