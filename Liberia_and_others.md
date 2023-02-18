@@ -7,6 +7,10 @@ and
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY
 ```
+and mellotrop from Germany
+```
+/home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/Germany_genome/raw_data
+```
 
 In total we have 17 WGS samples:
 ```
