@@ -37,6 +37,6 @@ XT7_WY	tadpole	Xenopus tropicalis	Ghana		probM	WY
 XT11_WW	tadpole	Xenopus tropicalis	Ghana		probF	WW
 XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ
 JBL052 adult Xenopus tropicalis lab F probWZ
-
 ```
+
 
