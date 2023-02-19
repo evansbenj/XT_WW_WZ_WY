@@ -39,4 +39,7 @@ XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ
 JBL052 adult Xenopus tropicalis lab F probWZ
 ```
 
-
+# XT genome with concatenated scaffolds:
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafs.fasta
+```
