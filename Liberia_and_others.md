@@ -7,6 +7,13 @@ and
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY
 ```
+including these four tad genomes:
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XTR_1_ZY/trimmed
+```
 and mellotrop from Germany
 ```
 /home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/Germany_genome/raw_data
