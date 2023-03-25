@@ -1,5 +1,23 @@
 # Calculating pi in windows for each genome
+I'm using angsd for this.
 
+First extract a new bam file that has only chr7 for each sample:
+```
+sbatch /home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/2023_samtools_subset_bam.sh  /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_no_adapt__sorted.bam_rg.bam XT7_WY
+```
+# make a file (mellobam_path.txt) that has the path to the bam file (do this for each one).
+```
+angsd -bam mellobam_path.txt -doSaf 1 -anc ../../../../../2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta -GL 1 -out out
+```
+```
+realSFS saf2theta out.saf.idx -sfs out.sfs -outname out
+```
+```
+thetaStat do_stat out.thetas.idx -win 50000 -step 10000  -outnames theta.thetasWindow.gz
+```
+
+
+These methods below were not used...
 I'm going to try three approaches - vcftools, tabfile + myscript, and general_genomics. The first works from a vcf file, which I now have.  The last works from a geno file. 
 
 First phase with Beagle:
