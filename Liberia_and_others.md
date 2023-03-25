@@ -157,3 +157,12 @@ do
     gatk --java-options -Xmx8G HaplotypeCaller  -I ${file} -R ${1} -L ${3} -O ${file}_${3}.g.vcf -ERC GVCF
 done
 ```
+# CombineGVCF
+```
+sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_CombineGVCFs.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta ./ Chr7:1-133565930
+```
+# GenotypeGVCFs
+```
+sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_GenotypeGVCFs.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta allsites_Chr7:1-133565930.g.vcf.gz
+```
+
