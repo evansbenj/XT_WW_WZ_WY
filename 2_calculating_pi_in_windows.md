@@ -22,9 +22,11 @@ realSFS saf2theta out.saf.idx -sfs out.sfs -outname out
 ```
 thetaStat do_stat out.thetas.idx -win 50000 -step 10000  -outnames theta.thetasWindow.gz
 ```
+This generated an output file with the suffix ".pestPG" that has the windowed stats.
 
+I need to divide these by the number of sites to get the pi per site...
 
-These methods below were not used...
+# These methods below were not used...
 I'm going to try three approaches - vcftools, tabfile + myscript, and general_genomics. The first works from a vcf file, which I now have.  The last works from a geno file. 
 
 First phase with Beagle:
