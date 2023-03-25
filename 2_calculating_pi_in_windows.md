@@ -1,6 +1,10 @@
 # Calculating pi in windows for each genome
 I'm using angsd for this.
 
+bam files are here:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined
+```
 First extract a new bam file that has only chr7 for each sample:
 ```
 sbatch /home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/2023_samtools_subset_bam.sh  /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_no_adapt__sorted.bam_rg.bam XT7_WY
