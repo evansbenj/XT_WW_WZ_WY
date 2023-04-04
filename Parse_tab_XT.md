@@ -336,6 +336,56 @@ while ( my $line = <DATAINPUT>) {
 close OUTFILE1;
 
 
+```
+# Plotting
+
+```R
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
+# Run like this:
+# Rscript --vanilla W_Y_Z_specific_overlay_computecanada.R Nigeria_only_221122220022222222.out
+library (ggplot2)
+library(reshape2) # this facilitates the overlay plot
+setwd("./")
 
 
+# test if there is at least one argument: if not, return an error
+if (length(args)==0) {
+  stop("Please specify the (input file).n", call.=FALSE)
+}
+
+# read in the data and name the df based on the file name
+locations <- read.table(args[1], header = T, sep="\t")
+
+subset_WY_specific <- locations[locations$TYPE!="Z_linked",]
+
+
+png(filename = paste(args[1],"_W_Y_Z_specific.png",sep=""),w=1200, h=800,units = "px", bg="transparent")
+  ggplot(locations, aes(x=POS/1000000, fill=TYPE)) +
+  geom_density(alpha=.25) + 
+  xlab("Position (Mb)") + ylab("Density") +
+  theme_classic(base_size = 22)
+dev.off()
+
+png(filename = paste(args[1],"_W_Y_specific.png",sep=""),w=1200, h=800, units = "px", bg="transparent")
+  ggplot(subset_WY_specific, aes(x=POS/1000000, fill=TYPE)) +
+  geom_density(alpha=.25) + 
+  xlab("Position (Mb)") + ylab("Density") +
+  theme_classic(base_size = 22)
+dev.off()
+
+
+# make a density plot of #het_fems/#fems and #het_males/#males
+
+subset_W_homoz <- locations[(locations$het_females/locations$n_FEMs==0) & (locations$TYPE == "W_linked"),]
+subset_Z_homoz <- locations[(locations$het_males/locations$n_MALS==0) & (locations$TYPE == "Z_linked"),]
+
+combined <- rbind(subset_W_homoz,subset_Z_homoz)
+png(filename = paste(args[1],"_hetfems_hetmale.png",sep=""),w=1200, h=800, units = "px", bg="transparent")
+  ggplot(combined, aes(x=POS/1000000, fill=TYPE)) +
+  geom_density(alpha=.25) + 
+  xlab("Position (Mb)") + ylab("Density") +
+  scale_fill_manual('Legend Name', labels=c('W-linked fem hets', 'Z-linked male hets'), values=c('pink', 'green')) +
+  theme_classic(base_size = 22) 
+dev.off()
 ```
