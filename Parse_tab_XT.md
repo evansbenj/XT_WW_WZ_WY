@@ -61,10 +61,7 @@ unless (open(OUTFILE1, ">$outputfile1"))  {
 print "Creating output file: $outputfile1\n";
 print OUTFILE1 "CHR\tPOS\tTYPE\thet_females\thet_males\tn_FEMs\tn_MALS\n";
 
-
-
 my @sexes = split("",$ARGV[1]);
-
 my @males=();
 my @females=();
 my @MFcombined=();
@@ -85,6 +82,12 @@ my $diverged=0;
 my $diverged_2=0;
 my $number_of_male_individuals_genotyped=0;
 my $number_of_female_individuals_genotyped=0;
+my @male_specific_nucleotides=();
+my $male_het_nuc1=0;
+my $male_het_nuc2=0;
+my $female_hom_nuc1=0;
+
+my $f_diverged=0;
 
 for ($y = 0 ; $y <= $#sexes ; $y++ ) {
 	if($sexes[$y] == 0){
@@ -135,18 +138,16 @@ while ( my $line = <DATAINPUT>) {
 		@unique_female_nucleotides = uniq @females;
 		# find out how many unique nucleotides there are in the combined genotypes
 		@unique_MFcombined_nucleotides = uniq @MFcombined;
-		
-		#print @females," ",@males,"\n";
-		#print $#unique_male_nucleotides," ",$#unique_female_nucleotides,"\n";
-		# looks fine
+
 		if(($#unique_male_nucleotides != -1)&&($#unique_female_nucleotides != -1)){
 			# this means that there is at least one genotype in each sex
 			# we can compare homoz and het genotypes because both sexes have data
-			
 			# First check for W-linked SNPs; 
 				# all males homozygous 
-				# all females are heterozygous or homozygous for the non-male variant
+				# all females are heterozygous or homozygous for a variant
+				# that is never homoz in a male
 			if(($#unique_male_nucleotides == 0)&&($#unique_female_nucleotides > 0)){
+				# this is one scenario where all males are ZZ
 				# the males are all homozygous for $unique_male_nucleotides[0]
 				# now check if any females are homozygous for this variant 
 				$not_W=0;
@@ -166,8 +167,53 @@ while ( my $line = <DATAINPUT>) {
 					print OUTFILE1 $temp[0],"\t",$temp[1],"\tW_linked\t",$diverged,"\t0\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
 					# W-linked variation
 				}								
-			} # end of check for W-linked SNPs
-			
+			} # end of check for scenario 1 for W-linked SNPs
+			elsif(($#unique_male_nucleotides > 0)&&($#unique_female_nucleotides > 0)){
+				# this is a second scenario where at least some males could be WY or ZY
+				# need to make sure no males are WW
+				# so if a fem is homoz, need to check if any of the males are homoz for this position as well
+				$not_W=0;
+				$diverged=0;
+				$male_het_nuc1=0;
+				$male_het_nuc2=0;
+				for ($x = 0 ; $x <= $#females ; $x=$x+2 ) {
+					if($females[$x] eq $females[$x+1]){
+						# this female is homoz
+						# need to go through each male to check if this nucleotide is also homoz in any male
+						for ($y = 0 ; $y <= $#males ; $y=$y+2 ) {
+							if(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x])){
+								# this is a male that was homoz for a nucleotide that was also homoz in a female
+								# so it is not a W-linked position
+								$not_W=1;
+							}
+						}
+					}
+					elsif($females[$x] ne $females[$x+1]){
+						# this female is heteroz
+						# go through each male to check if both of these nucleotides are homoz in different males
+						# this could be something like this: female: AT, male1: AA, male2: TT (which is not W-linked)
+						for ($y = 0 ; $y <= $#males ; $y=$y+2 ) {
+							if(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x])){
+								$male_het_nuc1=1;
+							}
+							elsif(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x])){
+								$male_het_nuc2=1;
+							}	
+						}
+						$diverged+=1;  # this is the number of heterozygous females
+					}
+				}
+				# ok I went through each female and checked if there are any pairs of males that are 
+				# homoz for both nucleotides
+				if(($male_het_nuc1==1)&&($male_het_nuc2==1)){
+					$not_W=1;
+				}
+				if($not_W==0){	
+					print OUTFILE1 $temp[0],"\t",$temp[1],"\tW_linked\t",$diverged,"\t0\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
+					# W-linked variation
+				}								
+			}
+
 			# Now check for Y-linked SNPs; 
 				# only found in males in heterozygous genotypes
 				# never in females 
@@ -181,7 +227,7 @@ while ( my $line = <DATAINPUT>) {
 					if($males[$x] eq $males[$x+1]){
 						# this male is homoz, and potentially ZZ
 						# check if this is not the variant that is found in 
-						# females, which would mean that
+						# homoz females, which would mean that
 						# this position is not Y-linked (because
 						# we can't be homoz for YY)
 						if($males[$x] ne $unique_female_nucleotides[0]){
@@ -189,15 +235,70 @@ while ( my $line = <DATAINPUT>) {
 						}	
 					}
 					else{
+						# this male is heteroz and one of the SNPs is never
+						# homoz in females
 						$diverged+=1; # this is the number of heterozygous males
 					}
 				}
 				if($not_Y==0){	
 					print OUTFILE1 $temp[0],"\t",$temp[1],"\tY_linked\t0\t$diverged\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
-					# W-linked variation
+					# Y-linked variation
 				}								
-			} # end of check for Y-linked SNPs
-
+			} # end of check for Y-linked SNPs with females all homoz
+			if(($#unique_male_nucleotides > 0)&&($#unique_female_nucleotides > 0)){
+				# the males and females both have variation 
+				# need to check if there are unique SNPs in males (e.g. females are WW and WZ and males are ZZ, WY, and ZY)
+				# figure out which SNPs are uniquely male and then check if any males are homoz for these SNPs
+				# but also allow for all females to be WW and all males to be ZZ and ZY
+				$not_Y=0;
+				$diverged=0;
+				for ($x = 0 ; $x <= $#males; $x=$x+2 ) {
+					if($males[$x] ne $males[$x+1]){
+						# this male is heteroz, and potentially ZY
+						# check if one of the variants is never found in 
+						# females, which would mean that
+						# this position is not Y-linked (because
+						# we can't be homoz for YY)
+						for ($y = 0 ; $y <= $#females ; $y=$y+2 ) {
+							if(
+							(($males[$x] eq $females[$y])||($males[$x] eq $females[$y+1]))
+							&&
+							(($males[$x+1] eq $females[$y])||($males[$x+1] eq $females[$y+1]))
+							){
+								# neither of these nucleotides is male specific
+								$not_Y=1;
+							}							
+						}
+						$diverged+=1; # this is the number of heterozygous males	
+					}
+				}
+				# check for two different homoz genotypes in females and do not count this
+				# position as a Y-linked one if you find this (e.g. fems: C/C, T/T and males C/C and T/C)
+				$female_hom_nuc1=0;
+				for ($x = 0 ; $x <= $#females ; $x=$x+2 ) {
+					if($females[$x] eq $females[$x+1]){
+						if($female_hom_nuc1 ne 0){
+							$female_hom_nuc1=$females[$x];
+						}
+						elsif($female_hom_nuc1 ne $females[$x]){
+							$not_Y=1;
+						}
+					}
+				}
+				$f_diverged=0;
+				for ($x = 0 ; $x <= $#females ; $x=$x+2 ) {
+					if($females[$x] ne $females[$x+1]){
+						$f_diverged+=1;
+					}
+				}	
+				if($not_Y==0){	
+					print OUTFILE1 $temp[0],"\t",$temp[1],"\tY_linked\t$f_diverged\t$diverged\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
+					# Y-linked variation
+				}								
+			}
+			
+			
+							
 			# Now check for Z-linked SNPs; 
 				# never homozy in females 
 			if($#unique_female_nucleotides > 0){
@@ -233,6 +334,7 @@ while ( my $line = <DATAINPUT>) {
 	} # end of check to see if we are at the first line	
 } # end while	
 close OUTFILE1;
+
 
 
 
