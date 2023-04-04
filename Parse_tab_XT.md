@@ -1,4 +1,4 @@
-# This file looks for W-linked, Z-linked, and Y-linked SNPs
+# This script looks for W-linked, Z-linked, and Y-linked SNPs in XT
 ```perl
 #!/usr/bin/env perl
 use strict;
