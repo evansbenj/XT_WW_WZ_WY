@@ -1,3 +1,25 @@
+# Paths
+mello
+```
+/home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/Germany_genome/raw_data
+```
+Liberia
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/Liberia/trim_fq
+```
+tads
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT11_WW_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT10_WZ_trim_noadapters
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XTR_1_ZY/trimmed
+```
+newseqs
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined/gvcfs
+```
+
+
 # This script looks for W-linked, Z-linked, and Y-linked SNPs in XT
 ```perl
 #!/usr/bin/env perl
