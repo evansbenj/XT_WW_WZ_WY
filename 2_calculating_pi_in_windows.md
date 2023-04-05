@@ -9,6 +9,12 @@ First extract a new bam file that has only chr7 for each sample:
 ```
 sbatch /home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/2023_samtools_subset_bam.sh  /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_no_adapt__sorted.bam_rg.bam XT7_WY
 ```
+
+# Try using exons only to reduce noise from mismapped reads and repettive regions
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/2023_samtools_subset_bam_using_bed.sh
+```
+
 # make a file (mellobam_path.txt) that has the path to the bam file (do this for each one).
 ```
 angsd -bam mellobam_path.txt -doSaf 1 -anc /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta -GL 1 -out out
