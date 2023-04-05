@@ -384,14 +384,14 @@ subset_WY_specific <- locations[locations$TYPE!="Z_linked",]
 
 png(filename = paste(args[1],"_W_Y_Z_specific.png",sep=""),w=1200, h=800,units = "px", bg="transparent")
   ggplot(locations, aes(x=POS/1000000, fill=TYPE)) +
-  geom_density(alpha=.25) + 
+  geom_histogram(alpha=0.2, position="identity", binwidth = 0.5) + 
   xlab("Position (Mb)") + ylab("Density") +
   theme_classic(base_size = 22)
 dev.off()
 
 png(filename = paste(args[1],"_W_Y_specific.png",sep=""),w=1200, h=800, units = "px", bg="transparent")
   ggplot(subset_WY_specific, aes(x=POS/1000000, fill=TYPE)) +
-  geom_density(alpha=.25) + 
+  geom_histogram(alpha=0.2, position="identity", binwidth = 0.5) + 
   xlab("Position (Mb)") + ylab("Density") +
   theme_classic(base_size = 22)
 dev.off()
@@ -405,9 +405,10 @@ subset_Z_homoz <- locations[(locations$het_males/locations$n_MALS==0) & (locatio
 combined <- rbind(subset_W_homoz,subset_Z_homoz)
 png(filename = paste(args[1],"_hetfems_hetmale.png",sep=""),w=1200, h=800, units = "px", bg="transparent")
   ggplot(combined, aes(x=POS/1000000, fill=TYPE)) +
-  geom_density(alpha=.25) + 
+  geom_histogram(alpha=0.2, position="identity", binwidth = 0.5) + 
   xlab("Position (Mb)") + ylab("Density") +
   scale_fill_manual('Legend Name', labels=c('W-linked fem hets', 'Z-linked male hets'), values=c('pink', 'green')) +
   theme_classic(base_size = 22) 
 dev.off()
+
 ```
