@@ -17,6 +17,9 @@ sbatch /home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/20
 
 # make a file (mellobam_path.txt) that has the path to the bam file (do this for each one).
 ```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/ben_scripts/2023_angsd.sh
+```
+```
 #!/bin/sh
 #SBATCH --job-name=angsd
 #SBATCH --nodes=1
