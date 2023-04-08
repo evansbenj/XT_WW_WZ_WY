@@ -14,5 +14,15 @@ Also subset the concatenated scaffolds from the other file I have:
 samtools view -b -L Scafs.bed JBL052__sorted.bam > subsetJBL052__sorted.bam_Scafsonly.bam
 ```
 
+# Trial association:
+```
+angsd -yBin bin_sex.ybin -doAsso 1 -GL 1 -out out -doMajorMinor 1 -doMaf 1 -SNP_pval 1e-6 -bam bam.filelist -P 5
+```
+
+# could try:
+ `-model  2` with males coded as 1 in the ybin file (0 being the controls, 1 being the cases)
+ default is `-model 1` which is additive
+
+
 
 * first step is to filter bam files (http://popgen.dk/angsd/index.php/Filters#Allele_frequencies)
