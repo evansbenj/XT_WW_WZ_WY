@@ -51,6 +51,20 @@ JBL052 adult Xenopus tropicalis lab F probWZ
 /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta
 ```
 
+# XT genome seq
+Extract reads from bam file; first sorting by query using samtools
+```
+samtools sort -n -o aln.qsort.bam aln.bam
+```
+then extract paired reads using bedtools
+```
+$ bedtools bamtofastq -i aln.qsort.bam \
+                      -fq aln.end1.fq \
+                      -fq2 aln.end2.fq
+```
+as detailed here:
+https://bedtools.readthedocs.io/en/latest/content/tools/bamtofastq.html
+
 # Align and genotyping
 ```
 /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2020_align_paired_fq_to_ref.sh
