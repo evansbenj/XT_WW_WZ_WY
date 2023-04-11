@@ -33,6 +33,10 @@ cut -f1,2 log > sites.temp
 sort -k1 sites.txt >sorted_sites.txt 
 angsd sites index sorted_sites.txt 
 ```
+now one can run the association test on these particular sites:
+```
+angsd -yBin bin_sex.ybin -doAsso 1 -doMaf 1 -doMajorMinor 1 -GL 1 -sites sorted_sites.txt -out tempty -bam bam.filelist 
+```
 
 
 # could try:
