@@ -29,7 +29,8 @@ First get two columns from output and then sort by chr and then index using angs
 module load angsd
 zcat out_longer.lrt0.gz > log # remove last line which was incomplete using emacs
 cut -f1,2 log > sites.temp
-sort -k1 sites.txt >sorted_sites.txt
+# remove the header before sorting using emacs or whatever
+sort -k1 sites.txt >sorted_sites.txt 
 angsd sites index sorted_sites.txt 
 ```
 
