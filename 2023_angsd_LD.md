@@ -19,6 +19,21 @@ samtools view -b -L Scafs.bed JBL052__sorted.bam > subsetJBL052__sorted.bam_Scaf
 angsd -yBin bin_sex.ybin -doAsso 1 -GL 1 -out out -doMajorMinor 1 -doMaf 1 -SNP_pval 1e-6 -bam bam.filelist -P 5
 ```
 
+# Memory issues, run by sites
+A trial run that was filtering and then doing the association test failed with an out of memory error with 128 Gb assigned.  I'm rerunning now with 256.
+
+In the meantime I am trying to use the sites command to run the association on specific sites that were output from the failed run. This is only a subset of the genome so it will need to be repeated.
+
+First get two columns from output and then sort by chr and then index using angsd:
+```
+module load angsd
+zcat out_longer.lrt0.gz > log # remove last line which was incomplete using emacs
+cut -f1,2 log > sites.temp
+sort -k1 sites.txt >sorted_sites.txt
+angsd sites index sorted_sites.txt 
+```
+
+
 # could try:
  `-model  2` with males coded as 1 in the ybin file (0 being the controls, 1 being the cases)
  default is `-model 1` which is additive
