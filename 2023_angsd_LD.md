@@ -35,9 +35,9 @@ angsd sites index sorted_sites.txt
 ```
 now one can run the association test on these particular sites:
 ```
-angsd -yBin bin_sex.ybin -doAsso 1 -doMaf 1 -doMajorMinor 1 -GL 1 -sites sorted_sites.txt -out tempty -bam bam.filelist 
+angsd -yBin bin_sex.ybin -doAsso 1 -doMaf 1 -doMajorMinor 1 -GL 1 -sites sorted_sites.txt -out tempty -Pvalue 1 -bam bam.filelist 
 ```
-
+ the `-Pvalue 1` causes the output to be a Pvalue instead of a chi square value with df = 1
 
 # could try:
  `-model  2` with males coded as 1 in the ybin file (0 being the controls, 1 being the cases)
