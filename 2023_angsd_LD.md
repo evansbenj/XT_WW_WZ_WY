@@ -46,3 +46,12 @@ angsd -yBin bin_sex.ybin -doAsso 1 -doMaf 1 -doMajorMinor 1 -GL 1 -sites sorted_
 
 
 * first step is to filter bam files (http://popgen.dk/angsd/index.php/Filters#Allele_frequencies)
+
+
+# This worked
+
+Filter to remove non-significant sites for plotting.
+Without the "-Pvalue 1' flag, the 6th column is a chisq value with df=1, so lets save only significant values (higher than 7):
+```
+zcat tempty.lrt0.gz | awk '$6 < 7 { next } { print }'> sig.only
+```
