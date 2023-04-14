@@ -42,3 +42,9 @@ M_Ghana_ZY_BJE4360_combined__sorted.bam_rg.bam
 XT7_WY_no_adapt__sorted.bam_rg.bam
 M_Nigeria_EUA0334_combined__sorted.bam_rg.bam
 ```
+
+# Subsample the depth per site file
+Using `awk`:
+```
+awk '$2 < 8000000 { next } { print }' new_Chr7_depthpersite.txt | awk '$2 > 9000000 { next } { print }' > Chr7_depthpersite_8MB_to_9MB.txt
+```
