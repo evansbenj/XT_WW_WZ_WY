@@ -55,3 +55,21 @@ Without the "-Pvalue 1' flag, the 6th column is a chisq value with df=1, so lets
 ```
 zcat tempty.lrt0.gz | awk '$6 < 7 { next } { print }'> sig.only
 ```
+
+# Example sbatch script:
+```
+#!/bin/sh
+#SBATCH --job-name=angsd
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=96:00:00
+#SBATCH --mem=256gb
+#SBATCH --output=angsd.%J.out
+#SBATCH --error=angsd.%J.err
+#SBATCH --account=def-ben
+
+
+module load StdEnv/2020 angsd/0.939
+
+angsd -yBin bin_sex.ybin -doAsso 1 -GL 1 -out out_additive_F1 -doMajorMinor 1 -doMaf 1 -SNP_pval 1e-6 -minInd 4 -bam bam.filelist -P 5 -doCounts 1 -setMinDepthInd 2 -setMaxDepthInd 100 -Pvalue 1
+```
