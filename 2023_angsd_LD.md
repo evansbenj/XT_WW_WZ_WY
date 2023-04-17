@@ -55,6 +55,9 @@ Without the "-Pvalue 1' flag, the 6th column is a chisq value with df=1, so lets
 ```
 zcat tempty.lrt0.gz | awk '$6 < 7 { next } { print }'> sig.only
 ```
+```
+zcat out_additive_F1.lrt0.gz | awk '$6 < 0.001 { next } { print }'> 2022_pyg_P_gt_0.001_only.txt
+```
 
 # Example sbatch script:
 ```
