@@ -50,7 +50,7 @@ calcaratus_3D6.1D5980.1953	3D6.1D5980.1953	X. calcaratus
 
 # XT genome with concatenated scaffolds:
 ```
-/home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta
+/home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta
 ```
 
 # XT genome seq
