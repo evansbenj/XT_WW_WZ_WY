@@ -23,7 +23,7 @@ and XT from ref genome
 /home/ben/projects/rrg-ben/ben/2020_XT_v10_raw_data/XT-v10_rawdata/
 ```
 
-In total we have 19 WGS samples:
+In total we have 21 WGS samples:
 ```
 Fieldnumber	Museum_or_barcode	species	Country	Locality	Sex	Sex chromosome genotype if known
 AMNH17271	2644.055	Xenopus tropicalis	Sierra Leone	near Freetown	Male	
@@ -44,6 +44,8 @@ XT7_WY	tadpole	Xenopus tropicalis	Ghana		probM	WY
 XT11_WW	tadpole	Xenopus tropicalis	Ghana		probF	WW
 XT10_WZ	tadpole	Xenopus tropicalis	Ghana		probF	WZ
 JBL052 adult Xenopus tropicalis lab F probWZ
+mello_GermSeq_sorted.bam_rg_rh	BJE3652	X. mellotropicalis
+calcaratus_3D6.1D5980.1953	3D6.1D5980.1953	X. calcaratus
 ```
 
 # XT genome with concatenated scaffolds:
