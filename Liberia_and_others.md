@@ -23,7 +23,7 @@ and XT from ref genome
 /home/ben/projects/rrg-ben/ben/2020_XT_v10_raw_data/XT-v10_rawdata/
 ```
 
-In total we have 21 WGS samples:
+In total we have 20 WGS samples:
 ```
 Fieldnumber	Museum_or_barcode	species	Country	Locality	Sex	Sex chromosome genotype if known
 AMNH17271	2644.055	Xenopus tropicalis	Sierra Leone	near Freetown	Male	
