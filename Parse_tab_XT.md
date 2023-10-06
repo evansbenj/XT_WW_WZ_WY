@@ -412,3 +412,16 @@ png(filename = paste(args[1],"_hetfems_hetmale.png",sep=""),w=1200, h=800, units
 dev.off()
 
 ```
+
+# Looking at interesting regions
+
+first subset a vcf
+```
+module load bcftools
+bcftools view -R Chr7_9550000_9600000.bed -o Chr7_9550000_9600000.vcf combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.vcf.gz_selected.vcf.gz
+```
+now convert to tab
+```
+module load vcftools
+zcat file.vcf.gz | vcf-to-tab > out.tab
+```
