@@ -423,7 +423,7 @@ In this directory (which doesn't have the new calcaratus seq):
 first subset a vcf
 ```
 module load bcftools
-bcftools view -R Chr7_9577608_9593589.bed -o Chr7_9577608_9593589.vcf allsites_Chr7:1-133565930.g.vcf.gz
+bcftools view -R Chr7_9577608_9593589.bed -o Chr7_9577608_9593589.vcf allsites_Chr7:1-133565930.g.vcf.gz_genotyped.vcf.gz
 ```
 or (somewhere else):
 ```
