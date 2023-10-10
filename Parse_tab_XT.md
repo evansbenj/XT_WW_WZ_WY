@@ -417,13 +417,13 @@ dev.off()
 
 In this directory (which doesn't have the new calcaratus seq):
 ```
-/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined/gvcfs
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_before_filtering/
 ```
 
 first subset a vcf
 ```
 module load bcftools
-bcftools view -R Chr7_9577608_9593589.bed -o Chr7_9577608_9593589.vcf allsites_Chr7:1-133565930.g.vcf.gz_genotyped.vcf.gz
+bcftools view -R Chr7_9577608_9593589.bed -o Chr7_9577608_9593589.vcf combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.vcf.gz
 ```
 or (somewhere else):
 ```
