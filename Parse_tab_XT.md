@@ -435,7 +435,7 @@ module load vcftools
 zcat file.vcf.gz | vcf-to-tab > out.tab
 ```
 
-
+Parsetab can be run using this sbatch script:
 ```
 /home/ben/projects/rrg-ben/ben/2021_Austin_XB_genome/ben_scripts/2022_Parse_tab.sh
 ```
