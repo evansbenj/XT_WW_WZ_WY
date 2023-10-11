@@ -326,3 +326,8 @@ print OUTFILE "divergence_13_2 ",$divergence_13_2,"\n";
 print OUTFILE "divergence_23_1 ",$divergence_23_1,"\n";
 close OUTFILE;
 ```
+
+# Working directory:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_before_filtering/
+```
