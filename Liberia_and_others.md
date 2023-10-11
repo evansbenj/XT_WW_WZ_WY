@@ -182,3 +182,147 @@ sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_Co
 sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_GenotypeGVCFs.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta allsites_Chr7:1-133565930.g.vcf.gz
 ```
 
+# Liberia apomorphies
+This script tabulates apomorphies in pairwise comparisons between three taxa:
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use lib qw(~/perl_modules);
+use List::MoreUtils qw/ uniq /;
+
+# Prepare input file
+# module load tabix
+# bgzip -c file.vcf > file.vcf.gz
+# tabix -p vcf file.vcf.gz
+#  Now use vcftools to make a tab delimited file:
+# module load StdEnv/2020 vcftools/0.1.16
+# zcat file.vcf.gz | vcf-to-tab > out.tab
+
+# on computecanada:
+# module load perl/5.30.2
+# module load gcc/9.3.0
+# cpan
+# install List::MoreUtils
+
+#  This program reads in a tab delimited genotype file generated
+#  by vcftools (vcf2tab) and searches for apomorphies in each of three taxa
+
+# to execute type Liberia_apomorphies.pl inputfile.tab 12000000000000000300 apomorphies.out 
+# where 12000000000000000300 refers to whether or not each individual in the ingroup 
+# in the vcf file is (1) individ1, (2) individ2, (3) individ3, or (0) not included
+
+# perl Parse_tab_XT.pl all_parsetab.txt 12000000000000000300 all_parsetab_12000000000000000300.output
+
+
+my $inputfile = $ARGV[0];
+my $input2 = $ARGV[1];
+my $outputfile = $ARGV[2];
+
+
+unless (open DATAINPUT, $inputfile) {
+	print "Can not find the input file.\n";
+	exit;
+}
+
+unless (open(OUTFILE, ">$outputfile"))  {
+	print "I can\'t write to $outputfile\n";
+	exit;
+}
+print "Creating output file: $outputfile\n";
+print OUTFILE "indiv1\tindiv2\tindiv3\n";
+
+my @sexes = split("",$ARGV[1]);
+my @temp;
+my $number_of_individuals_included=0;
+my $divergence_12_3=0;
+my $divergence_13_2=0;
+my $divergence_23_1=0;
+my @indiv1=();
+my @indiv2=();
+my @indiv3=();
+my $y;
+my @unique_indiv1_nucleotides;
+my @unique_indiv2_nucleotides;
+my @unique_indiv3_nucleotides;
+my $counter = 0;
+
+
+for ($y = 0 ; $y <= $#sexes ; $y++ ) {
+	if(($sexes[$y] == 1)||($sexes[$y] == 2)||($sexes[$y] == 3)){
+		$number_of_individuals_included +=1;
+	}	
+}	
+print "This number should be three: ",$number_of_individuals_included,".\n";
+
+while ( my $line = <DATAINPUT>) {
+	chomp($line);
+	@temp=split /[\t\/]/,$line;
+	if($temp[0] ne '#CHROM'){
+		if($#temp ne (($#sexes+1)*2)+2){
+			print "The number of individuals in the input line does not match the number of individuals genotyped ",
+			$temp[0],"\t",$temp[1],"\t",$#temp," ",(($#sexes+1)*2)+2,"\n";
+		}
+
+		# parse the bases in all genotypes in each sex
+		@indiv1=();
+		@indiv2=();
+		@indiv3=();
+
+		$counter=0;
+		for ($y = 3 ; $y <= $#temp; $y=$y+2 ) {
+			if(($temp[$y] ne ".")&&($temp[$y+1] ne ".")){ # allowing asterisks (*), which are deletions
+				if($sexes[$counter] == 1){
+						push(@indiv1, $temp[$y]);
+						push(@indiv1, $temp[$y+1]);
+				}
+				elsif($sexes[$counter] == 2){
+					push(@indiv2, $temp[$y]);
+					push(@indiv2, $temp[$y+1]);
+				}
+				elsif($sexes[$counter] == 3){
+					push(@indiv3, $temp[$y]);
+					push(@indiv3, $temp[$y+1]);
+				}
+			}
+			$counter+=1;
+		}	
+		# OK I should have all the bases loaded for non-missing genotypes for each male and each female
+		# and combined as well
+		
+		# find out what and how many unique nucleotides are in each sex
+		@unique_indiv1_nucleotides = uniq @indiv1;
+		@unique_indiv2_nucleotides = uniq @indiv2;
+		@unique_indiv3_nucleotides = uniq @indiv3;
+		if(($#unique_indiv1_nucleotides == 0)&&($#unique_indiv2_nucleotides == 0)&&($#unique_indiv3_nucleotides == 0)){
+			# this means that all individuals are homozygous
+			if(($unique_indiv1_nucleotides[0] eq $unique_indiv2_nucleotides[0])&&
+			($unique_indiv1_nucleotides[0] ne $unique_indiv3_nucleotides[0])){
+				$divergence_12_3+=1
+			}	
+			if(($unique_indiv1_nucleotides[0] eq $unique_indiv3_nucleotides[0])&&
+			($unique_indiv1_nucleotides[0] ne $unique_indiv2_nucleotides[0])){
+				$divergence_13_2+=1
+			}	
+			if(($unique_indiv2_nucleotides[0] eq $unique_indiv3_nucleotides[0])&&
+			($unique_indiv2_nucleotides[0] ne $unique_indiv1_nucleotides[0])){
+				$divergence_23_1+=1
+			}	
+		} # end of check that there is at least one genotype in each sex
+	} # end of check to see if we are at the first line	
+	else{ # print the names of the included samples to the outfile
+		for ($y = 0 ; $y <= $#sexes ; $y++ ) {
+			if(($sexes[$y] == 1)||($sexes[$y] == 2)){
+				print OUTFILE $temp[$y+3],"\t";
+			}	
+			if(($sexes[$y] == 3)){
+				print OUTFILE $temp[$y+3],"\n";
+			}	
+		}	
+	}
+} # end while
+print OUTFILE "divergence_12_3 ",$divergence_12_3,"\n";
+print OUTFILE "divergence_13_2 ",$divergence_13_2,"\n";
+print OUTFILE "divergence_23_1 ",$divergence_23_1,"\n";
+close OUTFILE;
+```
