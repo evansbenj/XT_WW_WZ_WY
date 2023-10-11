@@ -56,7 +56,7 @@ use List::MoreUtils qw/ uniq /;
 	# it can be homozygous or heterozygous in males 
 	# it can be heterozygous but never homozygous in females
 
-# to execute type Parse_tab.pl inputfile.tab 1111100110000111100011100110010100002200 interesting_sites.out proportion
+# to execute type Parse_tab.pl inputfile.tab 1111100110000111100011100110010100002200 interesting_sites.out 
 # where 1111100110000111100011100110010100002200 refers to whether or not each individual in the ingroup 
 # in the vcf file is (0) male, (1) female, and or (2) skipped
 
@@ -64,7 +64,27 @@ use List::MoreUtils qw/ uniq /;
 # to include the tadpoles use this: 111111000000111001
 
 # Example for XT_WGS (ignoring tads)
-# perl Parse_tab_XT.pl XT_Chr7_1_22416950.tab 111111000000122221 interesting_sites.out
+# perl Parse_tab_XT.pl Chr7_1_15000000.tab 11111110000002222122 XT_Chr7_all_excepttads_11111110000002222122.output
+# perl Parse_tab_XT.pl Chr7_1_15000000.tab 11111110000001100122 XT_Chr7_all_11111110000001100122.output
+# perl Parse_tab_XT.pl Chr7_1_15000000.tab 22222210000002222222 JBL_vs_males_22222210000002222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 221122220222222222 Nigeria_bothfems_334only_221122220222222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222122220022222222 Nigeria_333only_bothmales_222122220022222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 221222220022222222 Nigeria_331only_bothmales_221222220022222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 221122220022222222 Nigeria_only_221122220022222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222211222220222222 SierraLeone_bothfems_17273only_222211222220222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222211222202222222 SierraLeone_bothfems_17271only_222211222202222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222221222200222222 SierraLeone_17274only_bothmales_222221222200222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222212222200222222 SierraLeone_17272only_bothmales_222212222200222222.output
+# perl Parse_tab_XT.pl XT_Chr7_all.tab 222211222200222222 SierraLeone_only_222211222200222222.output
+
+# for RADseq
+
+# Ghana West
+# ./Parse_tab_XT.pl RADseq_DB__Chr7_out.vcf_filtered.vcf.gz_selected.vcf.tab 22222222221111111111111111111111111112222222222000000000000000000000022222220000000000022 GW_interesting_sites.out 
+
+# Ghana east
+# ./Parse_tab_XT.pl RADseq_DB__Chr7_out.vcf_filtered.vcf.gz_selected.vcf.tab 11111112222222222222222222222222222222212000002222222222222222222222200000002222222222222 GE_interesting_sites.out
+
 
 my $inputfile = $ARGV[0];
 my $input2 = $ARGV[1];
@@ -160,7 +180,7 @@ while ( my $line = <DATAINPUT>) {
 		@unique_female_nucleotides = uniq @females;
 		# find out how many unique nucleotides there are in the combined genotypes
 		@unique_MFcombined_nucleotides = uniq @MFcombined;
-
+		# print $#unique_female_nucleotides," ",$#unique_male_nucleotides,"\n";
 		if(($#unique_male_nucleotides != -1)&&($#unique_female_nucleotides != -1)){
 			# this means that there is at least one genotype in each sex
 			# we can compare homoz and het genotypes because both sexes have data
@@ -218,7 +238,7 @@ while ( my $line = <DATAINPUT>) {
 							if(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x])){
 								$male_het_nuc1=1;
 							}
-							elsif(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x])){
+							elsif(($males[$y] eq $males[$y+1])&&($males[$y] eq $females[$x+1])){
 								$male_het_nuc2=1;
 							}	
 						}
@@ -231,7 +251,7 @@ while ( my $line = <DATAINPUT>) {
 					$not_W=1;
 				}
 				if($not_W==0){	
-					print OUTFILE1 $temp[0],"\t",$temp[1],"\tW_linked\t",$diverged,"\t0\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
+					print OUTFILE1 $temp[0],"\t",$temp[1],"\tWY_linked\t",$diverged,"\t0\t",($#females+1)/2,"\t",($#males+1)/2,"\n"; 
 					# W-linked variation
 				}								
 			}
@@ -270,7 +290,7 @@ while ( my $line = <DATAINPUT>) {
 			if(($#unique_male_nucleotides > 0)&&($#unique_female_nucleotides > 0)){
 				# the males and females both have variation 
 				# need to check if there are unique SNPs in males (e.g. females are WW and WZ and males are ZZ, WY, and ZY)
-				# figure out which SNPs are uniquely male and then check if any males are homoz for these SNPs
+				# figure out which SNPs are uniquely male and then check if any males are homoz for these SNPs, which should not be possible
 				# but also allow for all females to be WW and all males to be ZZ and ZY
 				$not_Y=0;
 				$diverged=0;
@@ -357,7 +377,6 @@ while ( my $line = <DATAINPUT>) {
 } # end while	
 close OUTFILE1;
 
-
 ```
 # Plotting
 
@@ -438,4 +457,9 @@ zcat file.vcf.gz | vcf-to-tab > out.tab
 Parsetab can be run using this sbatch script:
 ```
 /home/ben/projects/rrg-ben/ben/2021_Austin_XB_genome/ben_scripts/2022_Parse_tab.sh
+```
+
+Concatenate all files but save the header:
+```
+head -1 combined_Chr1.g.vcf.gz_Chr1_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab_11111110000002222122_out.txt > all_parsetab.txt; awk 'FNR>1{print}' combined_Chr*.g.vcf.gz_Chr*_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab_11111110000002222122_out.txt >> all_parsetab.txt
 ```
