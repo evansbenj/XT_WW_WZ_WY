@@ -1,5 +1,10 @@
 # Depth per site
 
+directory:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined/bam_bad_chrnames/depth_per_site
+```
+
 Get depth from all bam files into one file:
 ```
 #!/bin/sh
