@@ -47,6 +47,10 @@ This generated an output file with the suffix ".pestPG" that has the windowed st
 I need to divide these by the number of sites to get the pi per site...
 
 # Divergence using general_genomics
+Directory (on graham):
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_before_filtering
+```
 
 First phase with Beagle:
 ```
