@@ -52,7 +52,10 @@ Directory (on graham):
 /home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_before_filtering
 ```
 
-First phase with Beagle:
+First phase with Beagle using this file `2020_Beagle_phasing.sh` in this directory:
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts
+```
 ```
 #!/bin/sh
 #SBATCH --job-name=beagle
