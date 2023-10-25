@@ -79,6 +79,9 @@ depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/twisst/beagle
 
 Then make the geno file like this (2020_make_geno_from_vcf.sh):
 ```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts/2020_make_geno_from_vcf.sh
+```
+```
 #!/bin/sh
 #SBATCH --job-name=makegeno
 #SBATCH --nodes=1
