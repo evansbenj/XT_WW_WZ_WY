@@ -46,8 +46,7 @@ This generated an output file with the suffix ".pestPG" that has the windowed st
 
 I need to divide these by the number of sites to get the pi per site...
 
-# These methods below were not used...
-I'm going to try three approaches - vcftools, tabfile + myscript, and general_genomics. The first works from a vcf file, which I now have.  The last works from a geno file. 
+# Divergence using general_genomics
 
 First phase with Beagle:
 ```
