@@ -52,9 +52,9 @@ Directory (on graham):
 /home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_before_filtering
 ```
 
-First phase with Beagle using this file `2020_Beagle_phasing.sh` in this directory:
+First phase with Beagle using this file `2023_Beagle_phasing.sh`:
 ```
-/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts/2023_Beagle_phasing.sh
 ```
 ```
 #!/bin/sh
@@ -62,18 +62,18 @@ First phase with Beagle using this file `2020_Beagle_phasing.sh` in this directo
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=3:00:00
-#SBATCH --mem=128gb
+#SBATCH --mem=256gb
 #SBATCH --output=beagle.%J.out
 #SBATCH --error=beagle.%J.err
-#SBATCH --account=def-ben
+#SBATCH --account=rrg-ben
 
 # sbatch Beagle.sh chr
 
 module load java
 
-java -Xmx12g -jar /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_
-depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/twisst/beagle.18May20.d20.jar gt=${1} out=${1}_phased.vcf
-.gz impute=true
+java -Xmx12g -jar /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by
+_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/twisst/beagle.22Jul22.46e.jar gt=${1} out=${1}_phased.v
+cf.gz impute=true 
 ```
 
 
@@ -106,7 +106,10 @@ sed -i 's/\*/N/g' ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohe
 gzip -c ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno > ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz
 ```
 
-Here is an sbatch script that runs the popgenWindows calculation of Fst:
+Here is an sbatch script that runs the popgenWindows calculation:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_after_filtering/2023_general_genomics_popgen_14pops.sh
+```
 ```
 #!/bin/sh
 #SBATCH --job-name=popgen
@@ -119,85 +122,30 @@ Here is an sbatch script that runs the popgenWindows calculation of Fst:
 #SBATCH --account=def-ben
 
 
-# sbatch ./popgenWindows_allautosomes.sh pop1 pop2
-
-# populations
-# bru papio hec mau nem sum nig nge tog ton
-
-module --force purge
-module load StdEnv/2020
-module load scipy-stack/2020b
-module load python/3.8.2
-
-## declare an array variable
-declare -a chrs=("chr01" "chr02a" "chr02b" "chr03" "chr04" "chr05" "chr06" "chr07" "chr08" "chr09" "chr10" "chr11
-" "chr12" "chr13" "chr14" "chr15" "chr16" "chr17" "chr18" "chr19")
-
-for file in "${chrs[@]}"; do  
-
-    echo python3 ./popgenWindows.py -g ./VCF_processing/${file}.geno.gz -o ./VCF_processing/popgenWindows_${file}
-_${1}_${2}_windowstats.csv -w 100000 -m 100 -s 100000 -p ${1} -p ${2} -f phased -T 10 --popsFile pops.txt --write
-FailedWindows --windType coordinate
-
-python3 ./popgenWindows.py -g ./VCF_processing/${file}.geno.gz -o ./VCF_processing/popgenWindows_${file}_${1}_${2
-}_windowstats.csv -w 100000 -m 100 -s 100000 -p ${1} -p ${2} -f phased -T 10 --popsFile pops.txt --writeFailedWin
-dows --windType coordinate
-
-done
-```
-
-
-The sbatch scripts are not working for some reason probably related to module incompatibility.  It runs really quickly directly though:
-
-```
-./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT7_WY XT10_WZ
-
-python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT7_WY_XT10_WZ.csv -m 1 -p XT7_WY -p XT10_WZ -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
-
-./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT10_WZ XT11_WW
-
-python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT10_WZ_XT11_WW.csv -m 1 -p XT10_WZ -p XT11_WW -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
-
-./2020_popgenWindows.sh ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT11_WW XT7_WY
-
-python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_filtered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWindows.py -g ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz -o ../raw_data/XTgenomez_Chr7.vcf.gz_SNPsonly_first20mil_XT11nohet.vcf.recode.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz_XT11_WW_XT7_WY.csv -m 1 -p XT11_WW -p XT7_WY -f phased -T 10 --popsFile pops.txt --writeFailedWindows -w 10000 -s 10000 -m 10 --windType coordinate
-```
-
-Update Nov 2021 - I now have 4 individuals sequenced and genotyped.
-example commandline:
-```
-./2021_general_genomics_popgen_4pops.sh ../combined_and_genotyped_vcf_filez_SNPsonly/MandF_Chr7.g.vcf.gz_Chr7_SNPs_pos1_30Mb.vcf.gz_phased.vcf.gz.vcf.gz.geno.gz XT10_WZ XT11_WW XT1_ZY XT7_WY
-```
-with 2021_general_genomics_popgen_4pops.sh being this:
-
-```
-#!/bin/sh
-#SBATCH --job-name=popgen
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=1:00:00
-#SBATCH --mem=2gb
-#SBATCH --output=popgen.%J.out
-#SBATCH --error=popgen.%J.err
-#SBATCH --account=def-ben
-
-
-# sbatch ./2021_general_genomics_popgen_2pops.sh genofile pop1 pop2
+# sbatch ./2023_general_genomics_popgen_14pops.sh genofile pop1 pop2 pop3 ... pop14
+# sbatch ./2023_general_genomics_popgen_14pops.sh genofile GE_F1 IC_F1 NI_F1 NI_F2 SL_F1 SL_F2 REF_F1 GE_M1 GW_M1 NI_M1 NI_
+M2 SL_M1 SL_M2 LI_F1
 
 module --force purge
 module load StdEnv/2020
 module load scipy-stack/2020b
 module load python/3.8.2
+#module load StdEnv/2023 python/3.11.5
 
+#python3 /home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_after_filtering/genomics_general/popgenWindows.py -g ${1} -o $
+{1}_windowstats.csv -w 10000 -m 100 -s 10000 -p ${2} -p ${3} -p ${4} -p ${5} -p ${6} -p ${7} -p ${8} -p ${9} -p ${10} -p ${
+11} -p ${12} -p ${13} -p ${14} -p ${15} -f phased -T 10 --popsFile XT_pops.txt --writeFailedWindows --windType coordinate
 
-python3 /home/ben/projects/rrg-ben/ben/2017_SEAsian_macaques/SEAsian_macaques_bam/with_papio/2020_Nov_fi
-ltered_by_depth_3sigmas/final_data_including_sites_with_lots_of_missing_data/genomics_general/popgenWind
-ows.py -g ${1} -o ${2}_${3}_${4}_${5}_windowstats.csv -w 10000 -m 100 -s 10000 -p ${2} -p ${3} -p ${4} -
-p ${5} -f phased -T 10 --popsFile pops.txt --writeFailedWindows --windType coordinate
+python3 /home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_after_filtering/genomics_general/popgenWindows.py -g ${1} -o ${
+1}_windowstats.csv -w 10000 -m 100 -s 10000 -p GE_F1 F_Ghana_WZ_BJE4687_combined__sorted.bam -p IC_F1 F_IvoryCoast_xen228_c
+ombined__sorted.bam -p NI_F1 F_Nigeria_EUA0331_combined__sorted.bam -p NI_F2 F_Nigeria_EUA0333_combined__sorted.bam -p SL_F
+1 F_SierraLeone_AMNH17272_combined__sorted.bam -p SL_F2 F_SierraLeone_AMNH17274_combined__sorted.bam -p REF_F1 JBL052_conca
+tscafs_sorted.bam -p GE_M1 M_Ghana_WY_BJE4362_combined__sorted.bam -p GW_M1 M_Ghana_ZY_BJE4360_combined__sorted.bam -p NI_M
+1 M_Nigeria_EUA0334_combined__sorted.bam -p NI_M2 M_Nigeria_EUA0335_combined__sorted.bam -p SL_M1 M_SierraLeone_AMNH17271_c
+ombined__sorted.bam -p SL_M2 M_SierraLeone_AMNH17273_combined__sorted.bam -p LI_F1 all_ROM19161_sorted.bam -f phased -T 10 
+--writeFailedWindows --windType coordinate
 ```
-
-
-
+**** Not used below ****
 
 The tab file approach is made with vcftools and my script is this (Boot_from_tab_diverge_poly_2018_allowmissingdata_transcripts_.pl):
 ```
