@@ -106,3 +106,27 @@ And this is the filename of the circularized mtDNA genome for Liberia:
 ```
 /home/ben/projects/rrg-ben/ben/2022_Liberia/Liberia/bad_trim_fq/Circularized_assembly_1_ROM_19161_Liberia_denovo_mtDNA.fasta
 ```
+
+# Executable
+```
+/home/ben/projects/rrg-ben/ben/2021_M_f_aurea/bin/NOVOPlasty
+```
+sbatch script:
+```
+#!/bin/sh
+#SBATCH --job-name=NOVOplasty
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=6:00:00
+#SBATCH --mem=128gb
+#SBATCH --output=NOVOplasty.%J.out
+#SBATCH --error=NOVOplasty.%J.err
+#SBATCH --account=def-ben
+
+
+# This script will run NOVOplasty
+# run like this sbatch 2021_NOVOplasty.sh config_file
+module load StdEnv/2020 perl/5.30.2
+
+perl NOVOPlasty4.3.1.pl -c ${1}
+```
