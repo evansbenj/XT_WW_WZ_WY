@@ -182,7 +182,7 @@ sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_Co
 sbatch /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/ben_scripts/2021_GenotypeGVCFs.sh /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat.fasta allsites_Chr7:1-133565930.g.vcf.gz
 ```
 
-# Liberia apomorphies
+# Liberia apomorphies (Liberia_apomorphies.pl)
 This script tabulates apomorphies in pairwise comparisons between three taxa:
 ```
 #!/usr/bin/env perl
@@ -212,7 +212,11 @@ use List::MoreUtils qw/ uniq /;
 # where 12000000000000000300 refers to whether or not each individual in the ingroup 
 # in the vcf file is (1) individ1, (2) individ2, (3) individ3, or (0) not included
 
-# perl Parse_tab_XT.pl all_parsetab.txt 12000000000000000300 all_parsetab_12000000000000000300.output
+# ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00100000000000000230 apomorphies_00100000000000000230.out
+
+# ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00001000000000000230 apomorphies_00001000000000000230.out
+
+# ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00101000000000000030 apomorphies_00101000000000000030.out
 
 
 my $inputfile = $ARGV[0];
