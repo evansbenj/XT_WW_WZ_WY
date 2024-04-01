@@ -130,3 +130,8 @@ module load StdEnv/2020 perl/5.30.2
 
 perl NOVOPlasty4.3.1.pl -c ${1}
 ```
+
+I've also generated mtDNA genomes for the other trop genomes here:
+```
+/home/ben/projects/rrg-ben/ben/2021_M_f_aurea/bin/NOVOPlasty/
+```
