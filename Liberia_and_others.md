@@ -216,7 +216,7 @@ use List::MoreUtils qw/ uniq /;
 
 # ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00001000000000000230 apomorphies_00001000000000000230.out
 
-# ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00101000000000000030 apomorphies_00101000000000000030.out
+# ./Liberia_apomorphies.pl combined_Chr10.g.vcf.gz_Chr10_GenotypedSNPs.vcf.gz_filtered.vcf.gz.tab 00102000000000000030 apomorphies_00102000000000000030.out
 
 
 my $inputfile = $ARGV[0];
