@@ -316,11 +316,14 @@ while ( my $line = <DATAINPUT>) {
 	} # end of check to see if we are at the first line	
 	else{ # print the names of the included samples to the outfile
 		for ($y = 0 ; $y <= $#sexes ; $y++ ) {
-			if(($sexes[$y] == 1)||($sexes[$y] == 2)){
-				print OUTFILE $temp[$y+3],"\t";
-			}	
+			if($sexes[$y] == 1){
+				print OUTFILE "indiv1 ",$temp[$y+3],"\t";
+			}
+			if(($sexes[$y] == 2)){
+				print OUTFILE "indiv2 ",$temp[$y+3],"\n";
+			}
 			if(($sexes[$y] == 3)){
-				print OUTFILE $temp[$y+3],"\n";
+				print OUTFILE "indiv3 ",$temp[$y+3],"\n";
 			}	
 		}	
 	}
