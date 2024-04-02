@@ -317,7 +317,7 @@ while ( my $line = <DATAINPUT>) {
 	else{ # print the names of the included samples to the outfile
 		for ($y = 0 ; $y <= $#sexes ; $y++ ) {
 			if($sexes[$y] == 1){
-				print OUTFILE "indiv1 ",$temp[$y+3],"\t";
+				print OUTFILE "indiv1 ",$temp[$y+3],"\n";
 			}
 			if(($sexes[$y] == 2)){
 				print OUTFILE "indiv2 ",$temp[$y+3],"\n";
