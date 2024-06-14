@@ -13,7 +13,7 @@ bam files are here:
 #SBATCH --job-name=angsd_fst_step1
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=1:00:00
+#SBATCH --time=6:00:00
 #SBATCH --mem=32gb
 #SBATCH --output=angsd_fst.%J.out
 #SBATCH --error=angsd_fst.%J.err
