@@ -6,6 +6,11 @@ bam files are here:
 ```
 /home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups
 ```
+Discussion here about using angsd for pairwise Fst between individuals:
+```
+https://github.com/ANGSD/angsd/issues/413
+```
+
 
 # Step 1
 ```
