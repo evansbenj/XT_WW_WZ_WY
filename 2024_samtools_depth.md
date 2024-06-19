@@ -1,5 +1,10 @@
 # Getting depth of coverage for mapped reads
 
+bam files are here:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups
+```
+
 Script is here:
 ```
 /home/ben/projects/rrg-ben/ben/2022_Liberia/ben_scripts
