@@ -1,4 +1,9 @@
 # Paths
+Filtered genotype and tab files are here:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_vcfs_after_filtering
+```
+
 mello
 ```
 /home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/Germany_genome/raw_data
