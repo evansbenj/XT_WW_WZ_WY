@@ -44,6 +44,29 @@ From: https://www.popgen.dk/angsd/index.php/Fst
 ```
 ../misc/realSFS fst index pop1.saf.idx pop2.saf.idx -sfs pop1.pop2.ml -fstout here
 ```
+...or on graham:
+```
+#!/bin/sh
+#SBATCH --job-name=angsd_fst_step2
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=1:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=angsd_fst_step2.%J.out
+#SBATCH --error=angsd_fst_step2.%J.err
+#SBATCH --account=rrg-ben
+
+# you need a text file called bam.txt that has the name of the bam file in it
+# do this for each bam file in a pairwise comparison
+# sbatch ../ben_scripts/2024_angsd_fst_step1.sh bamfilename
+
+module load StdEnv/2023 angsd/0.940
+
+#realSFS temp1.saf.idx temp2.saf.idx > temp1_temp2.ml
+#realSFS fst index temp1.saf.idx temp2.saf.idx -sfs temp1_temp2.ml -fstout pop1_pop2_fsst
+realSFS fst index ${1} ${2} -sfs ${3} -fstout ${1}_${2}_fsst
+realSFS fst stats ${1}_${2}_fsst.fst.idx -bootstrap 1000 > ${1}_${2}_boot.txt
+```
 # Get the global estimate
 ```
 ../misc/realSFS fst stats here.fst.idx
