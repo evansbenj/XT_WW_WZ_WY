@@ -1,5 +1,5 @@
 # Angsd LD analysis
-path:
+path (updated in 2024 to not include the Nigeria samples):
 ```
 /home/ben/projects/rrg-ben/ben/2022_Liberia/2023_XT_genomz/raw_data/combined/angsd_LD
 ```
