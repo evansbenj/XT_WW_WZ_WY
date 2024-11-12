@@ -166,6 +166,13 @@ while ( my $line = <DATAINPUT>) {
 } # end while	
 close OUTFILE;
 ```
+Now sample every 500 lines of this fine. This allows for the analysis to run in a relatively reasonable amount of time
+
+```
+head -n1 combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.1_to_16408953_onelettergenotype.tab >combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.1_to_16408953_onelettergenotype_every500.tab
+
+awk 'NR % 500 == 0' combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.1_to_16408953_onelettergenotype.tab >> combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.1_to_16408953_onelettergenotype_every500.tab
+```
 
 And this R script calculates the minimum deviance between models with only one site and the model with the interaction between both:
 ```R
