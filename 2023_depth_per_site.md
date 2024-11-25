@@ -19,7 +19,7 @@ Get depth from all bam files into one file:
 
 # sbatch 2023_samtools_depth_from_bam.sh bamfile
 
-module load samtools/1.10
+module load StdEnv/2023  gcc/12.3 samtools/1.20
 
 samtools depth -b Chr7.bed -f ./list_of_bams.txt -o Chr7_depthpersite.txt
 ```
