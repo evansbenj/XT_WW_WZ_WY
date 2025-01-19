@@ -10,7 +10,7 @@ samtools view -b -L ../XL_subgenomeL.bed SRR3210959_SRR3210971_SRR3210972_sorted
 ```
 Now extract mapped reads, sort, and export fastqs:
 ```
-samtools view -u -f 1 -F 12 SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam
+samtools view -f 1 -F 12 SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam
 samtools sort -n SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam -o SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam
 /usr/local-centos6/bedtools/2.19.1/bin/bamToFastq -i SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam -fq SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.1.fastq -fq2 SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.2.fastq
 ```
