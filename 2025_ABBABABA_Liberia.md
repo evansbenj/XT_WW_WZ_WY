@@ -2,11 +2,17 @@
 
 I want to test for gene flow between the Liberia sample and each of the other trop samples using Patterson's D. I'm going to use subgenomeL of XL as an outgroup. This means mapping the trop data to this subgenome only, and also extracting mapped reads from XL to subgenomeL, and then remapping these reads to the subgenomeL reference and then doing joint genotyping with everyone.
 
-To extract mapped reads from XL (as detailed here https://darencard.net/blog/2017-09-07-extract-fastq-bam/):
+To extract mapped reads from XL on info (as detailed here https://darencard.net/blog/2017-09-07-extract-fastq-bam/).
+
+First make a bam file with only subgenomeL:
 ```
-samtools view -u -f 1 -F 12 lib_002.sorted.md.bam > lib_002_map_map.bam
-samtools flagstat lib_002.sorted.md.bam
-bamToFastq -i lib_002_mapped.sort.bam -fq lib_002_mapped.1.fastq -fq2 lib_002_mapped.2.fastq
+samtools view -b -L ../XL_subgenomeL.bed SRR3210959_SRR3210971_SRR3210972_sorted.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam
+```
+Now extract mapped reads, sort, and export fastqs:
+```
+samtools view -u -f 1 -F 12 SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam
+samtools sort -n SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam -o SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam
+/usr/local-centos6/bedtools/2.19.1/bin/bamToFastq -i SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam -fq SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.1.fastq -fq2 SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.2.fastq
 ```
 
 I mapped these XL accessions: SRR3210959_SRR3210971_SRR3210972
