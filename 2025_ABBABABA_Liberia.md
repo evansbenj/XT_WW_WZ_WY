@@ -22,7 +22,7 @@ samtools fastq -0 /dev/null SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_m
 ```
 These can be aligned to a reference using `bwa mem -p ` which recognizes these combined reads:
 ```
-bwa mem -p ../XENLA_10.1_genome_subgenomeL_only.fa SRR3210959_SRR3210971_SRR3210972_all_reads.fq -o SRR3210959_SRR3210971_SRR3210972_subgenomeL.bam
+bwa mem -p ../XENLA_10.1_genome_subgenomeL_only.fa SRR3210959_SRR3210971_SRR3210972_all_reads.fq | samtools view -Shu - | samtools sort - -o SRR3210959_SRR3210971_SRR3210972_extractedfq_to_subgenomeL_ref_sorted.bam
 ```
 
 I mapped these XL accessions: SRR3210959_SRR3210971_SRR3210972
