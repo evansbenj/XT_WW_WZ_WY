@@ -8,13 +8,21 @@ First make a bam file with only subgenomeL:
 ```
 samtools view -b -L ../XL_subgenomeL.bed SRR3210959_SRR3210971_SRR3210972_sorted.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam
 ```
-Now extract mapped reads, sort, and export fastqs:
+Now extract mapped reads:
 ```
 samtools view -h -f 1 -F 12 SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL.bam > SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam
 ```
-111
+Now sort by coordinate:
+```
 samtools sort SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped.bam -o SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam
-/usr/local-centos6/bedtools/2.19.1/bin/bamToFastq -i SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_sorted.bam -fq SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.1.fastq -fq2 SRR3210959_SRR3210971_SRR3210972_subgenomeL_mapped.2.fastq
+```
+Now export fastqs (combined F and R and singletons):
+```
+samtools fastq -0 /dev/null SRR3210959_SRR3210971_SRR3210972_sorted_subgenomeL_mapped_name_sorted.bam > SRR3210959_SRR3210971_SRR3210972_all_reads.fq 
+```
+These can be aligned to a reference using `bwa mem -p ` which recognizes these combined reads:
+```
+bwa mem -p ../XENLA_10.1_genome_subgenomeL_only.fa SRR3210959_SRR3210971_SRR3210972_all_reads.fq -o SRR3210959_SRR3210971_SRR3210972_subgenomeL.bam
 ```
 
 I mapped these XL accessions: SRR3210959_SRR3210971_SRR3210972
