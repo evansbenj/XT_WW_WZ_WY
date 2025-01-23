@@ -10,10 +10,6 @@ vcftools --vcf trop_only_allchrs_concat_maxmissingcount_0_genoqual30.recode.vcf 
 
 # Admixture analysis
 
-# Admixture analysis
-
-
-
 on info I concatenated  chrs:
 ```
 bcftools concat all_162_maqs_chr{1..20}_maxmissingcount_0_genoqual30_thin_5000.recode.vcf -Ov -o all_162_maqs_allautsomal_chrs_maxmissingcount_0_genoqual30_thin_5000.recode.vcf
