@@ -33,8 +33,8 @@ use List::MoreUtils qw/ uniq /;
 #  the easiest way to do this is to count homoz sites and assume the hets are
 #  all identical (this can be checked too)
 
-# to execute type Parse_tab_check_for_shared_heterozygotes.pl temp.tab 00110000011000000000 output.out 
-# where 00110000011000000000 refers to whether or not each individual in the ingroup 
+# to execute type Parse_tab_check_for_shared_heterozygotes.pl temp.tab 10110000011000000011 output.out 
+# where 10110000011000000011 refers to whether or not each individual in the ingroup 
 # in the vcf file is (1) included, or (0) skipped
 
 # I am doing this to check for evidence of polyploidy in the nigeria trop samples
@@ -67,7 +67,9 @@ my $patterns=0;
 my @patterns;
 my @include;
 my @unique_included_nucleotides;
-my @individual_counter;
+my @individual_homoz_counter; # this counts how many positions are homoz in each individual and heteroz in all other individuals (not very useful)
+my @individual_het_counter; # this counts how many positions are heterozygous in each individual, irrespective of
+							#  the genotypes of other individuals 
 my $homoz_indiv;
 my $hets=0;
 my $keyz;
@@ -88,7 +90,7 @@ for ($y = 0 ; $y <= $#sexes ; $y++ ) {
 print "This includes ",$number_of_included_individuals," individuals\n";
 for ($x = 0 ; $x < $number_of_included_individuals ; $x++ ) {
 	$patterns[$x]=0;
-	$individual_counter[$x]=0;
+	$individual_homoz_counter[$x]=0;
 }
 
 
@@ -140,18 +142,115 @@ while ( my $line = <DATAINPUT>) {
 				# now update the hash
 				$Venn{$keyz}+=1;
 				if($hets == 3){ # tabulate which individual is homozygous while the others are all het
-					$individual_counter[$homoz_indiv]+=1;
+					$individual_homoz_counter[$homoz_indiv]+=1;
 				}
 				$patterns[$hets-1]+=1;
 		}
 	}
 } # end while
-print "@patterns\n";
-print "@individual_counter\n";
+#print "@patterns\n";
+#print "@individual_homoz_counter\n";
+
+my $number_of_keys = scalar keys %Venn;
+my $countr = 0;
+
 foreach my $key (sort keys %Venn){
-	print $key," ",$Venn{$key},"\n";
-	print OUTFILE1 $key," ",$Venn{$key},"\n";
+	if($key ne ""){
+		@temp=split "",$key;
+		$countr+=1;
+		#print "key $key hello @temp hi $temp[$#temp]\n";
+		print "`";
+		for ($y =0 ; $y < $#temp; $y++) {
+			print $temp[$y]."&";
+		}
+		print $temp[$#temp],'`=';
+		if($countr < ($number_of_keys-1)){
+			print $Venn{$key},",";
+		}
+		else{
+			print $Venn{$key},"\n";
+		}	
+		#print OUTFILE1 $key," ",$Venn{$key},"\n";
+	}
 }	
 print OUTFILE1 "@patterns\n";
 close OUTFILE1;
+```
+
+
+Then this output could be copied and pasted into this R code to print an UpSet plot:
+```R
+setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2021_XT_sex_linked_markers/2024_Parsetab_sharedhets")
+library("UpSetR")
+
+# example of expression input
+expressionInput <- c(one = 2, two = 1, three = 2, `one&two` = 1, `one&three` = 4, 
+                     `two&three` = 1, `one&two&three` = 2)
+
+
+expressionInput <- c(E331 = 30979,
+                     E333 = 36645,
+                     E334 = 284339,
+                     E335 = 38787,
+                     Xcal = 250858,
+                     Xmel = 696542,
+                     `E331&E333` = 46228,
+                     `E331&E334` = 26069,
+                     `E331&E335` = 261,
+                     `E331&Xcal` = 12355,
+                     `E331&Xmel` = 5007,
+                     `E333&E334` = 31138,
+                     `E333&E335` = 255,
+                     `E333&Xcal` = 16454,
+                     `E333&Xmel` = 5778,
+                     `E334&E335` = 21005,
+                     `E335&Xcal` = 999,
+                     `E335&Xmel` = 2028,
+                     `E334&Xcal` = 32715,
+                     `E334&Xmel` = 37335,
+                     `Xcal&Xmel` = 39280,
+                     `E331&E333&E334` = 169812,
+                     `E331&E333&E335` = 228,
+                     `E331&E333&Xcal` = 50125,
+                     `E331&E333&Xmel` = 8891,
+                     `E331&E334&E335` = 336,
+                     `E331&E334&Xcal` = 18826,
+                     `E331&E334&Xmel` = 4522,
+                     `E331&E335&Xcal` = 65,
+                     `E331&E335&Xmel` = 81,
+                     `E331&Xcal&Xmel` = 7022,
+                     `E333&E334&E335` = 319,
+                     `E333&E334&Xcal` = 27205,
+                     `E333&E334&Xmel` = 5781,
+                     `E333&E335&Xcal` = 118,
+                     `E333&E335&Xmel` = 57,
+                     `E333&Xcal&Xmel` = 9501,
+                     `E334&E335&Xcal` = 734,
+                     `E334&E335&Xmel` = 1517,
+                     `E334&Xcal&Xmel` = 15047,
+                     `E335&Xcal&Xmel` = 409,
+                     `E331&E333&E334&E335` = 1049,
+                     `E331&E333&E334&Xcal` = 274327,
+                     `E331&E333&E334&Xmel` = 30735,
+                     `E331&E333&E335&Xcal` = 331,
+                     `E331&E333&E335&Xmel` = 94,
+                     `E331&E333&Xcal&Xmel` = 37894,
+                     `E331&E334&E335&Xcal` = 204,
+                     `E331&E334&E335&Xmel` = 79,
+                     `E331&E334&Xcal&Xmel` = 11311,
+                     `E331&E335&Xcal&Xmel` = 52,
+                     `E333&E334&E335&Xcal` = 273,
+                     `E333&E334&E335&Xmel` = 89,
+                     `E333&E334&Xcal&Xmel` = 17316,
+                     `E333&E335&Xcal&Xmel` = 86,
+                     `E334&E335&Xcal&Xmel` = 296,
+                     `E331&E333&E334&E335&Xcal` = 2038,
+                     `E331&E333&E334&E335&Xmel` = 410,
+                     `E331&E333&E334&Xcal&Xmel` = 220082,
+                     `E331&E333&E335&Xcal&Xmel` = 272,
+                     `E331&E334&E335&Xcal&Xmel` = 148,
+                     `E333&E334&E335&Xcal&Xmel` = 226,
+                     `E331&E333&E334&E335&Xcal&Xmel` = 1787)
+
+upset(fromExpression(expressionInput), order.by = "freq", nsets = 6)
 ```
