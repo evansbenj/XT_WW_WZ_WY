@@ -26,3 +26,28 @@ bwa mem -p ../XENLA_10.1_genome_subgenomeL_only.fa SRR3210959_SRR3210971_SRR3210
 ```
 
 I mapped these XL accessions: SRR3210959_SRR3210971_SRR3210972
+
+I genotyped and filtered these samples using GATK as previously (e.g. Evans et al. 2022) including these filters:
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/XT_fq/gatk-4.6.0.0/gatk --java-options -Xmx8G VariantFiltration -V XT_Lsubgenome_Chr3L_genotyped.vcf.gz\
+    -filter "QD < 2.0" --filter-name "QD2" \
+    -filter "QUAL < 30.0" --filter-name "QUAL30" \
+    -filter "SOR > 3.0" --filter-name "SOR3" \
+    -filter "FS > 60.0" --filter-name "FS60" \
+    -filter "MQ < 40.0" --filter-name "MQ40" \
+    -filter "MQRankSum < -12.5" --filter-name "MQRankSum-12.5" \
+    -filter "ReadPosRankSum < -8.0" --filter-name "ReadPosRankSum-8" \
+    -O XT_Lsubgenome_Chr3L_genotyped_filtered.vcf.gz
+```
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/XT_fq/gatk-4.6.0.0/gatk --java-options -Xmx8G SelectVariants \
+	        --exclude-filtered \
+	        -V XT_Lsubgenome_Chr9_10L_genotyped_filtered.vcf.gz \
+	        -O XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.vcf.gz
+```
+# General genomics
+
+On info, I converted these files to geno format like this:
+```
+python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.geno.gz
+```
