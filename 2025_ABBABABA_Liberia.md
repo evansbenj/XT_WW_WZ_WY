@@ -51,3 +51,25 @@ On info, I converted these files to geno format like this:
 ```
 python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.geno.gz
 ```
+ABABABAtest:
+```
+python3 /home/ben/2025_genomics_general/genomics_general/ABBABABAwindows.py -g XT_Lsubgenome_Chr1L_genotyped_filtered_removed.geno.gz -f phased -o XT_Lsubgenome_Chr1L_ABBA.csv --windType coordinate -w 100000 -m 100 -s 100000 -P1 SL1 -P2 IC1 -P3 LIB -O OUT -T 10 --minData 0.5 --popsFile pops.txt --writeFailedWindows
+```
+where pops.txt is:
+```
+AMNH17272 SL1
+AMNH17274 SL2
+BJE4360 GH1
+BJE4362 GH2
+BJE4687 GH3
+JBL052 NG1
+M_SierraLeone_AMNH17271 SL3
+M_SierraLeone_AMNH17273 SL4
+ROM19161 LIB
+SRR3210959_SRR3210971_SRR3210972 OUT
+XT1 LB1
+XT10_WZ LB2
+XT11_WW LB3
+XT7_WY LB4
+xen228 IC1
+```
