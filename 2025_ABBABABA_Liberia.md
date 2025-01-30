@@ -51,6 +51,11 @@ On info, concatenate the filtered files:
 ```
 bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
 ```
+Then compress and index:
+```
+bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
+tabix -p vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
+```
 
 On info, I converted these files to geno format like this:
 ```
