@@ -47,6 +47,11 @@ I genotyped and filtered these samples using GATK as previously (e.g. Evans et a
 ```
 # General genomics
 
+On info, concatenate the filtered files:
+```
+bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
+```
+
 On info, I converted these files to geno format like this:
 ```
 python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_Chr9_10L_genotyped_filtered_removed.geno.gz
