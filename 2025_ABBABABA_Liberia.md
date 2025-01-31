@@ -51,13 +51,13 @@ On info, concatenate the filtered files:
 ```
 bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
 ```
-Then compress and index:
+Then compress and index (only on info113):
 ```
 bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
 tabix -p vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
 ```
 
-On info, I converted these files to geno format like this:
+On info2020, I converted these files to geno format like this:
 ```
 python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.geno.gz
 ```
