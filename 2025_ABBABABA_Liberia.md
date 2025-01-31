@@ -56,6 +56,10 @@ Then compress and index (only on info113):
 bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
 tabix -p vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
 ```
+Then I filtered to remove positions with any missing genotypes and retain only biallelic positions:
+```
+vcftools --gzvcf XT_Lsubgenome_Chr1L_genotyped_filtered_removed.vcf.gz --min-alleles 2 --max-alleles 2 --max-missing 0 --recode --recode-INFO-all --out XT_Lsubgenome_Chr1L_genotyped_filtered_removed_nomissing_2
+```
 
 On info2020, I converted these files to geno format like this:
 ```
