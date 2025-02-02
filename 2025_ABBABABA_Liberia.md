@@ -51,24 +51,21 @@ On info, concatenate the filtered files:
 ```
 bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
 ```
-Then compress and index (only on info113):
-```
-bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
-tabix -p vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
-```
 Then I filtered to remove positions with any missing genotypes and retain only biallelic positions:
 ```
 vcftools --gzvcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --max-missing-count 0 --max-alleles 2 --recode --recode-INFO-all --out XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2
 
 mv XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.recode.vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf
-
+```
+Compress (only on info113):
+```
 bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz
 
 ```
 
 On info2020, I converted these files to geno format like this:
 ```
-python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.geno.gz
+python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.geno.gz
 ```
 
 These files still had uncalled genotypes (N/N and N|N). So, for each chromosome I removed these and then concatenated all of the chromosomes for the final analysis:
