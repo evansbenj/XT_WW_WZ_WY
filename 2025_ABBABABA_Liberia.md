@@ -73,7 +73,7 @@ These files still had uncalled genotypes (N/N and N|N). So, for each chromosome 
 zcat XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.geno | sed '/N\/N/d' > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_a.geno
 
 cat XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_a.geno | sed '/N|N/d' > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno
-
+```
 compress (on info113):
 ```
 bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno.gz
