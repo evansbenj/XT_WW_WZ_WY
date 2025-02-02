@@ -58,7 +58,12 @@ tabix -p vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz
 ```
 Then I filtered to remove positions with any missing genotypes and retain only biallelic positions:
 ```
-vcftools --gzvcf XT_Lsubgenome_Chr1L_genotyped_filtered_removed.vcf.gz --max-missing-count 0 --max-alleles 2 --recode --recode-INFO-all --out XT_Lsubgenome_Chr1L_genotyped_filtered_removed_nomissing_2
+vcftools --gzvcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --max-missing-count 0 --max-alleles 2 --recode --recode-INFO-all --out XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2
+
+mv XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.recode.vcf XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf
+
+bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz
+
 ```
 
 On info2020, I converted these files to geno format like this:
