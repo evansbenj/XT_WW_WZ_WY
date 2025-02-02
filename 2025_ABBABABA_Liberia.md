@@ -70,6 +70,17 @@ python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF
 
 These files still had uncalled genotypes (N/N and N|N). So, for each chromosome I removed these and then concatenated all of the chromosomes for the final analysis:
 
+```
+zcat XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.geno | sed '/N\/N/d' > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_a.geno
+
+cat XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_a.geno | sed '/N|N/d' > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno
+
+compress (on info113):
+```
+bgzip -c XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno > XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_b.geno.gz
+```
+```
+
 
 # ABABABAtest
 
