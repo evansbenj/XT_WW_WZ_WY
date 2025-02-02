@@ -65,9 +65,16 @@ On info2020, I converted these files to geno format like this:
 ```
 python3 /home/ben/2025_genomics_general/genomics_general/VCF_processing/parseVCF.py -i XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --skipIndels --minQual 30 --gtf flag=DP min=5 max=100 -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.geno.gz
 ```
-ABABABAtest:
+
+These files still had uncalled genotypes (N/N and N|N). So, for each chromosome I removed these and then concatenated all of the chromosomes for the final analysis:
+
+
+# ABABABAtest
+
+I used 5 million bp nonoverlapping windows and required at least 100 informative positions:
+
 ```
-python3 /home/ben/2025_genomics_general/genomics_general/ABBABABAwindows.py -g XT_Lsubgenome_Chr1L_genotyped_filtered_removed.geno.gz -f phased -o XT_Lsubgenome_Chr1L_ABBA.csv --windType coordinate -w 100000 -m 100 -s 100000 -P1 SL1 -P2 IC1 -P3 LIB -O OUT -T 10 --minData 0.5 --popsFile pops.txt --writeFailedWindows
+python3 /home/ben/2025_genomics_general/genomics_general/ABBABABAwindows.py -g XT_Lsubgenome_Chr1L_genotyped_filtered_removed.geno.gz -f phased -o XT_Lsubgenome_Chr1L_ABBA.csv --windType coordinate -w 5000000 -m 100 -s 5000000 -P1 SL1 -P2 IC1 -P3 LIB -O OUT -T 10 --minData 0.5 --popsFile pops.txt --writeFailedWindows
 ```
 where pops.txt is:
 ```
