@@ -47,7 +47,7 @@ I genotyped and filtered these samples using GATK as previously (e.g. Evans et a
 ```
 # General genomics
 
-On info, concatenate the filtered files:
+On info113, concatenate the filtered files:
 ```
 bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
 ```
