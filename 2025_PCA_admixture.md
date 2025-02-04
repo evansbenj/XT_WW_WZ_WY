@@ -31,3 +31,9 @@ do
 /usr/local/admixture/admixture --cv --seed $((1 + $RANDOM % 1000)) ../trop_only_allchrs_concat_maxmissingcount_0_genoqual30_thin_5000.bed $i > log${i}.out
 done
 ```
+
+# AdmixturePlotter (https://github.com/TCLamnidis/AdmixturePlotter)
+
+```
+./AdmixturePlotter.R -i ../Plotting/compound.labelled.QperK.txt -p ../poporder.txt
+```
