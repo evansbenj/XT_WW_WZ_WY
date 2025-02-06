@@ -51,7 +51,7 @@ On info113, concatenate the filtered files:
 ```
 bcftools concat XT_Lsubgenome_Chr{1..9}L_genotyped_filtered_removed.vcf.gz -Ov -o XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf
 ```
-Then I filtered to remove positions with any missing genotypes and retain only biallelic positions:
+Then I filtered to remove positions with any missing genotypes and retain only positiojns with up to two variants:
 ```
 vcftools --gzvcf XT_Lsubgenome_allchrsgenotyped_filtered_removed.vcf.gz --max-missing-count 0 --max-alleles 2 --recode --recode-INFO-all --out XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2
 
