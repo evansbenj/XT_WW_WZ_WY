@@ -182,75 +182,59 @@ Then this output could be copied and pasted into this R code to print an UpSet p
 ```R
 setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2021_XT_sex_linked_markers/2024_Parsetab_sharedhets")
 library("UpSetR")
-
+options(scipen=999)
 # example of expression input
-expressionInput <- c(one = 2, two = 1, three = 2, `one&two` = 1, `one&three` = 4, 
-                     `two&three` = 1, `one&two&three` = 2)
+#expressionInput <- c(one = 2, two = 1, three = 2, `one&two` = 1, `one&three` = 4, 
+#                     `two&three` = 1, `one&two&three` = 2)
+
+# 1:EUA0331	(NG2)
+# 2:EUA0333	(NG3)
+# 3:EUA0334 (NG4)
+# 4:EUA0335 (NG5)
+# 5:Xcal  (Cal)
+
+expressionInput <- c(`NG2`=1214684,
+                     `NG2&NG3`=1847532,
+                     `NG2&NG3&NG4`=6969040,
+                     `NG2&NG3&NG4&NG5`=49389,
+                     `NG2&NG3&NG4&NG5&Cal`=126092,
+                     `NG2&NG3&NG4&Cal`=17871976,
+                     `NG2&NG3&NG5`=12877,
+                     `NG2&NG3&NG5&Cal`=19806,
+                     `NG2&NG3&Cal`=2898475,
+                     `NG2&NG4`=946774,
+                     `NG2&NG4&NG5`=15152,
+                     `NG2&NG4&NG5&Cal`=11110,
+                     `NG2&NG4&Cal`=895576,
+                     `NG2&NG5`=13173,
+                     `NG2&NG5&Cal`=5940,
+                     `NG2&Cal`=595158,
+                     `NG3`=1424512,
+                     `NG3&NG4`=1194663,
+                     `NG3&NG4&NG5`=18085,
+                     `NG3&NG4&NG5&Cal`=15841,
+                     `NG3&NG4&Cal`=1367525,
+                     `NG3&NG5`=14828,
+                     `NG3&NG5&Cal`=7599,
+                     `NG3&Cal`=768914,
+                     `NG4`=10795399,
+                     `NG4&NG5`=833968,
+                     `NG4&NG5&Cal`=35534,
+                     `NG4&Cal`=1355129,
+                     `NG5`=1514606,
+                     `NG5&Cal`=45505,
+                     `Cal`=9704927)
 
 
-expressionInput <- c(E331 = 30979,
-                     E333 = 36645,
-                     E334 = 284339,
-                     E335 = 38787,
-                     Xcal = 250858,
-                     Xmel = 696542,
-                     `E331&E333` = 46228,
-                     `E331&E334` = 26069,
-                     `E331&E335` = 261,
-                     `E331&Xcal` = 12355,
-                     `E331&Xmel` = 5007,
-                     `E333&E334` = 31138,
-                     `E333&E335` = 255,
-                     `E333&Xcal` = 16454,
-                     `E333&Xmel` = 5778,
-                     `E334&E335` = 21005,
-                     `E335&Xcal` = 999,
-                     `E335&Xmel` = 2028,
-                     `E334&Xcal` = 32715,
-                     `E334&Xmel` = 37335,
-                     `Xcal&Xmel` = 39280,
-                     `E331&E333&E334` = 169812,
-                     `E331&E333&E335` = 228,
-                     `E331&E333&Xcal` = 50125,
-                     `E331&E333&Xmel` = 8891,
-                     `E331&E334&E335` = 336,
-                     `E331&E334&Xcal` = 18826,
-                     `E331&E334&Xmel` = 4522,
-                     `E331&E335&Xcal` = 65,
-                     `E331&E335&Xmel` = 81,
-                     `E331&Xcal&Xmel` = 7022,
-                     `E333&E334&E335` = 319,
-                     `E333&E334&Xcal` = 27205,
-                     `E333&E334&Xmel` = 5781,
-                     `E333&E335&Xcal` = 118,
-                     `E333&E335&Xmel` = 57,
-                     `E333&Xcal&Xmel` = 9501,
-                     `E334&E335&Xcal` = 734,
-                     `E334&E335&Xmel` = 1517,
-                     `E334&Xcal&Xmel` = 15047,
-                     `E335&Xcal&Xmel` = 409,
-                     `E331&E333&E334&E335` = 1049,
-                     `E331&E333&E334&Xcal` = 274327,
-                     `E331&E333&E334&Xmel` = 30735,
-                     `E331&E333&E335&Xcal` = 331,
-                     `E331&E333&E335&Xmel` = 94,
-                     `E331&E333&Xcal&Xmel` = 37894,
-                     `E331&E334&E335&Xcal` = 204,
-                     `E331&E334&E335&Xmel` = 79,
-                     `E331&E334&Xcal&Xmel` = 11311,
-                     `E331&E335&Xcal&Xmel` = 52,
-                     `E333&E334&E335&Xcal` = 273,
-                     `E333&E334&E335&Xmel` = 89,
-                     `E333&E334&Xcal&Xmel` = 17316,
-                     `E333&E335&Xcal&Xmel` = 86,
-                     `E334&E335&Xcal&Xmel` = 296,
-                     `E331&E333&E334&E335&Xcal` = 2038,
-                     `E331&E333&E334&E335&Xmel` = 410,
-                     `E331&E333&E334&Xcal&Xmel` = 220082,
-                     `E331&E333&E335&Xcal&Xmel` = 272,
-                     `E331&E334&E335&Xcal&Xmel` = 148,
-                     `E333&E334&E335&Xcal&Xmel` = 226,
-                     `E331&E333&E334&E335&Xcal&Xmel` = 1787)
+upset(fromExpression(expressionInput), 
+      #keep.order = T,
+      order.by = "freq",
+      show.numbers = "no",
+      set_size.show = F,
+      sets = c("NG2", "NG3", "NG4","NG5","Cal"))
 
-upset(fromExpression(expressionInput), order.by = "freq", nsets = 6)
+
+# you need to save the plot from the RStudio plot window
+# a size of 6.5 x 9 works well
+
 ```
