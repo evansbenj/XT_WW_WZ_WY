@@ -42,106 +42,106 @@ list.files(dir)
 AMNH17271 <- read.table("AMNH17271_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(AMNH17271) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 AMNH17271$sample <- "SL1"
-AMNH17271$color <- "steelblue"
+AMNH17271$color <- "Sierra"
 
 AMNH17272 <- read.table("AMNH17272_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(AMNH17272) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 AMNH17272$sample <- "SL2"
-AMNH17272$color <- "steelblue"
+AMNH17272$color <- "Sierra"
 
 AMNH17273 <- read.table("AMNH17273_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(AMNH17273) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 AMNH17273$sample <- "SL3"
-AMNH17273$color <- "steelblue"
+AMNH17273$color <- "Sierra"
 
 AMNH17274 <- read.table("AMNH17274_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(AMNH17274) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 AMNH17274$sample <- "SL4"
-AMNH17274$color <- "steelblue"
+AMNH17274$color <- "Sierra"
 
 lib <- read.table("lib_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(lib) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 lib$sample <- "LB"
-lib$color <- "orange"
+lib$color <- "Liberia"
 
 ic <- read.table("ic_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(ic) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 ic$sample <- "IC"
-ic$color <- "purple"
+ic$color <- "Ivory"
 
 
 
 jbl <- read.table("jbl_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(jbl) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 jbl$sample <- "NG1"
-jbl$color <- "green"
+jbl$color <- "Nigeria"
 
 EUA0331 <- read.table("EUA0331_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(EUA0331) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 EUA0331$sample <- "NG2"
-EUA0331$color <- "green"
+EUA0331$color <- "Nigeria"
 
 EUA0333 <- read.table("EUA0333_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(EUA0333) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 EUA0333$sample <- "NG3"
-EUA0333$color <- "green"
+EUA0333$color <- "Nigeria"
 
 EUA0334 <- read.table("EUA0334_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(EUA0334) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 EUA0334$sample <- "NG4"
-EUA0334$color <- "green"
+EUA0334$color <- "Nigeria"
 
 EUA0335 <- read.table("EUA0335_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(EUA0335) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 EUA0335$sample <- "NG5"
-EUA0335$color <- "green"
+EUA0335$color <- "Nigeria"
 
 BJE4360 <- read.table("BJE4360_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(BJE4360) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 BJE4360$sample <- "GW"
-BJE4360$color <- "red"
+BJE4360$color <- "GhanaW"
 
 BJE4362 <- read.table("BJE4362_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(BJE4362) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 BJE4362$sample <- "GE1"
-BJE4362$color <- "red"
+BJE4362$color <- "GhanaE"
 
 BJE4687 <- read.table("BJE4687_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(BJE4687) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 BJE4687$sample <- "GE2"
-BJE4687$color <- "red"
+BJE4687$color <- "GhanaE"
 
 
 XT1 <- read.table("XT1_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(XT1) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 XT1$sample <- "GE3"
-XT1$color <- "red"
+XT1$color <- "GhanaE"
 
 XT7 <- read.table("XT7_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(XT7) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 XT7$sample <- "GE4"
-XT7$color <- "red"
+XT7$color <- "GhanaE"
 
 XT10 <- read.table("XT10_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(XT10) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 XT10$sample <- "GE5"
-XT10$color <- "red"
+XT10$color <- "GhanaE"
 
 XT11 <- read.table("XT11_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(XT11) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 XT11$sample <- "GE6"
-XT11$color <- "red"
+XT11$color <- "GhanaE"
 
 
 cal <- read.table("cal_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(cal) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 cal$sample <- "Cal"
-cal$color <- "gray"
+cal$color <- "Cameroon"
 
 mel <- read.table("mel_theta.thetasWindow.gz.pestPG", header = T, skip = 1)
 colnames(mel) <- c("details","Chr","midpoint","tW","tP","tF","tH","tL","Tajima","fuf","fud","fayh","zeng","nSites")
 mel$sample <- "Mel"
-mel$color <- "black"
+mel$color <- "Gabon"
 
 
 
@@ -168,25 +168,28 @@ my_df$sample <- factor(my_df$sample, levels = c('SL1','SL2','SL3','SL4',
                             'NG4','NG5','Cal','Mel'), order = T)
 
 library(Hmisc)
-pdf("./XT_pi_boxplot.pdf",w=8, h=2.0, version="1.4", bg="transparent")
+pdf("./XT_pi_boxplot.pdf",w=8, h=3.0, version="1.4", bg="transparent")
   p<-ggplot(my_df %>% arrange(sample), aes(x=sample, y=pi_per_site, fill = color, color = color)) + 
     geom_violin(width = 1.5) +
     stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
                  colour = "black", size=0.15) +
     #geom_boxplot() +
     # color the stuff the way I want
-    scale_fill_manual(values = c("black" = "black", "gray"="gray", "orange" = "orange",
-                                  "red" = "red","green" = "green", "purple" = "purple",
-                                  "steelblue" = "steelblue")
+    scale_fill_manual(name= 'Location',
+                      breaks = c('Sierra','Liberia','Ivory','GhanaW','GhanaE','Nigeria','Cameroon','Gabon'),
+                      values = c('Gabon' = 'black', 'Cameroon'='gray', 'Liberia' = 'orange',
+                                 'GhanaW' = 'pink','GhanaE' = 'red','Nigeria' = 'green', 'Ivory' = 'purple',
+                                 'Sierra' = 'steelblue')
                       )+
-    scale_color_manual(values = c("black" = "black", "gray"="gray", "orange" = "orange",
-                                 "red" = "red","green" = "green", "purple" = "purple",
-                                 "steelblue" = "steelblue")
+    scale_color_manual(values = c('Gabon' = 'black', 'Cameroon'='gray', 'Liberia' = 'orange',
+                                  'GhanaW' = 'pink','GhanaE' = 'red','Nigeria' = 'green', 'Ivory' = 'purple',
+                                  'Sierra' = 'steelblue'), guide = "none"
     )+
     xlab("Sample") + ylab(expression(paste(italic(pi)))) +
     # get rid of gray background
     theme_classic() +
-    theme(legend.position="none") #+
+    theme(axis.title=element_text(size=16))
     p
 dev.off()
+
 ```
