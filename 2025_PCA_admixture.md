@@ -1,6 +1,22 @@
 # PCA and Admixture
 
-I am doing the PCA and admixture analysis again starting with only trop samples (excluding the hybrid Nigeria samples). For PCA and Admixture I am going to filter sites with missing data and then thin every 5000 bp:
+I am doing the PCA and admixture analysis again starting with only trop samples (excluding the hybrid Nigeria samples). I first will work with a vcf that includes only trop samples (including EUA335):
+
+On info in this directory:
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/XT_data_only
+```
+Extract the XT samples:
+```
+bcftools view -S trop_only.txt combined_Chr9.g.vcf.gz_Chr9_GenotypedSNPs.vcf.gz_filtered.vcf.gz_filtered_removed.vcf.gz -Oz -o troponly_Chr9.vcf.gz
+```
+Now merge the chromosomes:
+```
+bcftools troponly_Chr{1..10}.vcf.gz -Oz -o troponly_allChrs.vcf.gz
+```
+
+
+For PCA and Admixture I am going to filter sites with missing data and then thin every 5000 bp:
 ```
 vcftools --gzvcf trop_only_allchrs_concat.vcf.gz --max-missing-count 0 --minQ 30 --recode --recode-INFO-all --out trop_only_allchrs_concat_maxmissingcount_0_genoqual30
 ```
