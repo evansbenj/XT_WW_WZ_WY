@@ -12,7 +12,7 @@ bcftools view -S trop_only.txt combined_Chr9.g.vcf.gz_Chr9_GenotypedSNPs.vcf.gz_
 ```
 Now merge the chromosomes:
 ```
-bcftools troponly_Chr{1..10}.vcf.gz -Oz -o troponly_allChrs.vcf.gz
+bcftools concat troponly_Chr{1..10}.vcf.gz -Oz -o troponly_allChrs.vcf.gz
 ```
 
 
