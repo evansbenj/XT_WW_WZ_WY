@@ -1,5 +1,9 @@
 # Heterozygosity with angsd
 
+directory:
+```
+/home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups
+```
 First make a text file with the path to each bam. Then run this sbatch script:
 ```
 #!/bin/sh
