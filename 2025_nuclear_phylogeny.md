@@ -19,5 +19,5 @@ vcftools --gzvcf trop_only_allchrs_concat.vcf.gz --max-missing-count 0 --min-all
 
 # Bootstrap tree
 ```
-/home/ben/IQtree/iqtree-2.4.0-Linux-intel/bin/iqtree2 -s trop_only_allchrs_concat_maxmissingcount_0_genoqual30_thin_5000.nexus -m XXX -B 1000
+/home/ben/IQtree/iqtree-2.4.0-Linux-intel/bin/iqtree2 -s trop_only_allchrs_concat_maxmissingcount_0_genoqual30_thin_5000.nexus -m TVM+F+R3 -b 1000
 ```
