@@ -7,9 +7,9 @@ Directory:
 
 We are going to make a ML phylogeny from the mapped data.
 
-Using the hardfiltered vcf as input, convert to nexus file
+Using the hardfiltered vcf as input, convert to nexus file; require no missing data (min of 15 samples with data for each site).
 ```
-python3 vcf2phylip/vcf2phylip.py -i trop_only_allchrs_concat.vcf.gz.geno_b.vcf -n --output-prefix trop_only_allchrs_concat.vcf.gz.geno_b_nexus
+python3 vcf2phylip/vcf2phylip.py -i trop_only_allchrs_concat.vcf.gz -m 15 -n --output-prefix trop_only_allchrs_concat.vcf.gz_nexus
 ```
 
 # Model selection
