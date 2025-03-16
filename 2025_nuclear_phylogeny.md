@@ -1,5 +1,10 @@
 # Nuclear / WGS phylogeny 
 
+Directory:
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/XT_data_only
+```
+
 We are going to make a ML phylogeny from the mapped data.
 
 Using the hardfiltered vcf as input, filter again to retain only positions that have no missing data and that have biallelic sites:
