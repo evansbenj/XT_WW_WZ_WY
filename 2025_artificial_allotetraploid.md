@@ -1,6 +1,6 @@
 # Artifical allotetraploid
 
-One possibility is that X. calcaratus is derived from allotetraploidization between the Liberia strain and another trop. (This is not possible for mel because this species evolved before the divergence of Liberia from other trop) To test this possibility, I wrote the script below to make an artifical allotetraploid out of positions that were homozygous for different variants in Liberia and trop.
+One possibility is that X. calcaratus is derived from allotetraploidization between the Liberia strain and another trop. (This is not possible for mel because this species evolved before the divergence of Liberia from other trops). To test this possibility, I wrote the script below to make an artifical allotetraploid out of positions that were homozygous for different variants in Liberia and trop.
 
 This script discards positions with missing or gapped genotypes in Liberia, trop, cal, and/or mel and it calculates how many of the "artificial pseudohet" sites match het sites in cal or mel.
 
