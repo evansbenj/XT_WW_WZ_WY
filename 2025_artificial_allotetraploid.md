@@ -2,6 +2,8 @@
 
 One possibility is that X. calcaratus is derived from allotetraploidization between the Liberia strain and another trop. To test this possibility, I wrote the script below to make an artifical allotetraploid out of positions that were homozygous for different variants in Liberia and trop.
 
+This script discards positions with missing or gapped genotypes in Liberia, trop, cal, and/or mel and it calculates how many of the "artificial pseudohet" sites match het sites in cal or mel.
+
 ```perl
 #!/usr/bin/env perl
 use strict;
