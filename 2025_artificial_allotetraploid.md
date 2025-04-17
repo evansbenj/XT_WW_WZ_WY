@@ -161,6 +161,7 @@ while ( my $line = <DATAINPUT>) {
 			  	 )
 			  	{
 					$number_of_shared_pseudohets_between_Xcal_and_Xmel_but_not_artificial+=1;
+					print "@trop @liberia @cal @mel\n";
 			  	}
 			}
 		} # end of if to check for gaps and missing data		
