@@ -8,18 +8,27 @@ use warnings;
 
 # This program reads in a vcf file with genotypic information from
 # a family and identifies positions that
-# are homozygous in sons (mat sites because daughters are heteroz) and positions
-# that are not homozygous only in daughters/mom (pat sites because sons are heteroz). 
+# are homozygous in all sons with genotypes and het in at least five daughters (mat sites because daughters 
+# are heteroz) and positions that are
+# are homozygous in all daughters with genotypes and het in at least five sons (pat sites because sons 
+# are heteroz) 
 # This is for dataset 
 # where there is no information from one or both parent (e.g. the dad for calcaratus)
 # module load StdEnv/2023 perl/5.36.1
 # execute like this:
-# ./Gets_matonly_positions_from_vcf_file_nopat.pl vcf 21111111111111111111000000000000000 matout patout
+# ./Gets_matonly_positions_from_vcf_file_homoz_daughters_and_sons.pl vcf 21111111111111111111000000000000000 matout patout
 
-# epitrop RADseq: 111111111110000000000
-# calcaratus RADseq: 11111111111111111111000000000000000
-# mel RADseq 11111111110000000000
-# allofraseri WGS data 0011001110
+# epitrop RADseq: 111111111120000000002 (10 daughters; 9 sons; exclude parents)
+# ./Gets_matpat_positions_from_vcf_file_homoz_daughters_and_sons.pl all_combined.g.vcf.gz_genotyped.vcf.gz 111111111120000000002 epi_mat_allchrs_allsonshomoz_atleastfivedaughterssheteroz.out epi_pat_allchrs_alldaughtersshomoz_atleastfivesonssheteroz.out
+
+# calcaratus RADseq: 21111111111111111111000000000000000 (19 daughters, 15 sons, exclude mom)
+# ./Gets_matpat_positions_from_vcf_file_homoz_daughters_and_sons.pl all_combined.g.vcf.gz_genotyped.vcf.gz 21111111111111111111000000000000000  cal_mat_allchrs_allsonshomoz_atleastfivedaughterssheteroz.out cal_pat_allchrs_alldaughtersshomoz_atleastfivesonssheteroz.out
+
+# mel RADseq 21111111112000000000
+# ./Gets_matpat_positions_from_vcf_file_homoz_daughters_and_sons.pl combined_Chr7:1-133565930.g.vcf.gz_Chr7:1-133565930_SNPs.vcf.gz 21111111112000000000  mel_mat_allchrs_allsonshomoz_atleastfivedaughterssheteroz_Chr7.out mel_pat_allchrs_alldaughtersshomoz_atleastfivesonssheteroz_Chr7.out
+
+# trop C659 RADseq 110000000022110000000011111111001111111
+# ./Gets_matpat_positions_from_vcf_file_homoz_daughters_and_sons.pl combined_Chr7.g.vcf.gz_Chr7_GenotypedSNPs.vcf.gz_filtered.vcf.gz_filtered_removed.vcf.gz 110000000022110000000011111111001111111  C659_mat_allchrs_allsonshomoz_atleastfivedaughterssheteroz_Chr7.out C659_pat_allchrs_alldaughtersshomoz_atleastfivesonssheteroz_Chr7.out
 
 # where 21111111111111111111000000000000000 is whether the individuals are the excluded(2), a daughter(1), or a son(0)
 # and matout and patout are the output files (with chromsoome name in them) 
@@ -161,6 +170,7 @@ while ( my $line = <DATAINPUT>) {
 close DATAINPUT;
 close OUTFILE;
 close OUTFILE2;
+
 ```
 
 
