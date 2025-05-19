@@ -4,8 +4,8 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib qw(~/perl_modules);
-use List::MoreUtils qw/ uniq /;
+# use lib qw(~/perl_modules);
+# use List::MoreUtils qw/ uniq /;
 
 # This script will run a simulation that explores how sex chromosome
 # genotypes change over generations of random mating
