@@ -34,7 +34,7 @@ unless (open(OUTFILE1, ">$outputfile1"))  {
 }
 print "Creating output file: $outputfile1\n";
 
-print OUTFILE1 "Generation WW WZ ZZ ZY WY W Z Y\n";
+print OUTFILE1 "Generation WW WZ ZZ ZY WY W Z Y SexRatio\n";
 
 
 my $population_size=6000; # use a number that is divisible by 2 and also by 3
@@ -199,7 +199,7 @@ for ($a = 0 ; $a <= $number_of_generations ; $a++ ) {
 		last;
 	}
 	else{
-		print OUTFILE1 $a," @genotype_countz @sex_chr_countz\n";
+		print OUTFILE1 $a," @genotype_countz @sex_chr_countz ($genotype_countz[0]+genotype_countz[1])/($genotype_countz[2]+genotype_countz[3]+genotype_countz[4])\n";
 	}
 	
 }
