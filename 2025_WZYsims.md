@@ -199,7 +199,7 @@ for ($a = 0 ; $a <= $number_of_generations ; $a++ ) {
 		last;
 	}
 	else{
-		print OUTFILE1 $a," @genotype_countz @sex_chr_countz ($genotype_countz[0]+genotype_countz[1])/($genotype_countz[2]+genotype_countz[3]+genotype_countz[4])\n";
+		print OUTFILE1 $a," @genotype_countz @sex_chr_countz ", ($genotype_countz[0]+$genotype_countz[1])/($genotype_countz[2]+$genotype_countz[3]+$genotype_countz[4]),"\n";
 	}
 	
 }
