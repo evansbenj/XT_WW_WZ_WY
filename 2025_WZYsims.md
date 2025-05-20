@@ -206,3 +206,105 @@ for ($a = 0 ; $a <= $number_of_generations ; $a++ ) {
 
 close OUTFILE1;
 ```
+
+# Plot it
+
+```R
+setwd("/Users/Shared/Previously Relocated Items/Security/projects/2021_XT_sex_linked_markers/WZY_sims")
+
+library (ggplot2)
+library(reshape2) # this facilitates the overlay plot
+
+
+ldf <- list() # creates a list
+listcsv <- dir(pattern = "*_sub.txt") # creates the list of all the csv files in the directory
+
+for (k in 1:length(listcsv)){
+  ldf[[k]] <- read.csv(listcsv[k], header=T, sep = ' ')
+  ldf[[k]]$Simulation <- k
+}
+str(ldf[[1]])
+
+# make it into a df
+my_df <- do.call(rbind.data.frame, ldf)
+
+
+
+# get rid of scientific notation
+options(scipen = 999)
+
+w <- ggplot(my_df, aes(x=Generation, y=W/12000, col = Simulation)) + 
+    #scale_color_manual(breaks = c("WW_minus_WZ", "WW_minus_WY", "WZ_minus_WY"), values=c("red", "blue", "gray")) +
+    geom_point(size=0.25) + #, alpha = 0.2) +
+    # geom_line()+
+    #geom_line(aes(colour = "red"), linetype = 1) +
+    scale_y_continuous(name="W frequency", limits=c(0,1)) +
+    # log transform y-axis
+    scale_x_continuous(name="Generation") + #, limits=c(0, 1000)) +
+    # get rid of gray background
+    theme_classic(base_size = 10) +
+    # get rid of legend
+    theme(axis.text.x=element_blank(),
+          axis.title.x=element_blank(),
+          legend.position = "none")  
+  
+
+ 
+
+ sr <- ggplot(my_df, aes(x=Generation, y=SexRatio, col = Simulation)) + 
+   #scale_color_manual(breaks = c("WW_minus_WZ", "WW_minus_WY", "WZ_minus_WY"), values=c("red", "blue", "gray")) +
+   geom_point(size=0.25) + #, alpha = 0.2) +
+   # geom_line()+
+   #geom_line(aes(colour = "red"), linetype = 1) +
+   scale_y_continuous(name="F/M Sex Ratio", limits=c(0.75,1.25)) +
+   # log transform y-axis
+   scale_x_continuous(name="Generation") + #, limits=c(0, 1000)) +
+   # get rid of gray background
+   theme_classic(base_size = 10) +
+   # get rid of legend
+   theme(legend.position = "none")  
+
+# C: get the legend
+C = ggplot(my_df, aes(x=Generation, y=SexRatio, col = Simulation)) + 
+  #scale_color_manual(breaks = c("WW_minus_WZ", "WW_minus_WY", "WZ_minus_WY"), values=c("red", "blue", "gray")) +
+  geom_point(size=0.25) + #, alpha = 0.2) +
+  # geom_line()+
+  #geom_line(aes(colour = "red"), linetype = 1) +
+  scale_y_continuous(name="F/M Sex Ratio", limits=c(0.75,1.25)) +
+  # log transform y-axis
+  scale_x_continuous(name="Generation") + #, limits=c(0, 1000)) +
+  # get rid of legend
+  theme(legend.background = element_blank(),
+        legend.box.background = element_blank(),
+        legend.key = element_blank()) +
+  # get rid of gray background
+  theme_classic() 
+  
+  
+
+
+library(gridExtra) 
+# http://stackoverflow.com/questions/12539348/ggplot-separate-legend-and-plot
+# use this trick to get the legend as a grob object
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  legend
+}
+
+#extract legend from C plot
+legend = g_legend(C)
+
+#arrange grob (the 2 plots)
+plots = arrangeGrob(w,sr) 
+
+# arrange the plots and the legend
+combined <- grid.arrange(plots, legend , ncol = 2, widths = c(3/4,1/4))
+
+# this doesn't work so save it through RStudio; 5 x 4 inches
+library(gridExtra)
+pdf("./2025_WZY_sims.pdf",w=6, h=4.0, version="1.4", bg="transparent")
+  combined
+dev.off()
+```
