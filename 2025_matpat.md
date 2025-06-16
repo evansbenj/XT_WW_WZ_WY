@@ -1,5 +1,10 @@
 # Making a matpat output from angsd
 
+Directory:
+```
+/home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/individual_gvcfs_by_species/2023_Mitros_trop/C659
+```
+
 MatPat using genotypes from parents. The first script is when we have data for both parents; the second one is for Xcal where we only have data for the mom.
 
 
