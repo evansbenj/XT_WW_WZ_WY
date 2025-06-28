@@ -35,7 +35,7 @@ grep '	Chr7	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Ch
 grep '	Chr8	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr8_hitz_only.paf
 ```
 
-Then I extracted the ones with a match length of at least 1000:
+Then I extracted the ones within Chr8 with a match length of at least 1000:
 ```
 awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf
 ```
@@ -46,7 +46,10 @@ awk '$9<20000000' XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.p
 awk '$9>20000000' XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_gt_20Mb.paf
 ```
 
-Here is a script to pull out angsd positions that are on mel contigs that minimap2 mapped to chr8:
+Here is a script to pull out angsd positions that are on mel contigs that minimap2 mapped to chr8 (or whatever). One of the input files is a list of chromosomes from the paf files above:
+```
+cut -f1 XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_gt_20Mb.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_gt_20Mb_contigs.txt
+```
 ```
 #!/usr/bin/env perl
 use strict;
