@@ -41,8 +41,9 @@ awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_me
 ```
 I also am going to extract the ones that match Chr7 above and below 20Mb:
 ```
-awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf
-grep '	Chr7	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr7_hitz_only.paf
+awk '$10>999' XT_to_germany_mel_alignments_Chr7_hitz_only.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.paf
+awk '$9<20000000' XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_lt_20Mb.paf
+awk '$9>20000000' XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_gt_20Mb.paf
 ```
 
 Here is a script to pull out angsd positions that are on mel contigs that minimap2 mapped to chr8:
