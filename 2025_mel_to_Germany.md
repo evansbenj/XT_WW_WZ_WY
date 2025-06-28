@@ -8,6 +8,26 @@ Working in this directory:
 ```
 # Figure out which contigs map to chr8 of XT
 To do this I mapped each of the Germany assembly contigs to the XT genome using minimap2
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts/2025_minimap_XT_to_mel_output_paf.sh
+```
+```
+#!/bin/sh
+#SBATCH --job-name=minmap
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=24:00:00
+#SBATCH --mem=64gb
+#SBATCH --output=minmap.%J.out
+#SBATCH --error=minmap.%J.err
+#SBATCH --account=def-ben
+
+# minimap2 -x asm10 -a --secondary=no -t8 reference.fasta query.fasta >alignments.sam
+module load StdEnv/2020 minimap2/2.24
+
+#/home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/bin/minimap2/
+minimap2 -x asm10 --secondary=no -t8 /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome.fasta /home/ben/projects/rrg-ben/ben/2020_mellotrop_RNA/Germany_genome/Super_NovaXeno_mega_gt200.fasta > XT_to_germany_mel_alignments.paf
+```
 
 Then I extracted the ones that hit Chr7 and Chr8:
 ```
@@ -18,6 +38,11 @@ grep '	Chr8	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Ch
 Then I extracted the ones with a match length of at least 1000:
 ```
 awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf
+```
+I also am going to extract the ones that match Chr7 above and below 20Mb:
+```
+awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf
+grep '	Chr7	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr7_hitz_only.paf
 ```
 
 Here is a script to pull out angsd positions that are on mel contigs that minimap2 mapped to chr8:
