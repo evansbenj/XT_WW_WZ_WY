@@ -6,6 +6,18 @@ Working in this directory:
 ```
 /home/ben/projects/rrg-ben/ben/2022_GBS_lotsofxennies/individual_gvcfs_by_species/2017_mello_GBS/bamz_mapped_to_germany_mello
 ```
+# Figure out which contigs map to chr8 of XT
+To do this I mapped each of the Germany assembly contigs to the XT genome using minimap2
+
+Then I extracted the ones that hit Chr8:
+```
+grep '	Chr8	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr8_hitz_only.paf
+```
+
+Then I extracted the ones with a match length of at least 1000:
+```
+awk '$10>999' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf
+```
 
 Here is a script to pull out angsd positions that are on mel contigs that minimap2 mapped to chr8:
 ```
