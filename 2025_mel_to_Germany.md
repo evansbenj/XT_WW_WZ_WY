@@ -9,8 +9,9 @@ Working in this directory:
 # Figure out which contigs map to chr8 of XT
 To do this I mapped each of the Germany assembly contigs to the XT genome using minimap2
 
-Then I extracted the ones that hit Chr8:
+Then I extracted the ones that hit Chr7 and Chr8:
 ```
+grep '	Chr7	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr7_hitz_only.paf
 grep '	Chr8	' XT_to_germany_mel_alignments.paf > XT_to_germany_mel_alignments_Chr8_hitz_only.paf
 ```
 
