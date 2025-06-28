@@ -43,8 +43,8 @@ awk '$10>999' XT_to_germany_mel_alignments_Chr7_hitz_only.paf > XT_to_germany_me
 
 Then I required a map quality of at least 60
 ```
-awk '$12>59' XT_to_germany_mel_alignments_Chr8_hitz_only.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000_mq60.paf
-awk '$12>59' XT_to_germany_mel_alignments_Chr7_hitz_only.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_mq60.paf
+awk '$12>59' XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000.paf > XT_to_germany_mel_alignments_Chr8_hitz_only_matching_gt_1000_mq60.paf
+awk '$12>59' XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000.paf > XT_to_germany_mel_alignments_Chr7_hitz_only_matching_gt_1000_mq60.paf
 ```
 
 I also am going to extract the ones that match Chr7 above and below 20Mb:
