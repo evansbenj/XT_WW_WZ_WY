@@ -23,3 +23,8 @@ Get average depth:
 ```
 awk '{ sum_values += $3 } END { print sum_values/NR }' male_BJE4181_sorted.bam_rg.bam_Chr7.depth
 ```
+
+Now get depth of the 76 positions with paternal heterozygosity:
+```
+egrep '(str1|str2|str3)'
+```
