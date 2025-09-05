@@ -72,6 +72,15 @@ seqkit stats ${2} > ${1}_stats.txt
 seqkit stats ${3} > ${1}_stats.txt
 samtools stats ${4} > ${1}_stats.txt
 ```
+# Example commandlines
+from this directory:
+```
+/home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/ben_scripts
+```
+
+```
+sbatch 2025_sample_stats.sh XT7 /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim.R1.fq.gz /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_no_adapt_trim_R1.fq.gz /home/ben/projects/rrg-ben/ben/2020_XT_WW_WZ_WY/raw_data/XT7_WY_trim_noadapters/XT7_WY_no_adapt__sorted.bam
+```
 
 
 # XT genome with concatenated scaffolds:
