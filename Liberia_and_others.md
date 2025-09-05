@@ -48,6 +48,32 @@ mello_GermSeq_sorted.bam_rg_rh	BJE3652	X. mellotropicalis
 calcaratus_3D6.1D5980.1953	3D6.1D5980.1953	X. calcaratus
 ```
 
+# Getting stats for each sample
+```
+#!/bin/sh
+#SBATCH --job-name=samplestats
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=6:00:00
+#SBATCH --mem=2gb
+#SBATCH --output=samplestats.%J.out
+#SBATCH --error=samplestats.%J.err
+#SBATCH --account=rrg-ben
+
+# sbatch 2025_sample_stats.sh sample_name untrimmed trimmed bam
+
+# ${1} is the sample name
+# ${2} is untrimmed fastq file
+# ${3} is trimmed fastq file
+# ${4} is bam file
+
+module load StdEnv/2023 seqkit/2.5.1 samtools/1.20 gcc/12.3
+seqkit stats ${2} > ${1}_stats.txt
+seqkit stats ${3} > ${1}_stats.txt
+samtools stats ${4} > ${1}_stats.txt
+```
+
+
 # XT genome with concatenated scaffolds:
 ```
 /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta
