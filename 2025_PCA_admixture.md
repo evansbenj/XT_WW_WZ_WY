@@ -24,6 +24,15 @@ vcftools --gzvcf trop_only_allchrs_concat.vcf.gz --max-missing-count 0 --minQ 30
 vcftools --vcf trop_only_allchrs_concat_maxmissingcount_0_genoqual30.recode.vcf --out trop_only_allchrs_concat_maxmissingcount_0_genoqual30_thin_5000.vcf --thin 5000 --recode
 ```
 
+For the PCA of the XT data mapped to the XLsubgenomeL, I also thinned to include only every 500bp (on info):
+directory:
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/XT_subgenomeL
+```
+```
+vcftools --gzvcf XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz --minQ 30 --out XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_thin_5000.vcf --thin 5000 --recode
+```
+
 # Admixture analysis
 
 on info I concatenated  chrs:
