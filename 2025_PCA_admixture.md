@@ -33,6 +33,11 @@ directory:
 vcftools --gzvcf XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz --minQ 30 --out XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2_thin_5000.vcf --thin 5000 --recode
 ```
 
+for subgenome L the same file used for PCA is this one:
+```
+/home/ben/2025_XL_v10_Lsubgenome_ref/individual_vcfz/troponly_forreal_XT_Lsubgenome_allchrsgenotyped_filtered_removed_nomissing_2.vcf.gz_thin_5000.vcf.recode.vcf.gz
+```
+
 # Admixture analysis
 
 on info I concatenated  chrs:
