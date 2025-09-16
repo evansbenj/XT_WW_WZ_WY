@@ -61,6 +61,55 @@ do
 /usr/local/admixture/admixture --cv --seed $((1 + $RANDOM % 1000)) ../trop_only_allchrs_concat_maxmissingcount_0_genoqual30_thin_5000.bed $i > log${i}.out
 done
 ```
+# Rename files
+I used a perl script to rename files for Admixture plotter:
+```perl
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+# This script will rename directories for admixtureplotter
+
+# Execute it in a directory that has 2 folders in it called
+# admix1...admix20
+
+
+my $y= 7; # this is the number of ancestral populations
+my $x;
+my $z;
+my $command;
+
+
+#my @directorynamez = ("admix1/","admix2/","admix3/","admix4/","admix5/","admix6/",
+#						"admix7/","admix8/","admix9/","admix10/",
+#						"admix11/","admix12/","admix13/","admix14/","admix15/","admix16/",
+#						"admix17/","admix18/","admix19/","admix20/",);
+
+# make directories
+for ($x = 2 ; $x <= $y ; $x++ ) {
+	$command = "mkdir ".$x;
+	system($command);
+	$command = "mkdir ".$x."/Logs";
+	system($command);
+	for ($z = 1 ; $z <= 20 ; $z++ ) {
+		$command = "mkdir ".$x."/".$z;
+		system($command);
+	}	
+}
+
+
+for ($z = 1 ; $z <= 20 ; $z++ ) {
+	for ($x = 2 ; $x <= $y ; $x++ ) {
+		$command = "mv admix".$z."/*".$x.".P ".$x."/".$z."/.";
+		system($command);
+		$command = "mv admix".$z."/*".$x.".Q ".$x."/".$z."/.";
+		system($command);
+		$command = "mv admix".$z."/log".$x.".out ".$x."/Logs/".$x."_".$z.".log";
+		system($command);
+	}	
+}
+```
+
 
 # AdmixturePlotter (https://github.com/TCLamnidis/AdmixturePlotter)
 
