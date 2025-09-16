@@ -116,6 +116,7 @@ You need to download the `.bed` file that was used to run admixture and put it i
 
 Then run this command (after copying these scripts and files to the same directory:
 ```
+poporder.txt
 allsamples.ind
 colorlist.txt
 CompileData.sh
@@ -125,5 +126,5 @@ CompileData.sh
 ./CompileData.sh
 ```
 ```
-./AdmixturePlotter.R -i ../Plotting/compound.labelled.QperK.txt -p ../poporder.txt
+./AdmixturePlotter.R -i ../Plotting/compound.labelled.QperK.txt -p ./poporder.txt -c ./colorlist.txt
 ```
