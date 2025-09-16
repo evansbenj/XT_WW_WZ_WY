@@ -112,7 +112,18 @@ for ($z = 1 ; $z <= 20 ; $z++ ) {
 
 
 # AdmixturePlotter (https://github.com/TCLamnidis/AdmixturePlotter)
+You need to download the `.bed` file that was used to run admixture and put it in the same directory as the renamed output files
 
+Then run this command (after copying these scripts and files to the same directory:
+```
+allsamples.ind
+colorlist.txt
+CompileData.sh
+```
+
+```
+./CompileData.sh
+```
 ```
 ./AdmixturePlotter.R -i ../Plotting/compound.labelled.QperK.txt -p ../poporder.txt
 ```
