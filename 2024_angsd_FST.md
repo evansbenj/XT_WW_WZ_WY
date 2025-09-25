@@ -18,10 +18,74 @@ https://github.com/ANGSD/angsd/issues/413
 #SBATCH --job-name=angsd_fst_step1
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=6:00:00
+#SBATCH --time=2:00:00
 #SBATCH --mem=32gb
 #SBATCH --output=angsd_fst.%J.out
 #SBATCH --error=angsd_fst.%J.err
+#SBATCH --account=def-ben
+
+# you need a text file called bam.txt that has the name of the bam file in it
+# do this for each bam file in a pairwise comparison
+# sbatch ../ben_scripts/2024_angsd_fst_step1.sh ref bamfilename bedfilename
+
+# /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta
+# /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/XL_v10.1_concatenatedscaffolds.fa
+
+#module load StdEnv/2020 angsd/0.939
+module load StdEnv/2023 angsd/0.940
+
+# angsd -bam ${1}.txt -doMaf 0 -doCounts 1 -setMinDepthInd 5 -setMaxDepth 100 -minMapQ 20 -rf /home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups/genome_wo_Chr7SL.bed -anc /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta -out ${1}_ -dosaf 1 -gl 1
+
+# with bed file
+# angsd -b ${2}.txt -doMaf 0 -doCounts 1 -setMinDepthInd 5 -setMaxDepth 100 -minMapQ 20 -rf ${3} -anc ${1} -out ${2}_ -dosaf 1 -gl 1
+
+# without bed file
+angsd -b ${2}.txt -doMaf 0 -doCounts 1 -setMinDepthInd 5 -setMaxDepth 100 -minMapQ 20 -anc ${1} -out ${2}_ -dosaf 1 -gl 1
+```
+# Genome-wide Fst Step2:
+```
+#!/bin/sh
+#SBATCH --job-name=angsd_fst_step2
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=6:00:00
+#SBATCH --mem=256gb
+#SBATCH --output=angsd_fst_step2.%J.out
+#SBATCH --error=angsd_fst_step2.%J.err
+#SBATCH --account=def-ben
+
+# you need a text file called bam.txt that has the name of the bam file in it
+# do this for each bam file in a pairwise comparison
+# sbatch ../ben_scripts/2024_angsd_fst_step1.sh bamfilename
+
+#module load StdEnv/2020 angsd/0.939
+module load StdEnv/2023 angsd/0.940
+
+z_files="./*.saf.idx"
+echo $z_files
+for i in $z_files; do
+  #echo "$i"
+    for j in $z_files; do
+	#echo "$j"
+	if [ "$i" \> "$j" ]; then
+
+	 echo "$i" "$j"
+        realSFS $i $j > ${i:2:-9}_${j:2:-8}.mml
+      fi
+  done
+done
+```
+
+# Genomewide Fst Step3:
+```
+#!/bin/sh
+#SBATCH --job-name=angsd_fst_step3
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=6:00:00
+#SBATCH --mem=256gb
+#SBATCH --output=angsd_fst_step3.%J.out
+#SBATCH --error=angsd_fst_step3.%J.err
 #SBATCH --account=def-ben
 
 # you need a text file called bam.txt that has the name of the bam file in it
@@ -30,31 +94,28 @@ https://github.com/ANGSD/angsd/issues/413
 
 module load StdEnv/2020 angsd/0.939
 
-# angsd -bam ${1}.txt -doMaf 0 -doCounts 1 -setMinDepthInd 5 -setMaxDepth 100 -minMapQ 20 -rf /home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups/genome_wo_Chr7SL.bed -anc /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta -out ${1}_ -dosaf 1 -gl 1
-
-angsd -b ${1}.txt -doMaf 0 -doCounts 1 -setMinDepthInd 5 -setMaxDepth 100 -minMapQ 20 -rf /home/ben/projects/rrg-ben/ben/2022_Liberia/20_bams_XT_lib_mel_cal_readgroups/genome_wo_Chr7SL.bed -anc /home/ben/projects/rrg-ben/ben/2020_XT_v10_refgenome/XENTR_10.0_genome_scafconcat_goodnamez.fasta -out ${1}b_ -dosaf 1 -gl 1
+z_files="*.saf.idx"
+for i in $z_files; do
+  for j in $z_files; do
+     # if [ "$i" \> "$j" ]; then
+      filename="${i}_${j}.ml"
+      echo ${filename}
+        realSFS $i $j >${filename}
+     # fi
+  done
+done
 ```
-# Calculate the 2dsfs prior 
-From: https://www.popgen.dk/angsd/index.php/Fst
-```
-../misc/realSFS pop1.saf.idx pop2.saf.idx >pop1.pop2.ml
-```
-
-# prepare the fst for easy window analysis etc
-```
-../misc/realSFS fst index pop1.saf.idx pop2.saf.idx -sfs pop1.pop2.ml -fstout here
-```
-...or on graham:
+# Genomewide Fst step4:
 ```
 #!/bin/sh
-#SBATCH --job-name=angsd_fst_step2
+#SBATCH --job-name=angsd_fst_step4
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=1:00:00
 #SBATCH --mem=32gb
-#SBATCH --output=angsd_fst_step2.%J.out
-#SBATCH --error=angsd_fst_step2.%J.err
-#SBATCH --account=rrg-ben
+#SBATCH --output=angsd_fst_step4.%J.out
+#SBATCH --error=angsd_fst_step4.%J.err
+#SBATCH --account=def-ben
 
 # you need a text file called bam.txt that has the name of the bam file in it
 # do this for each bam file in a pairwise comparison
@@ -62,11 +123,25 @@ From: https://www.popgen.dk/angsd/index.php/Fst
 
 module load StdEnv/2023 angsd/0.940
 
-#realSFS temp1.saf.idx temp2.saf.idx > temp1_temp2.ml
-#realSFS fst index temp1.saf.idx temp2.saf.idx -sfs temp1_temp2.ml -fstout pop1_pop2_fsst
-realSFS fst index ${1} ${2} -sfs ${3} -fstout ${1}_${2}_fsst
-realSFS fst stats ${1}_${2}_fsst.fst.idx -bootstrap 1000 > ${1}_${2}_boot.txt
+#realSFS ${1} ${2} > ${1}_${2}.ml
+
+
+z_files="*.saf.idx"
+for i in $z_files; do
+  for j in $z_files; do
+     # if [ "$i" \> "$j" ]; then
+        #echo "$i" "$j"
+        #realSFS $i $j > $i_$j.ml
+	realSFS fst index ${i} ${j} -sfs ${i}_${j}.ml -fstout ${i}_${j}_fsst
+	realSFS fst stats ${i}_${j}_fsst.fst.idx -bootstrap 1000 > ${i}_${j}_boot.txt
+    # fi
+  done
+done
+
+#realSFS fst index ${1} ${2} -sfs ${1}_${2}.ml -fstout ${1}_${2}_fsst
+#realSFS fst stats ${1}_${2}_fsst.fst.idx -bootstrap 1000 > ${1}_${2}_boot.txt
 ```
+
 # Get the global estimate
 ```
 ../misc/realSFS fst stats here.fst.idx
