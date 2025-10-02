@@ -546,3 +546,426 @@ print "The 95\%CI of the weighted BAB is ",
 sprintf("%.0f",($jack_BAB-1.96*$sterr_BAB))," - ",sprintf("%.0f",($jack_BAB+1.96*$sterr_BAB)),"\n";
 
 ```
+
+# Analysis 2 windowz
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+#use lib qw(~/perl_modules);
+#use List::MoreUtils qw/ uniq /;
+
+# Prepare input file
+# module load tabix
+# bgzip -c file.vcf > file.vcf.gz
+# tabix -p vcf file.vcf.gz
+# Now use vcftools to make a tab delimited file:
+# module load StdEnv/2020 vcftools/0.1.16
+# zcat file.vcf.gz | vcf-to-tab > out.tab
+
+# on computecanada:
+# module load perl/5.36.1
+
+# actually don't need to do these:
+# module load gcc/9.3.0
+# cpan
+# install List::MoreUtils
+
+#  This program reads in a tab delimited genotype file generated
+#  by vcftools (vcf2tab) and searches for sites that have an ABBA and BABA site pattern
+# where the taxa are in this order: trop, liberia, mello1, mello2
+# the genotypes of mello1 and mello2 is based on a heterozygous call when mello data are mapped to trop
+
+# if trop is more closely related to mello1 than to liberia, we expect more BABA sites than ABBA
+# if liberia is more closely related to mello1 than to trop, we expect more ABBA sites than BABA
+# if trop and liberia are more closely related to each other than to mello1, then we expect and equal frequency of ABBA and BABA
+
+
+# to execute type Liberia_ABBA_BABA.pl inputfile.tab a_x_y_z output.out 
+# where a, x, y, and z are the columns that have the trop, liberia, calcaratus, and mellotrop genotypes respectively.
+# these numbers shoudl start at 1 for the first sample in the file, etc.
+
+
+# EUA335 11
+# AMNH17271 12
+# lib: 18
+# cal: 19
+# mel: 20
+
+
+# ./2025_Liberia_ABBA_BABA_windowz.pl all.tab 11_12_19_20 NG5_SL1_cal_mel
+
+# ./2025_Liberia_ABBA_BABA_windowz.pl all.tab 11_18_19_20 NG5_LB_cal_mel
+
+# ./2025_Liberia_ABBA_BABA_windowz.pl all.tab 12_18_19_20 SL1_LB_cal_mel
+
+# There are 4 site patterns: 
+#         AB'BB and AB'AB (this is with the first allotet as the focal)
+# 	      and ABB'B and AAB'B (this is with the second allotet as the focal)
+#		  the first A is the first diploid genotype; the last B is the second diploid genotype
+# 		  in these patterns, B' is a heterozygous genotype; A and B are homozygous genotypes
+
+
+my $inputfile = $ARGV[0];
+my $input2 = $ARGV[1];
+my $outputfile1 = $ARGV[2];
+
+
+unless (open DATAINPUT, $inputfile) {
+	print "Can not find the input file.\n";
+	exit;
+}
+
+unless (open(OUTFILE1, ">$outputfile1"))  {
+	print "I can\'t write to $outputfile1\n";
+	exit;
+}
+print "Creating output file: $outputfile1\n";
+
+unless (open(OUTFILE2, ">".$outputfile1."_windowz"))  {
+	print "I can\'t write to ".$outputfile1."_windowz\n";
+	exit;
+}
+print "Creating output file: ".$outputfile1."_windowz\n";
+
+
+my @samples = split("_",$ARGV[1]);
+my @temp;
+my @cal;
+my @mello;
+my @trop;
+my @liberia;
+my @all_of_them;
+# AB'BB and AB'AB
+my $ABpBB=0;
+my $ABpAB=0;
+my $ABpBB_window=0;
+my $ABpAB_window=0;
+# ABB'B and AAB'B
+my $ABBpB=0;
+my $AABpB=0;
+my $ABBpB_window=0;
+my $AABpB_window=0;
+my @check;
+my $current_chr="Chr10"; # all.tab starts with Chr10
+my $previous_chr="Chr10";
+my $window=5000000; # use 5Mb windows
+my $switch=0;
+
+
+
+while ( my $line = <DATAINPUT>) {
+	chomp($line);
+	@temp=split(/\t/,$line);
+	if($temp[0] ne '#CHROM'){
+		$current_chr=$temp[0];
+		@cal = split("/",$temp[$samples[2]+2]);
+		@mello = split("/",$temp[$samples[3]+2]);
+		if(
+		   (($cal[0] ne $cal[1])||($mello[0] ne $mello[1]))&&
+		   (($cal[0] eq $cal[1])||($mello[0] eq $mello[1]))
+		   ){ 
+			# either cal or mel genotype is heteroz, but not both
+			@trop = split("/",$temp[$samples[0]+2]);
+			@liberia = split("/",$temp[$samples[1]+2]);
+			# first make sure both diploids are homozygous
+			if(($trop[0] eq $trop[1])&&($liberia[0] eq $liberia[1])&&($trop[0] ne $liberia[0])){
+				# now check if there are more than one variant
+				# both trop samples are homozygous for different variants
+				@all_of_them = (@trop, @liberia, @cal, @mello);
+				@check = grep /\*/, @all_of_them;
+				# print "hello $#check\n";
+				if((uniq(@all_of_them) eq 2)&&($#check == -1)){
+				# there are only two variants	
+					# count sites
+					# first count AB'BB and AB'AB  - these have the first allotet heteroz
+					if($cal[0] ne $cal[1]){
+						if($mello[0] eq $liberia[0]){
+							# the second allotet homozygous genotype is the same as the second diploid
+							$ABpBB+=1;
+							$ABpBB_window+=1;
+							print "ABpBB ",@trop," ",@cal," ",@mello," ",@liberia,"\n";
+						}
+						elsif($mello[0] eq $trop[0]){
+							# the second allotet homozygous genotype is the same as the first diploid
+							$ABpAB+=1;
+							$ABpAB_window+=1;
+							print "ABpAB ",@trop," ",@cal," ",@mello," ",@liberia,"\n";
+						}	
+					}
+					# now count ABB'B and AAB'B  - these have the second allotet heteroz
+					elsif($mello[0] ne $mello[1]){
+						if($cal[0] eq $liberia[0]){
+							# the first allotet homozygous genotype is the same as the second diploid
+							$ABBpB+=1;
+							$ABBpB_window+=1;
+							print "ABBpB ",@trop," ",@cal," ",@mello," ",@liberia,"\n";
+						}
+						elsif($cal[0] eq $trop[0]){
+							# the first allotet homozygous genotype is the same as the first diploid
+							$AABpB+=1;
+							$AABpB_window+=1;
+							print "AABpB ",@trop," ",@cal," ",@mello," ",@liberia,"\n";
+						}	
+					}
+					if(($temp[1] > $window)||($current_chr ne $previous_chr)){
+						print OUTFILE2 $previous_chr,"\t",$window,"\t",$ABpBB_window,"\t",$ABpAB_window,
+						"\t",$ABBpB_window,"\t",$AABpB_window,"\n";
+						print $previous_chr,"\t",$window,"\t","\t",$ABpBB_window,"\t",$ABpAB_window,
+						"\t",$ABBpB_window,"\t",$AABpB_window,"\n";
+						if($current_chr ne $previous_chr){
+							$window = 5000000;
+						}
+						else{
+							$window += 5000000;
+						}	
+						$ABpBB_window=0;
+						$ABpAB_window=0;
+						$ABBpB_window=0;
+						$AABpB_window=0;
+						$previous_chr = $current_chr;
+					}	
+				}				
+			}
+		}
+	} # end of check to see if we are at the first line	
+	else{
+		if($switch == 0){
+			print OUTFILE $temp[$samples[0]+2],"\t",$temp[$samples[1]+2],"\t",$temp[$samples[2]+2],"\t",$temp[$samples[3]+2],"\n";
+			print $temp[$samples[0]+2],"\t",$temp[$samples[1]+2],"\t",$temp[$samples[2]+2],"\t",$temp[$samples[3]+2],"\n";
+			print OUTFILE2 "Chr\twindow\tABpBB\tABpAB\tABBpB\tAABpB\n";
+			}
+			$switch=1;
+	}
+} # end while
+
+# print the last line
+print OUTFILE2 $previous_chr,"\t",$window,"\t",$ABpBB_window,"\t",$ABpAB_window,
+"\t",$ABBpB_window,"\t",$AABpB_window,"\n";
+print $previous_chr,"\t",$window,"\t",$ABpBB_window,"\t",$ABpAB_window,
+"\t",$ABBpB_window,"\t",$AABpB_window,"\n";
+
+
+print "Number of AB'BB sites: ",$ABpBB,"\n";
+print "Number of AB'AB sites: ",$ABpAB,"\n";
+print "Number of ABB'B sites: ",$ABBpB,"\n";
+print "Number of AAB'B sites: ",$AABpB,"\n";
+
+print OUTFILE1 "Number of AB'BB sites: ",$ABpBB,"\n";
+print OUTFILE1 "Number of AB'AB sites: ",$ABpAB,"\n";
+print OUTFILE1 "Number of ABB'B sites: ",$ABBpB,"\n";
+print OUTFILE1 "Number of AAB'B sites: ",$AABpB,"\n";
+
+close OUTFILE1;
+
+
+sub uniq {
+  my %seen;
+  return grep { !$seen{$_}++ } @_;
+}
+
+
+```
+
+# Analysis 2 block jacknife
+```
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Statistics::Descriptive;
+
+# This program reads in the output of a script for Libera ABB and BAB sites
+# and calculates the standard error of the weighted mean value of with weightings based 
+# on the sum of the number of ABB and BAB sites in each window.
+
+# From SI of Green et al. 2010 Neanderthal genome paper:
+# "By computing the variance of the statistic over the entire genome M times leaving each
+# block of the genome in turn, and then multiplying by M and taking the square root, we can obtain an
+# approximately normally distributed standard error using the theory of the jackknife. "
+
+# I can do this for ABB and BAB sites
+
+my $inputfile = $ARGV[0];
+
+unless (open DATAINPUT, $inputfile) {
+	print "Can not find the input file.\n";
+	exit;
+}
+
+my @temp; 
+my @ABpBB=();
+my @ABpAB=();
+my @ABBpB=();
+my @AABpB=();
+my $counter=0;
+my $counter2=0;
+my $ABpBB=0;
+my $ABpAB=0;
+my $ABBpB=0;
+my $AABpB=0;
+my $jack_ABpBB;
+my $jack_ABpAB;
+my $jack_ABBpB;
+my $jack_AABpB;
+my $jack_ABpBB_boot;
+my $jack_ABpAB_boot;
+my $jack_ABBpB_boot;
+my $jack_AABpB_boot;
+my @jackABpBBarray;
+my @jackABpABarray;
+my @jackABBpBarray;
+my @jackAABpBarray;
+my @jack_ABpBB;
+my @jack_ABpAB;
+my @jack_ABBpB;
+my @jack_AABpB;
+my $y;
+my $x;
+
+
+while ( my $line = <DATAINPUT>) {
+	@temp=split('\t',$line);
+	if($temp[0] ne 'Chr'){
+		if(($temp[2] !~ /nan/)&&($temp[3] !~ /nan/)){
+			push(@ABpBB,$temp[2]);
+			push(@ABpAB,$temp[3]);
+			push(@ABBpB,$temp[4]);
+			push(@AABpB,$temp[5]);
+			$counter+=1;
+		}
+	}	
+}		
+
+close DATAINPUT;
+
+# check that array lengths are ok
+if(($#ABpBB ne $#ABpAB)||($#ABBpB ne $#AABpB)||($#ABpBB ne ($counter-1))){
+	print "Problem!\n";
+}
+
+for ($y = 0 ; $y < $counter; $y++ ) {
+	$jack_ABpBB+=$ABpBB[$y]; # this is the global stat
+	$jack_ABpAB+=$ABpAB[$y]; # this is the global stat
+	$jack_ABBpB+=$ABBpB[$y]; # this is the global stat
+	$jack_AABpB+=$AABpB[$y]; # this is the global stat
+	for ($x = 0 ; $x < $counter; $x++ ) {
+		# leave out one row for each jackknfe replicates
+		if($y != $x){
+			# load arrays with values for each window for later variance calculations
+			$jack_ABpBB_boot += $ABpBB[$x];
+			$jack_ABpAB_boot += $ABpAB[$x];
+			$jack_ABBpB_boot += $ABBpB[$x];
+			$jack_AABpB_boot += $AABpB[$x];
+			# keep track of the number of windows
+			$counter2+=1;			
+		}
+	}
+	# store the stats from each bootstrap replicate
+	push(@jackABpBBarray,$jack_ABpBB_boot);
+	push(@jackABpABarray,$jack_ABpAB_boot);
+	push(@jackABBpBarray,$jack_ABBpB_boot);
+	push(@jackAABpBarray,$jack_AABpB_boot);
+	# reset variables
+	$jack_ABpBB_boot=0;
+	$jack_ABpAB_boot=0;
+	$jack_ABBpB_boot=0;
+	$jack_AABpB_boot=0;
+	$counter2=0;
+}
+
+
+# check that array lengths are ok
+if($#jackABpBBarray ne ($counter-1)){
+	print "Problem2!\n";
+}
+
+# now calculate the variance of the jackknife replicates
+my $jack_ABpBBmean=0;
+my $jack_ABpABmean=0;
+my $jack_ABBpBmean=0;
+my $jack_AABpBmean=0;
+
+# first we need the mean
+for ($x = 0 ; $x < $counter; $x++ ) {
+	$jack_ABpBBmean+=$jackABpBBarray[$x];
+	$jack_ABpABmean+=$jackABpABarray[$x];
+	$jack_ABBpBmean+=$jackABBpBarray[$x];
+	$jack_AABpBmean+=$jackAABpBarray[$x];
+}
+$jack_ABpBBmean=$jack_ABpBBmean/($counter);
+$jack_ABpABmean=$jack_ABpABmean/($counter);
+$jack_ABBpBmean=$jack_ABBpBmean/($counter);
+$jack_AABpBmean=$jack_AABpBmean/($counter);
+
+# now get the variance
+my $jack_ABpBBvar=0;
+my $jack_ABpABvar=0;
+my $jack_ABBpBvar=0;
+my $jack_AABpBvar=0;
+
+for ($x = 0 ; $x < $counter; $x++ ) {
+	$jack_ABpBBvar+=($jack_ABpBBmean-$jackABpBBarray[$x])**2;
+	$jack_ABpABvar+=($jack_ABpABmean-$jackABpABarray[$x])**2;
+	$jack_ABBpBvar+=($jack_ABBpBmean-$jackABBpBarray[$x])**2;
+	$jack_AABpBvar+=($jack_AABpBmean-$jackAABpBarray[$x])**2;
+}
+# for the sample variance, divide by (n-1)
+$jack_ABpBBvar=$jack_ABpBBvar/($counter-1);
+$jack_ABpABvar=$jack_ABpABvar/($counter-1);
+$jack_ABBpBvar=$jack_ABBpBvar/($counter-1);
+$jack_AABpBvar=$jack_AABpBvar/($counter-1);
+
+# get the standard error
+my $sterr_ABpBB = sqrt($counter*$jack_ABpBBvar);
+my $sterr_ABpAB = sqrt($counter*$jack_ABpABvar);
+my $sterr_ABBpB = sqrt($counter*$jack_ABBpBvar);
+my $sterr_AABpB = sqrt($counter*$jack_AABpBvar);
+
+# print the CIs
+print "The number of ABpBB sites is ",sprintf("%.0f",$jack_ABpBB)," (",sprintf("%.0f",($jack_ABpBB-1.96*$sterr_ABpBB))," - ",sprintf("%.0f",($jack_ABpBB+1.96*$sterr_ABpBB)),")\n";
+print "The number of ABpAB sites is ",sprintf("%.0f",$jack_ABpAB)," (",sprintf("%.0f",($jack_ABpAB-1.96*$sterr_ABpAB))," - ",sprintf("%.0f",($jack_ABpAB+1.96*$sterr_ABpAB)),")\n";
+print "The number of ABBpB sites is ",sprintf("%.0f",$jack_ABBpB)," (",sprintf("%.0f",($jack_ABBpB-1.96*$sterr_ABBpB))," - ",sprintf("%.0f",($jack_ABBpB+1.96*$sterr_ABBpB)),")\n";
+print "The number of AABpB sites is ",sprintf("%.0f",$jack_AABpB)," (",sprintf("%.0f",($jack_AABpB-1.96*$sterr_AABpB))," - ",sprintf("%.0f",($jack_AABpB+1.96*$sterr_AABpB)),")\n";
+
+print "The standard error of ABpBB is ",sprintf("%.0f",$sterr_ABpBB),"\n";
+print "The standard error of ABpAB is ",sprintf("%.0f",$sterr_ABpAB),"\n";
+print "The standard error of ABBpB is ",sprintf("%.0f",$sterr_ABBpB),"\n";
+print "The standard error of AABpB is ",sprintf("%.0f",$sterr_AABpB),"\n";
+
+print "The 95\%CI of the weighted ABpBB is ",
+sprintf("%.0f",($jack_ABpBB-1.96*$sterr_ABpBB))," - ",sprintf("%.0f",($jack_ABpBB+1.96*$sterr_ABpBB)),"\n";
+print "The 95\%CI of the weighted ABpAB is ",
+sprintf("%.0f",($jack_ABpAB-1.96*$sterr_ABpAB))," - ",sprintf("%.0f",($jack_ABpAB+1.96*$sterr_ABpAB)),"\n";
+print "The 95\%CI of the weighted ABBpB is ",
+sprintf("%.0f",($jack_ABBpB-1.96*$sterr_ABBpB))," - ",sprintf("%.0f",($jack_ABBpB+1.96*$sterr_ABBpB)),"\n";
+print "The 95\%CI of the weighted AABpB is ",
+sprintf("%.0f",($jack_AABpB-1.96*$sterr_AABpB))," - ",sprintf("%.0f",($jack_AABpB+1.96*$sterr_AABpB)),"\n";
+
+# Now calculate the 95% CI for the difference between the means
+
+# first calculate the difference
+my $difference_ABpBB_ABpAB = $jack_ABpBB - $jack_ABpAB;
+print "The diff between the means is ",sprintf("%.0f",$difference_ABpBB_ABpAB),"\n";
+
+my $difference_ABBpB_AABpB = $jack_ABBpB - $jack_AABpB;
+print "The diff between the means is ",sprintf("%.0f",$difference_ABBpB_AABpB),"\n";
+
+
+# or this could be obtained by converting the sterr to stdev:
+# SD = SE * √n where n is the sample size
+
+# now get sterr of the diff
+my $sterr_of_the_difference_ABpBB_ABpAB= sqrt(($sterr_ABpBB)**2+($sterr_ABpAB)**2);
+print "Sterr of diff_ABpBB_ABpAB ",sprintf("%.0f",($sterr_of_the_difference_ABpBB_ABpAB)),"\n";
+
+my $sterr_of_the_difference_ABBpB_AABpB= sqrt(($sterr_ABBpB)**2+($sterr_AABpB)**2);
+print "Sterr of diff_ABBpB_AABpB ",sprintf("%.0f",($sterr_of_the_difference_ABBpB_AABpB)),"\n";
+
+
+# now print confidence interval for the differnece
+print "The difference between the ABpBB_ABpAB means is ",$difference_ABpBB_ABpAB," (",sprintf("%.0f",($difference_ABpBB_ABpAB - 1.96*$sterr_of_the_difference_ABpBB_ABpAB))," - ",sprintf("%.0f",($difference_ABpBB_ABpAB + 1.96*$sterr_of_the_difference_ABpBB_ABpAB)),")\n";
+
+print "The difference between the ABBpB_AABpB means is ",$difference_ABBpB_AABpB," (",sprintf("%.0f",($difference_ABBpB_AABpB - 1.96*$sterr_of_the_difference_ABBpB_AABpB))," - ",sprintf("%.0f",($difference_ABBpB_AABpB + 1.96*$sterr_of_the_difference_ABBpB_AABpB)),")\n";
+
+```
